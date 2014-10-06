@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="com.genuitec.eclipse.j2eedt.core.J2EE14_CONTAINER"/>
+	<classpathentry kind="var" path="JBOSS_LIB/bsh-2.0b4.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/jasperreports-1.2.0.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/log4j.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/log4j-1.2.8.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/log4j-1.2.9.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/log4j-boot.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/mail.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/msbase.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/mssqlserver.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/msutil.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/postgresql-8.0-310.jdbc3.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>
