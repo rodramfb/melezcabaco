@@ -1,0 +1,86 @@
+/* CSS Document */
+
+body {
+	font-size: 12px;
+	FONT-FAMILY: tahoma;	
+}
+
+.fila-head{
+  font:bolder;
+	FONT-SIZE: 11px;
+	COLOR: #003366;
+	FONT-FAMILY: Tahoma;
+}
+
+.fila-det{
+	FONT-SIZE: 11px;
+	COLOR: #003366;
+	FONT-FAMILY: Tahoma;
+}
+
+.mensaje{
+  font:bolder;
+	FONT-SIZE: 11px;
+	COLOR: #CC3300;
+	FONT-FAMILY: Tahoma;
+	text-decoration:none
+}
+
+.boton{
+	FONT-WEIGHT: bold;
+	FONT-SIZE: 10px;
+	COLOR: white;
+	FONT-FAMILY: Tahoma;
+	BACKGROUND-COLOR: #99CCFF;
+	border: 1px solid #000000;
+	text-align: left;
+	white-space: nowrap;
+}
+
+.campo{
+    FONT-SIZE: 11px;
+    COLOR: black;
+    FONT-FAMILY: tahoma
+}
+
+.combo{
+	width: 200px;
+	FONT-SIZE: 10px;
+	COLOR: black;
+	FONT-FAMILY: tahoma
+}
+
+.combo-size-var{
+	FONT-SIZE: 10px;
+	COLOR: black;
+	FONT-FAMILY: tahoma
+}
+
+.lista{
+	width: 200px;
+	FONT-SIZE: 10px;
+	COLOR: black;
+	FONT-FAMILY: tahoma
+}
+
+a:link,visited,hover,active {
+	FONT-FAMILY: tahoma;
+	FONT-SIZE: 10px;
+	text-decoration: underline;	
+	color: #003366;
+}
+
+a:hover  {
+	FONT-FAMILY: tahoma;
+	FONT-SIZE: 10px;
+	text-decoration: underline;
+	color: #000000;
+	font-style: italic;
+}
+
+/*
+:link { color: rgb(0, 0, 153) }  para links no visitados  
+:visited { color: rgb(153, 0, 153) }   para link visitados   
+:hover { color: rgb(0, 96, 255) }   cuando el mouse está sobre link  
+:active { color: rgb(255, 0, 102) }  cuando el link is pulsado 
+*/ 

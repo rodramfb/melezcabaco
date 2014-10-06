@@ -1,0 +1,61 @@
+label {
+	cursor: pointer;
+}
+
+div#header form {
+	text-align: right;
+}
+
+div#header form input {
+	color: #5C798A;
+	font-size: 0.95em;
+	margin: 6px 0 0 0;
+	padding: 0 0 1px 2px;
+}
+
+form.back {
+	margin: 0;
+}
+
+input.submit {
+	float: right;	
+}
+
+form input,
+form textarea {
+	padding-left: 2px;
+}
+
+form input.image {
+	vertical-align: top;
+}
+
+form textarea {
+	width: 266px;	
+}
+
+input.submit {
+	cursor: pointer;
+}
+
+input {
+	font-size: 0.93em;
+}
+
+select {
+	font-size: 0.93em;
+	width: 25em;
+}
+
+selectperfil {
+	font-size: 0.93em;
+	width: 20em;
+}
+
+textarea {
+	font-size: 1.5em;
+}
+
+form {
+	margin: 0;
+}

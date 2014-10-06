@@ -1,0 +1,127 @@
+<!--
+
+/* This Style sheet is used by Netscape 6 and IE4+ */
+
+/*BODY 			{color: #000000; font:.75em Verdana,Arial,helvetica,sans-serif; background-color: #ffffff;}			 	*/
+
+
+P,.text,.text-medium			{color: #333333; font-family:arial,geneva,sans-serif; font-size: .75em; line-height: 1.5em; }
+.datasheetField,.celltext,.label {color: #333333; font-family:tahoma,geneva,sans-serif; font-size: .7em; }
+
+
+A.tab-label 		{color: #ffffff; font-family:tahoma,geneva,sans-serif; font-size: .7em; text-decoration:none;}
+A.tab-label:visited	{color: #ffffff; font-family:tahoma,geneva,sans-serif; font-size: .7em; text-decoration:none;}
+A.tab-label:hover 	{color: #ffcc66; text-decoration:underline;}
+
+th				{text-align: left; font-weight: normal;} 
+						 
+/* Link Global Settings */
+A 				{color: #773300;}
+A:visited 		{color: #668877;}
+A:hover 		{color: #cc6600; text-decoration:underline;}
+A:active 		{color: #dd0000; text-decoration:underline;}
+
+A.links 		{color: #000000; text-decoration:none;}
+A.links:visited {color: #000000; text-decoration:none;}
+A.links:hover 	{color: #ff0000; text-decoration:underline;}
+A.links:active 	{color: #dd0000; text-decoration:underline;}
+
+A.white			{color: #ffffff; text-decoration:underline;}
+A.white:visited	{color: #ffffff; text-decoration:underline;}
+A.white:hover 	{color: #ff0000; text-decoration:underline;}
+A.white:active	{color: #ffc400; text-decoration:underline;}
+
+A.help			{color: #000000; text-decoration:underline;}
+A.help:visited	{color: #000000; text-decoration:underline;}
+A.help:hover 	{color: #ff0000; text-decoration:underline; cursor:help;}
+A.help:active	{color: #ffc400; text-decoration:underline;}
+
+/* Navbar */
+A.nav 			{color: #ffffff; text-decoration:none;}
+A.nav:visited 	{color: #ffffff; text-decoration:none;}
+A.nav:hover 	{color: #ff0000; text-decoration:underline;}
+A.nav:active 	{color: #ffc400; text-decoration:underline;}
+TD.nav  		{color: #006600; font-weight: bold;}
+
+/* general colors */
+.color-rule				{background-color: #999999;}
+.color-tableheader		{background-color: #898983;}
+.color-tabletrim		{background-color: #898983;}
+.color-buttonbacking	{background-color: #ccccc5;}
+.color-columnheaders,
+.color-formbacking		{background-color: #ddddd5;}
+.color-datacell			{background-color: #fffff5;}
+/* Background colors */
+.a				{background-color: #c0c0b5;}
+.b				{background-color: #D4D0C8;}
+.c				{background-color: #fffff5;}
+.d				{background-color: #ffffdd;}
+.e				{background-color: #ffffff;}
+.f				{background-color: #ffffff;}
+.g				{background-color: #ffddaa;}
+
+/* Headers */
+H1 				{color: #333333; font-size: 2.8em; font-weight: bold;}
+H2 				{color: #333333; font-size: 2em; font-weight: bold;}
+H3,.h3			{color: #333333; font-size: 1em; font-weight: bold; font-family: arial,geneva,helvetica,sans-serif;}
+H4,.h4			{color: #224433; font-size: 0.8em; font-weight: bold; font-family: arial,geneva,helvetica,sans-serif;}
+
+/* Form Button settings */
+/* -default */
+INPUT			{font-family:tahoma,verdana,geneva,sans-serif; font-size: .7em; border-width: .2em;border-width: .2em;color:333333;}
+SELECT			{font-family:tahoma,verdana,geneva,sans-serif; font-size: .7em; border-style: groove; border-width: .2em;}
+TEXTAREA		{font-family:tahoma,verdana,geneva,sans-serif; font-size: .7em; border-style: groove; border-width: .2em;}
+.normform		{font-family:tahoma,verdana,geneva,sans-serif; font-size: .7em; border-style: groove; border-width: .2em;}
+/* -grey */
+INPUT.locked	{background-color: #eeeee9; border-style: groove; border-width: .2em; color:666666;}
+SELECT.locked	{background-color: #eeeee9; border-style: groove; border-width: .2em; color:666666;}
+TEXTAREA.locked	{background-color: #eeeee9; border-style: groove; border-width: .2em; color:666666;}
+/* -highlight */
+INPUT.invalid	{background-color: #ff6600; color: #ffffff; font-weight: bold;}
+SELECT.invalid	{background-color: #ff6600; color: #ffffff; font-weight: bold;}
+TEXTAREA.invalid{background-color: #ff6600; color: #ffffff; font-weight: bold;}
+/* -button */
+INPUT.button	{font-family: tahoma,arial,sans-serif;font-size: .65em;width:7.5em;background-color:ddddd9;}
+INPUT.image		{border: none;}
+
+/* Text Styles */
+.smallbold		{color: #000000; font-weight: bold;}
+.smallboldgrey	{color: #aaaaaa; font-weight: bold;}
+.smallboldwhite	{color: #ffffff; font-weight: bold;}
+.small			{color: #000000;}
+.smallwhite		{color: #ffffff;}
+.smallgrey		{color: #777777;}
+
+/* -Message Text */
+.info			{color: #000000; font-weight: bold;}
+.error			{color: #ff6600; font-weight: bold;}
+.warning		{color: #446655; font-weight: bold;}
+.debug			{color: #0000ff; font-weight: bold;}
+
+/* Utility settings */
+HR				{color: #c0c0b5; background-color: #000000; width: 100% size: 1px;}
+/*
+TD	 			{color: #000000; font-family: Verdana, Arial, helvetica, sans-serif; font-size: .75em;}
+*/
+DIV				{font-family: Verdana, Arial, helvetica, sans-serif;}
+
+DIV.dlgbody		{width: 100%; height: 200; background-color:#ddddD0; font-size: .7em; padding: 5px; border-width: 1 1 1 1; border-style: solid; border-color: #000000;}
+DIV.dlgtitle	{width: 100%; background-color:#C0C0b5; font-size: 1em; padding: 5px; border-width: 1 1 1 1; border-style: solid; border-color: #ddddD0;}
+
+DIV.box			{width: 100%; background-color: #669966; font-size: 1em; padding: 20px; border-width: 1 1 1 1; border-style: solid; border-color: #000000;}
+DIV.note 		{width: 100%; background-color: #eeeeee; font-size: 1em; margin-left: 40px; margin-right: 40px; padding: 10px; border-width: 1 1 1 1; border-style: solid; border-color: #000000;}
+SMALL.update 	{color: #999999; font-size: .8em; font-weight: bold;}
+SMALL.date 		{color: #666666; font-size: .8em;}
+STRONG.error 	{font-size: 1.5em; font-weight: bold; color: #ff0000;}
+STRONG.title 	{font-size: .7em; font-weight: bold;font-family:tahoma,geneva,sans-serif;}
+STRONG.titlerev	{color: #ffffff; font-size: .7em; font-weight: bold;font-family:tahoma,geneva,sans-serif;}
+UL 				{margin-left: 2em; list-style: disc; color: #333333; font-family:arial,geneva,sans-serif; font-size: .75em; line-height: 1.5em; }
+PRE 			{color: #3366CC; background-color: #fffff5; margin-left: 1em; margin-right: 2em; padding: 1em; font-size: .7em;}
+.code 			{color: #3366CC; font-size: 1em;}
+.smalltext 		{font-size: .8em;}
+.dlgtext		{color: #000000; font-family: Verdana, Arial, helvetica, sans-serif; font-size: 1em;}
+.title2			{color: #707065; font-size: 1em; font-weight: bold; font-style: normal; line-height: .5em;}
+
+/* Fonts Specific */
+UL.font 		{margin-left: 1em; font-size: 1em; font-weight: bold;}
+-->

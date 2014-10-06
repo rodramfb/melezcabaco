@@ -1,0 +1,13 @@
+<%  
+String pagina = request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/") + 1 );
+//String referente = request.getHeader("referer").substring(request.getHeader("referer").lastIndexOf("/") + 1 );
+try {
+ 	if(session.getAttribute("usuario") == null){
+	  String mensaje = "La sesión ha caducado.<br>Por Favor, ingrese nuevamente.";
+	  System.out.println("SESSION EXPIRO. ");
+	  response.sendRedirect("expire.jsp?mensaje="+mensaje);
+	}
+}catch (Exception e){
+	System.out.println("EXCEPTION (session.jspf) :" + e);
+}
+%>

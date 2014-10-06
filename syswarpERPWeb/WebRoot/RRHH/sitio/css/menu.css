@@ -1,0 +1,47 @@
+div#left {
+	background-color: #F4F5F7;
+	float: left;
+	font-size: 0.8em;
+ }
+
+ul#menu {
+	margin: 0;
+	padding: 0;
+	width: 150px;
+}
+
+ul#menu li {
+	border-bottom: 1px solid #BFC9D2;
+	border-left: 4px solid #CFDADF;
+	border-top: 1px solid White;
+	line-height: 14px;
+	list-style-type: none;
+	margin:0;
+}
+
+ul#menu li a {
+	background-image: url(../images/list.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+	color: #5C798A;
+	display: block;
+	font-size: 0.9em;
+	font-weight: bolder;
+	padding: 3px 0 3px 14px;	
+	text-decoration: none;
+}
+
+ul#menu li a:hover {
+	background-color: #CFDADF;
+	background-image: url(../images/listHover.gif);
+	background-position: left;
+	background-repeat: no-repeat;	
+	line-height: 14px;
+	width: 132px;
+}
+
+
+ul#menu li img {
+	vertical-align: middle;
+}
+

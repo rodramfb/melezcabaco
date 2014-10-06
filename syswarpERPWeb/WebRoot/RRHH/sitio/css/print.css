@@ -1,0 +1,30 @@
+@import url(layout.css);
+@import url(header.css);
+@import url(menu.css);
+@import url(footer.css);
+@import url(table.css);
+@import url(form.css);
+
+
+	
+div#header,
+div#left,
+div#footer,
+div#print,
+div#status {
+	display: none !important
+}
+
+div#global {
+	background: #fff none !important;
+	margin: auto;
+	padding: 0pt;
+	width: auto !important;
+}
+
+div#content {
+	border: none !important;
+	margin: 0px !important;
+	padding: 0px !important;	
+}
+
