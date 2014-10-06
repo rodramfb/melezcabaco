@@ -1,0 +1,29 @@
+div#header {
+	background-color: White;
+	border: 1px solid #ccc;	
+	float: left;
+	font-size: 0.9em;
+	margin-bottom: 3px;
+	width: 753px;
+}
+
+div#header img.logo {
+	float: left;
+	padding: 4px 0 4px 8px;
+}
+
+div#map {	
+	float: right;
+	font-size: 0.85em;
+	padding: 8px 6px 0 0;
+	vertical-align: middle;
+	text-align: right;
+}
+
+div#map a {
+	color: #5C798A;
+}
+
+div#map a:hover {
+	text-decoration: none;
+}

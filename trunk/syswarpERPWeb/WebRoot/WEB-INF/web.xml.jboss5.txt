@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+  <servlet>
+    <description>UploadFicheroNew</description>
+    <display-name>UploadFicheroNew</display-name>
+    <servlet-name>UploadFicheroNew</servlet-name>
+    <servlet-class>ar.com.syswarp.servlet.upload.UploadFicheroNew</servlet-class>
+  </servlet>
+  <servlet>
+    <description>UploadFicheroBlob</description>
+    <display-name>UploadFicheroBlob</display-name>
+    <servlet-name>UploadFicheroBlob</servlet-name>
+    <servlet-class>ar.com.syswarp.servlet.upload.UploadFicheroBlob</servlet-class>
+  </servlet>
+  <servlet>
+    <description>UploadFicheroProObsequios</description>
+    <display-name>UploadFicheroProObsequios</display-name>
+    <servlet-name>UploadFicheroProObsequios</servlet-name>
+    <servlet-class>ar.com.syswarp.servlet.upload.UploadFicheroProObsequios</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadFicheroNew</servlet-name>
+    <url-pattern>/servlet/UploadFicheroNew</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UploadFicheroBlob</servlet-name>
+    <url-pattern>/servlet/UploadFicheroBlob</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>UploadFicheroProObsequios</servlet-name>
+    <url-pattern>/servlet/UploadFicheroProObsequios</url-pattern>
+  </servlet-mapping>
+</web-app>

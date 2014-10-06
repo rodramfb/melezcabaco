@@ -1,0 +1,8 @@
+table {
+	font-size: 0.93em;
+	margin-left: 4px;
+}
+
+.table-border {
+	border: thin solid #336699;
+}
