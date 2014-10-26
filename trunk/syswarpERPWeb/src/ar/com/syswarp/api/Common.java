@@ -15,19 +15,44 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.ejb.EJBException;
 import javax.mail.Message;
-import javax.mail.internet.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 import org.apache.log4j.Logger;
 
-import ar.com.syswarp.ejb.*;
+import ar.com.syswarp.ejb.BC;
+import ar.com.syswarp.ejb.BCBean;
+import ar.com.syswarp.ejb.CRM;
+import ar.com.syswarp.ejb.CRMBean;
+import ar.com.syswarp.ejb.Clientes;
+import ar.com.syswarp.ejb.ClientesBean;
+import ar.com.syswarp.ejb.Contable;
+import ar.com.syswarp.ejb.ContableBean;
+import ar.com.syswarp.ejb.General;
+import ar.com.syswarp.ejb.GeneralBean;
+import ar.com.syswarp.ejb.Produccion;
+import ar.com.syswarp.ejb.ProduccionBean;
+import ar.com.syswarp.ejb.Proveedores;
+import ar.com.syswarp.ejb.ProveedoresBean;
+import ar.com.syswarp.ejb.RRHH;
+import ar.com.syswarp.ejb.RRHHBean;
+import ar.com.syswarp.ejb.Report;
+import ar.com.syswarp.ejb.ReportBean;
+import ar.com.syswarp.ejb.Stock;
+import ar.com.syswarp.ejb.StockBean;
+import ar.com.syswarp.ejb.Tesoreria;
+import ar.com.syswarp.ejb.TesoreriaBean;
 
 public class Common {
 
@@ -89,11 +114,11 @@ public class Common {
 	public static CRM getCrm() {
 		return crm;
 	}
+
 	public static BC getBc() {
 		return bc;
 	}
 
-	
 	// unicamente para interfaces. ;)
 
 	public static Object setObjectToStrOrTime(Object obj, String conversion) {
@@ -1233,6 +1258,7 @@ public class Common {
 
 		return ultimoDia;
 	}
+
 	public static boolean isCCVSTypeMatchIDSistema(BigDecimal idtarjetacredito,
 			String CCVSType) {
 
@@ -1373,6 +1399,30 @@ public class Common {
 
 		return isSend;
 	}
-	
+
+	public static BigDecimal getNumberFromString(String s) {
+		if (s == null || s.trim().equalsIgnoreCase("null")) {
+			return null;
+		} else {
+			try {
+				long id = Long.parseLong(s);
+				return BigDecimal.valueOf(id);
+			} catch (NumberFormatException e) {
+				log.error(String.format(
+						"Not a number - Exception message is: %s", e
+								.getMessage()));
+				System.out.println(String.format(
+						"Not a number - Exception message is: %s", e
+								.getMessage()));
+				return BigDecimal.ZERO;
+			} catch (Exception e) {
+				log.error(String.format("Exception message is: %s", e
+						.getMessage()));
+				System.out.println(String.format("Exception message is: %s", e
+						.getMessage()));
+				return BigDecimal.ZERO;
+			}
+		}
+	}
 
 }
