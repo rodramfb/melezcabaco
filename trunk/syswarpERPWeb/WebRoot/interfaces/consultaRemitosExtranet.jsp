@@ -4,6 +4,7 @@
 <%@ page import="ar.com.syswarp.api.*" %> 
 <%@ page import="ar.com.syswarp.ejb.*" %> 
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 String titulo     = "CONSULTA DE REMITOS DE SOCIOS";
 String mensajeerror = "";
@@ -106,21 +107,18 @@ try{
          if(usuarioalt.length()>17) usuarioalt = usuarioalt.substring(0, 16);
 		 if (usuarioalt.indexOf(":IF") == -1) usuarioalt += ":IF" ;
 		}
-		javax.naming.Context context = new javax.naming.InitialContext();
-		Object object = context.lookup("BC");
-		BCHome sHome = (BCHome) javax.rmi.PortableRemoteObject.narrow(object, BCHome.class);
-		repo = sHome.create();
-
+		
+		BC bc = Common.getBc();
 
 		System.out.println(mensajeerror);	
 		
 		if(!iddeposito.equals("")){
-		  ResultSet rsEquivelencia = repo.getTransaccion("spInterfacesConjuntoDepositoDeltaOne", iddeposito);
+		  ResultSet rsEquivelencia = bc.getTransaccion("spInterfacesConjuntoDepositoDeltaOne", iddeposito);
           String idconjunto = "0";
 		  if(rsEquivelencia != null && rsEquivelencia.next()){
             idconjunto = rsEquivelencia.getString(2);
 			System.out.println("idconjunto: " + idconjunto);
-		    rsStockConjunto = repo.getTransaccion("spInterfacesRemitosExnetConjunto", idconjunto + ", '"+  fechaDesde + "', '" + fechaHasta + "'");
+		    rsStockConjunto = bc.getTransaccion("spInterfacesRemitosExnetConjunto", idconjunto + ", '"+  fechaDesde + "', '" + fechaHasta + "'");
           }
         }
 		

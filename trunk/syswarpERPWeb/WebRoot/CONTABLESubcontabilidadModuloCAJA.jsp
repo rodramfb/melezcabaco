@@ -8,6 +8,7 @@
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="ar.com.syswarp.api.*" %> 
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 
 String fecha_desde   = Common.setNotNull(request.getParameter("fecha_desde"));	
@@ -124,17 +125,10 @@ if (!fecha_desde.equals("")) {
 	 float[] totalesParciales = new float[2];
 	 float[] totalesGenerales = new float[2];	 
    try{ 
-   	javax.naming.Context context = new javax.naming.InitialContext();
-   	// INSTANCIAR EL MODULO CONTABLE 
-   	Object object = context.lookup("Contable");
-   	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   	Contable repo =   sHome.create(); 
-   	// INSTANCIAR EL MODULO GENERAL    	
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    General gene =   sGen.create();      
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();
   	  	
-   	Asientos =  repo.getLibroDiarioSC(ejercicioActivo, fecha_desde,fecha_hasta,new BigDecimal(session.getAttribute("empresa").toString() ),vista ); 
+   	Asientos =  contable.getLibroDiarioSC(ejercicioActivo, fecha_desde,fecha_hasta,new BigDecimal(session.getAttribute("empresa").toString() ),vista ); 
    	iterAsientos = Asientos.iterator();      
    	totReg = Asientos.size();     
 

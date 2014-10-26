@@ -5,6 +5,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 String accion = request.getParameter("accion");
 String grabacion = request.getParameter("grabacion");
@@ -40,22 +41,10 @@ System.out.println("nivel "+ _nivel);
   if (ano==null)  ano="";
 	
 // instancio el contable
-Contable repo = null;
-General gene =  null;   	    
 java.util.Iterator iterMes=null;
 try{
-    // instanciar bean general
-    
-    javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    gene =   sGen.create();   	    
-    // INSTANCIAR EL MODULO CONTABLE 
-    Object object = context.lookup("Contable");
-    ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-    repo =   sHome.create();   	        
-   	
+    General general = Common.getGeneral();
+    Contable contable = Common.getContable();   	    
 }	   
 
    catch (Exception ex) {
@@ -65,7 +54,7 @@ try{
 }  
 
 if(grabacion != null && accion.equalsIgnoreCase("alta")){ 	 	
-   String respuesta = repo.PlanAjusSave(new Long(Long.parseLong(cuenta_pl)), new Long(Long.parseLong(indice_pl)), usuario, new BigDecimal(session.getAttribute("empresa").toString() ));
+   String respuesta = contable.PlanAjusSave(new Long(Long.parseLong(cuenta_pl)), new Long(Long.parseLong(indice_pl)), usuario, new BigDecimal(session.getAttribute("empresa").toString() ));
    System.out.println("cuenta_pl: " + cuenta_pl);
    System.out.println("indice_pl: " + indice_pl); 
    System.out.println("usuario: " + usuario);

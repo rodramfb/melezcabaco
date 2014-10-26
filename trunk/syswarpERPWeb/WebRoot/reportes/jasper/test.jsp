@@ -4,7 +4,8 @@
 <%//@ include file="session.jspf"%>
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.util.*"%>
-<%@ page import="java.math.*"%> 
+<%@ page import="java.math.*"%>
+<%@ page import="ar.com.syswarp.api.Common"%> 
 <%
 	try {
  
@@ -20,11 +21,7 @@
 
         if(idempresa.equals("")) idempresa = "1";
          
- 
-		javax.naming.Context context = new javax.naming.InitialContext();
-		Object object = context.lookup("Report");
-		ReportHome sHome = (ReportHome) javax.rmi.PortableRemoteObject.narrow(object, ReportHome.class);
-		Report repo = sHome.create();
+ 		Report report = Common.getReport();
 		Map parameters = new HashMap();
 
 		parameters.put("idempresa",  idempresa );
@@ -57,7 +54,7 @@
 		plantillaImpresionJRXML = "depositos_cheques_frame"; 
 		//plantillaImpresionJRXML = "test"; 
 		
-		byte[] bytes = repo.getOpenReportImpresiones(plantillaImpresionJRXML, parameters);
+		byte[] bytes = report.getOpenReportImpresiones(plantillaImpresionJRXML, parameters);
 		response.setContentType("application/pdf"); 
 		response.setContentLength(bytes.length); 
 		ouputStream = response.getOutputStream(); 

@@ -7,6 +7,7 @@
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 
 <%
 
@@ -58,20 +59,9 @@ Iterator IterMeses        = null;
 	
 </script>
 <%	
-// instancio el contable
-Contable repo = null;
-General gene =  null;   	    
 try{
-	// instanciar bean general
-	javax.naming.Context context = new javax.naming.InitialContext();
-	// INSTANCIAR EL MODULO GENERAL 
-	Object objgen = context.lookup("General");
-	GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-	gene =   sGen.create();   	  
-	// INSTANCIAR EL MODULO CONTABLE 
-	Object object = context.lookup("Contable");
-	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-	repo =   sHome.create();   
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();
 	%>
 	<link rel = "stylesheet" href = "<%= pathskin %>">
   </head>
@@ -122,7 +112,7 @@ try{
 						    <%
 					String  salida = "";
 					if(! aceptar.equalsIgnoreCase("")){
-						 salida    = repo.setRenumeracionAsiento( Integer.parseInt(ejercicioActivo),new BigDecimal(session.getAttribute("empresa").toString() )  );
+						 salida    = contable.setRenumeracionAsiento( Integer.parseInt(ejercicioActivo),new BigDecimal(session.getAttribute("empresa").toString() )  );
 							%>
 					<tr class="fila-det-bold">
 					  <td height="29" class="fila-det-border">

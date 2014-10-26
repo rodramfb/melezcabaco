@@ -1,4 +1,5 @@
-<%
+
+<%@page import="ar.com.syswarp.api.Common"%><%
 response.setHeader("Cache-Control", "no-cache");
 response.setHeader("Pragma","no-cache");
 response.setDateHeader("Expires",0);
@@ -57,17 +58,14 @@ if (session.getAttribute("ayudaHome") == null){
 String referencia = "";
 String ayuda = "";
 String imagen= "";
-try{
-   javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-   Object objgen = context.lookup("General");
-   GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-   General gene =   sGen.create();   	       
-   java.sql.ResultSet rs = gene.getAyudaPk( new Long(idayuda) );   
-   referencia = gene.getReferencia();
-   ayuda      = gene.getAyuda();
-   imagen     = gene.getImagen();
-   ayudaMax   = gene.getAyudaMax();
+try {
+	General general = Common.getGeneral();
+
+   java.sql.ResultSet rs = general.getAyudaPk( new Long(idayuda) );   
+   referencia = general.getReferencia();
+   ayuda      = general.getAyuda();
+   imagen     = general.getImagen();
+   ayudaMax   = general.getAyudaMax();
    ayudaPrevius = Integer.valueOf(idayuda).intValue() - 1;   
    ayudaNext = Integer.valueOf(idayuda).intValue() + 1;   
    

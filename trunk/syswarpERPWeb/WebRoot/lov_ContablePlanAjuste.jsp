@@ -6,6 +6,7 @@
 <%@ page import="java.util.Iterator" %>
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 
 <%
 	String  PlanAjuste   = request.getParameter("PlanAjuste");	
@@ -85,12 +86,8 @@ if (!PlanAjuste.equals("*")) {
    Iterator iterPlanAjuste=null;
    int totReg  = 0;
    try{
-   	javax.naming.Context context = new javax.naming.InitialContext();
-   	// INSTANCIAR EL MODULO CONTABLE 
-   	Object object = context.lookup("Contable");
-   	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   	Contable repo =   sHome.create();   	      
-   	Ajuste =  repo.getAjusteOcu(PlanAjuste, new BigDecimal(session.getAttribute("empresa").toString() ));
+	Contable contable = Common.getContable();   	      
+   	Ajuste =  contable.getAjusteOcu(PlanAjuste, new BigDecimal(session.getAttribute("empresa").toString() ));
    	iterPlanAjuste = Ajuste.iterator();      
    	totReg = Ajuste.size();     
    }

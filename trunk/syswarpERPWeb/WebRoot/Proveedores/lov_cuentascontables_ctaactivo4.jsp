@@ -6,6 +6,7 @@
 <%@ page import="java.math.*" %>
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="ar.com.syswarp.validar.*" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
   Strings str = new Strings();
     String ctaactivo4   = "";
@@ -78,38 +79,38 @@ function Find_OnClick() {
   </table>
 <%  
 if (!ctaactivo42.equals("*")) {
-   java.util.List cuentasContables =  new ArrayList();
-   Iterator iterCuentasContables=null;
-   int totReg  = 0;
-   try{
-   	javax.naming.Context context = new javax.naming.InitialContext();
-   	// INSTANCIAR EL MODULO CONTABLE 
-   	Object object = context.lookup("Contable");
-   	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   	Contable repo =   sHome.create();   	      
-   	cuentasContables =  repo.getCuentasOcu(ejercicioActivo, ctaactivo42, idempresa);
-   	iterCuentasContables = cuentasContables.iterator();      
-   	totReg = cuentasContables.size();     
-   }
-   catch (Exception ex) {
-     java.io.CharArrayWriter cw = new java.io.CharArrayWriter();
-     java.io.PrintWriter pw = new java.io.PrintWriter(cw,true);
-     ex.printStackTrace(pw);
-  }  
-
+	java.util.List cuentasContables = new ArrayList();
+	Iterator iterCuentasContables = null;
+	int totReg  = 0;
+	try {
+		Contable contable = Common.getContable();
+		cuentasContables = contable.getCuentasOcu(ejercicioActivo, ctaactivo42, idempresa);
+		iterCuentasContables = cuentasContables.iterator();
+		totReg = cuentasContables.size();
+	} catch (Exception ex) {
+		java.io.CharArrayWriter cw = new java.io.CharArrayWriter();
+		java.io.PrintWriter pw = new java.io.PrintWriter(cw, true);
+		ex.printStackTrace(pw);
+	}
 
 	boolean existenReg = false;
 	boolean esPrimero = true;
 	String color_fondo = "";
+
 	while ( iterCuentasContables.hasNext() ) {
-	if (color_fondo.equals("fila-det-verde")) color_fondo = "fila-det";
-  else color_fondo = "fila-det-verde"; 		
-   		String[] sCampos = (String[]) iterCuentasContables.next(); 
-   		String cmp_codigo = sCampos[0] ;
-   		String cmp_descripcion = sCampos[1] ;
-   		String cmp_imputable = sCampos[2] ;
-			int cmp_nivel =  Integer.parseInt( sCampos[3] ) ;
-   		existenReg = true;
+
+		if (color_fondo.equals("fila-det-verde")) {
+			color_fondo = "fila-det";
+		} else {
+			color_fondo = "fila-det-verde";
+		} 		
+
+		String[] sCampos = (String[]) iterCuentasContables.next(); 
+		String cmp_codigo = sCampos[0] ;
+		String cmp_descripcion = sCampos[1] ;
+		String cmp_imputable = sCampos[2] ;
+		int cmp_nivel =  Integer.parseInt( sCampos[3] ) ;
+		existenReg = true;
 		if (esPrimero) {
 			esPrimero = false; %>
   <table width="100%"  cellPadding=0 cellSpacing=0  border="0">

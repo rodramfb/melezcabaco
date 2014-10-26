@@ -19,6 +19,7 @@ Fecha de ultima modificacion: -
 <%@ page import="java.util.Iterator" %> 
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 // captura de variables comunes
 String codigo    = request.getParameter("codigo");
@@ -223,22 +224,13 @@ tituCol[2] = "Descripcion";
 tituCol[3]= "Audit";
 
 try{
-   javax.naming.Context context = new javax.naming.InitialContext();
-
-   // INSTANCIAR EL MODULO GENERAL 
-   Object objgen = context.lookup("General");
-   GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-   General gene =   sGen.create();   	    
-   // INSTANCIAR EL MODULO CONTABLE 
-   Object object = context.lookup("Contable");
-   ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   Contable repo =   sHome.create();   	    
-   
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();
    
    if (accion != null){
 	    String resultadoBaja ="";
       if (accion.equalsIgnoreCase("baja")){
-	        resultadoBaja = repo.delCenCosto(new java.lang.Integer(codigo), new BigDecimal(session.getAttribute("empresa").toString() )); 			   			
+	        resultadoBaja = contable.delCenCosto(new java.lang.Integer(codigo), new BigDecimal(session.getAttribute("empresa").toString() )); 			   			
      }    
       if (resultadoBaja.equalsIgnoreCase("OK")){
          %><script>alert('Se Borro en forma correcta');</script><%
@@ -254,11 +246,11 @@ try{
    java.util.List Centrodecosto = new java.util.ArrayList();	 
    if (buscar==null ) buscar = "";
    if ( buscar.trim().equals("")){	 
-     Centrodecosto = repo.getCenCosto(new BigDecimal(session.getAttribute("empresa").toString() ));      
+     Centrodecosto = contable.getCenCosto(new BigDecimal(session.getAttribute("empresa").toString() ));      
    }
    else
    {
-	   Centrodecosto = repo.getCenCosto(buscar.trim(), new BigDecimal(session.getAttribute("empresa").toString() ));    
+	   Centrodecosto = contable.getCenCosto(buscar.trim(), new BigDecimal(session.getAttribute("empresa").toString() ));    
    }
    iterCentrodecosto = Centrodecosto.iterator();      
    totReg = Centrodecosto.size();   

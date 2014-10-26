@@ -19,6 +19,7 @@ Fecha de ultima modificacion: -
 <%@ page import="java.util.Iterator" %> 
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 // captura de variables comunes
 
@@ -228,22 +229,15 @@ tituCol[3] = "Mes";
 tituCol[4] = "Indice";
 tituCol[5] = "Audit";
 
-try{
-   javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-   Object objgen = context.lookup("General");
-   GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-   General gene =   sGen.create();   	    
-   // INSTANCIAR EL MODULO CONTABLE 
-   Object object = context.lookup("Contable");
-   ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   Contable repo =   sHome.create();   	    
-   
+try {
+
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();
    
    if (accion != null){
 	    String resultadoBaja ="";
       if (accion.equalsIgnoreCase("baja")){
-	        resultadoBaja = repo.delAjuste(new java.lang.Integer(codigo),new BigDecimal(session.getAttribute("empresa").toString() )); 			   			
+	        resultadoBaja = contable.delAjuste(new java.lang.Integer(codigo),new BigDecimal(session.getAttribute("empresa").toString() )); 			   			
 		  }         
       %><script>alert('<%=resultadoBaja%>');</script><%
    }
@@ -255,11 +249,11 @@ try{
    java.util.List Ajustes = new java.util.ArrayList();	 
    if (buscar==null ) buscar = "";
    if ( buscar.trim().equals("")){	 
-     Ajustes = repo.getAjusteTod(new BigDecimal(session.getAttribute("empresa").toString() ));       
+     Ajustes = contable.getAjusteTod(new BigDecimal(session.getAttribute("empresa").toString() ));       
    }
    else
    {
-	   Ajustes = repo.getAjusteOcu(buscar.trim(), new BigDecimal(session.getAttribute("empresa").toString() ));    
+	   Ajustes = contable.getAjusteOcu(buscar.trim(), new BigDecimal(session.getAttribute("empresa").toString() ));    
    }
    iterAjustes = Ajustes.iterator();      
    totReg = Ajustes.size();   

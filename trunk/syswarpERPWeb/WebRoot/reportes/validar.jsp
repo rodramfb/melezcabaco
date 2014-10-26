@@ -5,19 +5,18 @@
 <%@ page import="javax.naming.directory.*" %>
 <%@ page import="java.util.Iterator" %> 
 <%@ page import="ar.com.syswarp.ejb.*"%>
+<%@ page import="ar.com.syswarp.api.Common"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%
 String usuario = request.getParameter("usuario");
 try{
    // primero guardo el usuario en session
-   session.setAttribute("usuario", usuario);      
-   javax.naming.Context context = new javax.naming.InitialContext();
-   Object object = context.lookup("Report");
-   ReportHome sHome = (ReportHome) javax.rmi.PortableRemoteObject.narrow(object, ReportHome.class);
-   Report repo =   sHome.create();   	 
+   session.setAttribute("usuario", usuario); 
+   
+   Report report = Common.getReport();     
    java.util.List variables = new java.util.ArrayList();	 
-   variables = repo.getVariables();
+   variables = report.getVariables();
    Iterator iterVariables   = null;
    iterVariables = variables.iterator();
     while(iterVariables.hasNext()){

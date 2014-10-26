@@ -13,6 +13,7 @@
 <%@ page import="ar.com.syswarp.api.*" %> 
 <%//@ include file="session.jspf"%>
 <%@ page import="java.math.BigDecimal" %> 
+<%@ page import="ar.com.syswarp.api.Common"%>
 
 <% 
 
@@ -49,13 +50,9 @@ String cmpDesc =  request.getParameter("cmpDesc");
 <%  
     
   try {
-    BC repo = null;
-    javax.naming.Context context = new javax.naming.InitialContext();
-    Object object = context.lookup("BC");
-    BCHome sHome = (BCHome) javax.rmi.PortableRemoteObject.narrow(object, BCHome.class);
-    repo = sHome.create();
+	BC bc = Common.getBc();
 	String sp = "spabm_areas";
-	java.sql.ResultSet rsConsulta = repo.getTransaccion(sp, " 'T' "); 
+	java.sql.ResultSet rsConsulta = bc.getTransaccion(sp, " 'T' "); 
 	if (rsConsulta != null) {
 		boolean existenReg = false;
 		boolean esPrimero = true;

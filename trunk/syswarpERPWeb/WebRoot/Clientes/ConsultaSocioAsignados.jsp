@@ -30,11 +30,7 @@ try{
 int i = 0;
 
 
-				// INSTANCIAR EL MODULO ENTERPRISE
-javax.naming.Context contextEnt = new javax.naming.InitialContext();
-Object objectRep = contextEnt.lookup("Report");
-ReportHome eHome = (ReportHome) javax.rmi.PortableRemoteObject.narrow(objectRep, ReportHome.class);
-Report rep = eHome.create();				
+Report rep = new ReportBean();				
 
 
 

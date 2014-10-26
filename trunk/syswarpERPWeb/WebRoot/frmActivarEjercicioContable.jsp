@@ -5,6 +5,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 String grabacion = request.getParameter("grabacion");
 String titulo    = "Activar Ejercicio Contable";
@@ -76,26 +77,14 @@ function isCharsInBag (s, bag)
   }
 </script>
 <%	
-// instancio el contable
-Contable repo = null;
-General gene =  null;   	    
 try{
-    // instanciar bean general
-    javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    gene =   sGen.create();   	  
- 
-    // INSTANCIAR EL MODULO CONTABLE 
-    Object object = context.lookup("Contable");
-    ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-    repo =   sHome.create();   
-				
+
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();				
 	
 	
 	if(ejercicio != null && !ejercicio.equals("") ){
-	   String rta = repo.activarEjercicio(Integer.valueOf(ejercicio).intValue(),new BigDecimal(session.getAttribute("empresa").toString() )); 
+	   String rta = contable.activarEjercicio(Integer.valueOf(ejercicio).intValue(),new BigDecimal(session.getAttribute("empresa").toString() )); 
 		 if (rta.equalsIgnoreCase("OK")){ 
 		    %><script>alert('Se acaba de Activar el Ejercicio en forma correcta');</script><%
 	   }

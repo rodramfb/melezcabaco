@@ -5,6 +5,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="java.math.*"%> 
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
  	String resultado = "INGRESAR VALORES"; 
  try {
@@ -15,13 +16,11 @@
  	Strings str = new Strings();
  	String idempresa = str.esNulo( session.getAttribute("empresa") + "" );
      if(idempresa.equals("")) idempresa = "1";
- 	javax.naming.Context context = new javax.naming.InitialContext();
- 	Object object = context.lookup("Clientes");
- 	ClientesRemote sHome = (ClientesRemote) javax.rmi.PortableRemoteObject.narrow(object, ClientesRemote.class);
- 	Clientes repo = sHome.create();
+
+     Clientes clientes = Common.getClientes();
      System.out.println("PASO PREVIO A getPorcentajeDescuentoIinBin ");
      if(Common.setNotNull(ejecutar).equalsIgnoreCase("SI") ){
- 	  float porcentaje = repo.getPorcentajeDescuentoIinBin(iinbin);
+ 	  float porcentaje = clientes.getPorcentajeDescuentoIinBin(iinbin);
        System.out.println("LLAMANDO A getPorcentajeDescuentoIinBin ");
  	  resultado =   "EL valor ingresado (" + iinbin + ") " +  ( porcentaje > 0  ?  " SI " : "NO" ) + "  corresponde a una tarjeta BBVA / "  + porcentaje ; 
        System.out.println("ES TJTA BBVA " + iinbin + ":  " + resultado); 

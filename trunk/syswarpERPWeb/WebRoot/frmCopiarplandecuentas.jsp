@@ -5,6 +5,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 String ayudalink  = "ayuda.jsp?idayuda=2";  // link a las ayudas en linea de cada punto
 String grabacion = request.getParameter("grabacion");
@@ -86,24 +87,12 @@ function isCharsInBag (s, bag)
 </script>
 <%	
 // instancio el contable
-Contable repo = null;
-General gene =  null;   	    
-try{
-    // instanciar bean general
-    javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    gene =   sGen.create();   	  
+try {
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();
  
-    // INSTANCIAR EL MODULO CONTABLE 
-    Object object = context.lookup("Contable");
-    ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-    repo =   sHome.create();   
-				
-				       
 	   if(ejerciciodesde != null && !ejerciciodesde.equals("") && ejerciciohasta !=null && !ejerciciohasta.equals("")  ){		 
-	     String rta = repo.copyPlanCuentas( Integer.valueOf(ejerciciodesde).intValue(), Integer.valueOf(ejerciciohasta).intValue()  ,new BigDecimal(session.getAttribute("empresa").toString() ));    	  
+	     String rta = contable.copyPlanCuentas( Integer.valueOf(ejerciciodesde).intValue(), Integer.valueOf(ejerciciohasta).intValue()  ,new BigDecimal(session.getAttribute("empresa").toString() ));    	  
 	     if (rta.equalsIgnoreCase("OK")){
 	        %><script>alert("Se paso Correctamente el Plan de Cuentas!");</script><%
 	      }   

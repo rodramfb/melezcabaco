@@ -55,7 +55,7 @@ String pathscript = session.getAttribute("pathscript").toString();
  %>
 <form action="asistente1Frm.jsp" method="post" name="frm">
 <input name="accion" type="hidden" value="<%=BGF.getAccion()%>" >
-<input name="idusuario" type="hidden" value="<%=BGF.getIdusuario()%>" > 
+<input name="idusuario" id="idusuario" type="hidden" value="<%=BGF.getIdusuario()%>" > 
    <table width="90%"  border="0" cellspacing="0" cellpadding="0" align="center">
      <tr>
        <td>
@@ -104,22 +104,18 @@ String pathscript = session.getAttribute("pathscript").toString();
                   </table></td>
                 
               </tr>
-			  
-			  
-			  
-			  
-			  
-			 
               <tr class="fila-det">
                 <td class="fila-det-border">&nbsp;</td>
-                <td class="fila-det-border">&nbsp;<input name="validar" type="submit" value="Enviar" class="boton">               <input name="siguiente" type="submit" class="boton" id="siguiente" value="siguiente"></td>
+                <td class="fila-det-border">&nbsp;
+                	<input name="validar" type="submit" value="Enviar" class="boton">
+					<input name="siguiente" type="submit" class="boton" id="siguiente" value="siguiente">
+				</td>
              </tr>
           </table>
         </td>
       </tr>
     </table>
    </form>
-   <input name="idusuario" type="hidden" value="<%=BGF.getIdusuario()%>" >
   </body>
 </html> 
 <% 
@@ -128,6 +124,8 @@ catch (Exception ex) {
    java.io.CharArrayWriter cw = new java.io.CharArrayWriter();
    java.io.PrintWriter pw = new java.io.PrintWriter(cw,true);
    ex.printStackTrace(pw);
-  System.out.println("ERROR (" + pagina + ") : "+ex);   
+  System.out.println("ERROR (" + pagina + ") : "+ex);
+  System.out.println(String.format("Exception: %s", ex.getMessage()));
+  ex.printStackTrace();
 }%>
 

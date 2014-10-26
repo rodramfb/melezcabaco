@@ -6,6 +6,7 @@
 <%@ page import="java.math.*" %>
 <%@ page import="java.math.*" %>
 <%@ page import="ar.com.syswarp.ejb.*"%>
+<%@ page import="ar.com.syswarp.api.Common"%>
 
 
 <%
@@ -89,13 +90,9 @@ if (!idretencion1.equals("")) {
    java.util.List Reten   =  new ArrayList();
    Iterator iterRetencion=null;
    int totReg  = 0;
-   try{
-   	javax.naming.Context context = new javax.naming.InitialContext();
-   	// INSTANCIAR EL MODULO CONTABLE 
-   	Object object = context.lookup("Proveedores");
-   	ProveedoresHome sHome = (ProveedoresHome) javax.rmi.PortableRemoteObject.narrow(object, ProveedoresHome.class);
-   	Proveedores repo =   sHome.create();   	      
-	  Reten =  repo.getProveedoRetencionesOcuLOV(idretencion1, idempresa);
+   try {
+   		Proveedores proveedores = Common.getProveedores();
+	  Reten =  proveedores.getProveedoRetencionesOcuLOV(idretencion1, idempresa);
    	iterRetencion = Reten.iterator();      
    	totReg = Reten.size();     
    }

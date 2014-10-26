@@ -7,6 +7,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 Strings str = new Strings();
 String asiento   = request.getParameter("asiento");	
@@ -70,22 +71,12 @@ if (!asiento.equals("")) {
    Iterator iterAsientos=null;
    int totReg  = 0;
    try{ 
-   	javax.naming.Context context = new javax.naming.InitialContext();
-   	// INSTANCIAR EL MODULO CONTABLE 
-   	Object object = context.lookup("Contable");
-   	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   	Contable repo =   sHome.create(); 
-   	
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    General gene =   sGen.create();        
-   	
+	Contable contable = Common.getContable(); 
+   	General general = Common.getGeneral();
    	  	      
-   	Asientos =  repo.getAsientosOcu(ejercicioActivo, asiento, new BigDecimal(session.getAttribute("empresa").toString() )); 
+   	Asientos =  contable.getAsientosOcu(ejercicioActivo, asiento, new BigDecimal(session.getAttribute("empresa").toString() )); 
    	iterAsientos = Asientos.iterator();      
    	totReg = Asientos.size();     
-
-
 
 	boolean existenReg = false;
 	boolean esPrimero = true;
@@ -96,7 +87,7 @@ if (!asiento.equals("")) {
    		String cmp_nroasiento = sCampos[0] ;
    		String cmp_renglon = sCampos[1] ;
    		String cmp_tipomov = sCampos[2] ;
-			String cmp_fecha =   gene.TimestampToStrDDMMYYYY ( gene.StrToTimestampDDMMYYYYHHMISE( sCampos[3] ) )  ;//sCampos[3]  ; // 
+			String cmp_fecha =   general.TimestampToStrDDMMYYYY ( general.StrToTimestampDDMMYYYYHHMISE( sCampos[3] ) )  ;//sCampos[3]  ; // 
 			String cmp_detalle =   sCampos[4]  ;
 			String cmp_leyenda =   sCampos[5]  ;
 			String cmp_cuenta =   sCampos[6]  ;

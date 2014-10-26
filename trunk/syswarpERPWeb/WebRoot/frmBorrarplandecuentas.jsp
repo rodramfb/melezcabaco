@@ -5,6 +5,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 String grabacion = request.getParameter("grabacion");
 String titulo    = "Borrar Plan de Cuentas";
@@ -82,22 +83,12 @@ function isCharsInBag (s, bag)
 Contable repo = null;
 General gene =  null;   	    
 try{
-    // instanciar bean general
-    javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    gene =   sGen.create();   	  
- 
-    // INSTANCIAR EL MODULO CONTABLE 
-    Object object = context.lookup("Contable");
-    ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-    repo =   sHome.create();   
-				
-	
+
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();
 	
 	if(ejercicio != null && !ejercicio.equals("") ){
-	   repo.dropEjercicioPostgres(Integer.valueOf(ejercicio).intValue(),new BigDecimal(session.getAttribute("empresa").toString() ));    	   
+	   contable.dropEjercicioPostgres(Integer.valueOf(ejercicio).intValue(),new BigDecimal(session.getAttribute("empresa").toString() ));    	   
 	    %><script>alert("Se Ejecuto el Borrado por favor Verifique!");</script><%
 	}
 }		

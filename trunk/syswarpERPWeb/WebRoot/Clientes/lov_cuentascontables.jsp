@@ -7,6 +7,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
   Strings str = new Strings();
     String idctaneto   = "";
@@ -81,13 +82,9 @@ if (!idctaneto2.equals("*")) {
    java.util.List cuentasContables =  new ArrayList();
    Iterator iterCuentasContables=null;
    int totReg  = 0;
-   try{
-   	javax.naming.Context context = new javax.naming.InitialContext();
-   	// INSTANCIAR EL MODULO CONTABLE 
-   	Object object = context.lookup("Contable");
-   	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   	Contable repo =   sHome.create();   	      
-   	cuentasContables =  repo.getCuentasOcu(ejercicioActivo, idctaneto2, new BigDecimal( session.getAttribute("empresa").toString() ));
+   try {
+		Contable contable = Common.getContable();
+   	cuentasContables =  contable.getCuentasOcu(ejercicioActivo, idctaneto2, new BigDecimal( session.getAttribute("empresa").toString() ));
    	iterCuentasContables = cuentasContables.iterator();      
    	totReg = cuentasContables.size();     
    }

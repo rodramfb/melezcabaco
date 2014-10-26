@@ -7,6 +7,7 @@
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 Strings str = new Strings();
 String grabacion = request.getParameter("grabacion");
@@ -145,24 +146,14 @@ function mOut(src,clrIn) {
   
 </script>
 <%	
-// instancio el contable
-Contable repo = null;
-General gene =  null;   	    
-try{
-    // instanciar bean general
-    javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    gene =   sGen.create();   	  
-    List meses = gene.getGlobalMeses();
+try {
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();
+
+    List meses = general.getGlobalMeses();
     IterMeses = meses.iterator();
     
-    // INSTANCIAR EL MODULO CONTABLE 
-    Object object = context.lookup("Contable");
-    ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-    repo =   sHome.create();   
-    List ejercicioContables = repo.getEjerciciosAll(new BigDecimal(session.getAttribute("empresa").toString() ));
+    List ejercicioContables = contable.getEjerciciosAll(new BigDecimal(session.getAttribute("empresa").toString() ));
     iterEjercicios = ejercicioContables.iterator();		
 	
 }		
@@ -317,9 +308,9 @@ if(cuenta!=null && anio!=null && mes!=null
     && !cuenta.equalsIgnoreCase("") && !anio.equalsIgnoreCase("") && !mes.equalsIgnoreCase("")  ){
     List libroMayor = null;
     if(cent_cost!=null && cent_cost1!= null && !cent_cost.equalsIgnoreCase("") && !cent_cost1.equalsIgnoreCase("") ){
-       libroMayor = repo.getLibroMayor(Integer.valueOf(ejercicioActivo).intValue(), new Long(cuenta),Integer.valueOf(anio).intValue(),Integer.valueOf(mes).intValue(), new Long(cent_cost), new Long(cent_cost1),new BigDecimal(session.getAttribute("empresa").toString() ));
+       libroMayor = contable.getLibroMayor(Integer.valueOf(ejercicioActivo).intValue(), new Long(cuenta),Integer.valueOf(anio).intValue(),Integer.valueOf(mes).intValue(), new Long(cent_cost), new Long(cent_cost1),new BigDecimal(session.getAttribute("empresa").toString() ));
     } else {
-       libroMayor = repo.getLibroMayorSinCC(Integer.valueOf(ejercicioActivo).intValue(), new Long(cuenta),Integer.valueOf(anio).intValue(),Integer.valueOf(mes).intValue(),new BigDecimal(session.getAttribute("empresa").toString() ));
+       libroMayor = contable.getLibroMayorSinCC(Integer.valueOf(ejercicioActivo).intValue(), new Long(cuenta),Integer.valueOf(anio).intValue(),Integer.valueOf(mes).intValue(),new BigDecimal(session.getAttribute("empresa").toString() ));
     }
 
    iterCuentasContables = libroMayor.iterator();

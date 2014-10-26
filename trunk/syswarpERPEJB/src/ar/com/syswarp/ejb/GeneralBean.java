@@ -70,10 +70,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import sun.misc.BASE64Encoder;
 import sun.misc.CharacterEncoder;
+
 @Stateless
 public class GeneralBean implements General {
 
-	
 	/** The session context */
 	private SessionContext context;
 
@@ -699,8 +699,7 @@ public class GeneralBean implements General {
 		return (float) tmp / p;
 	}
 
-	public  String getNumeroFormateado(float numero, int enteros,
-			int decimales) {
+	public String getNumeroFormateado(float numero, int enteros, int decimales) {
 		String salida = "";
 		String mask = "";
 
@@ -723,8 +722,8 @@ public class GeneralBean implements General {
 		return salida;
 	}
 
-	public  String colorSaldo(Object objeto, String clasePos,
-			String claseNeg) throws EJBException {
+	public String colorSaldo(Object objeto, String clasePos, String claseNeg)
+			throws EJBException {
 		String clase = clasePos;
 		try {
 			if (objeto instanceof Float) {
@@ -842,7 +841,7 @@ public class GeneralBean implements General {
 
 	// ---------------------------------------------------------------------------------------------------------------
 
-	public  boolean esNumerico(String num) throws EJBException {
+	public boolean esNumerico(String num) throws EJBException {
 		try {
 			Float.parseFloat(num);
 			return true;
@@ -852,7 +851,7 @@ public class GeneralBean implements General {
 		}
 	}
 
-	public   boolean esEntero(String num) throws EJBException {
+	public boolean esEntero(String num) throws EJBException {
 		try {
 			if (esNumerico(num)) {
 
@@ -902,23 +901,24 @@ public class GeneralBean implements General {
 			// lo manda el robot
 			String cMailFrom = setNotNull(props.getProperty("mail.from"))
 					.trim();
-			String cMailFromName = fromName == null  ?  setNotNull(props.getProperty("mail.from.name")) : fromName;
+			String cMailFromName = fromName == null ? setNotNull(props
+					.getProperty("mail.from.name")) : fromName;
 			//
 			String cMailBCC = setNotNull(props.getProperty("mail.bcc")).trim();
 			String cMailUsuario = setNotNull(props.getProperty("mail.usuario"))
 					.trim();
 			String cMailClave = setNotNull(props.getProperty("mail.clave"))
 					.trim();
-			
+
 			String authSmtp = setNotNull(props.getProperty("mail.smtp.auth"))
-			.trim();
+					.trim();
 
 			String mailer = "JavaMail API";
 			// 20121003 - EJV -->
 			// props.put("mail.smtp.auth", "true");
-			
+
 			log.info("authSmtp: " + authSmtp);
-			
+
 			props.put("mail.smtp.auth", authSmtp);
 			// <--
 
@@ -932,12 +932,12 @@ public class GeneralBean implements General {
 
 			msg.setRecipients(Message.RecipientType.TO,
 					javax.mail.internet.InternetAddress.parse(to, false));
-			
+
 			// 20121003 - EJV -->
-			msg.setRecipients(Message.RecipientType.BCC ,
+			msg.setRecipients(Message.RecipientType.BCC,
 					javax.mail.internet.InternetAddress.parse(cMailBCC, false));
 			// <--
-			
+
 			msg.setSubject(subject);
 			msg.setText(body);
 			msg.setHeader("X-Mailer", mailer);
@@ -26721,7 +26721,7 @@ public class GeneralBean implements General {
 	 * 
 	 * */
 
-	public   boolean validarClaveIdentificacionUnica(String clave) {
+	public boolean validarClaveIdentificacionUnica(String clave) {
 
 		boolean cuitCuilValido = false;
 
@@ -27209,7 +27209,7 @@ public class GeneralBean implements General {
 													if (nrointernomovcliente
 															.longValue() > -1) {// A
 
-														// CLIENTE 
+														// CLIENTE
 														salida = ClientesBean
 																.clientesMovCliCreate(
 																		idcliente,
@@ -27238,7 +27238,12 @@ public class GeneralBean implements General {
 																		credito,
 																		observaciones,
 																		condicionletra,
-																		// 20121005 - EJV - Mantis 882 -->
+																		// 20121005
+																		// - EJV
+																		// -
+																		// Mantis
+																		// 882
+																		// -->
 																		null,
 																		// <--
 																		usuarioalt,
@@ -28009,12 +28014,18 @@ public class GeneralBean implements General {
 				+ " left join globalusuariosgrupos gup on (ti.idgrupo = gup.idgrupo and ti.idempresa = gu.idempresa)"
 				+ " inner join clientesclientes cli on (ti.idcliente = cli.idcliente and ti.idempresa = cli.idempresa )"
 				+ " inner join ticketsestados te on (ti.idticketestado = te.idticketestado  and ti.idempresa = te.idempresa)"
-				+ " WHERE " + " ti.idempresa = " + idempresa.toString()
+				+ " WHERE "
+				+ " ti.idempresa = "
+				+ idempresa.toString()
 				/*
 				 * + " and " + filtroGrupo + " and ti.idusuario = " +
 				 * idusuario.toString()
 				 */
-				+ "  ORDER BY 1 DESC LIMIT " + limit + " OFFSET  " + offset + ";";
+				+ "  ORDER BY 1 DESC LIMIT "
+				+ limit
+				+ " OFFSET  "
+				+ offset
+				+ ";";
 		List vecSalida = new ArrayList();
 		try {
 			vecSalida = getLista(cQuery);
@@ -28060,7 +28071,11 @@ public class GeneralBean implements General {
 				 * + " and " + filtroGrupo + " and ti.idusuario = " +
 				 * idusuario.toString()
 				 */
-				+ " ORDER BY 1 DESC  LIMIT " + limit + " OFFSET  " + offset + ";";
+				+ " ORDER BY 1 DESC  LIMIT "
+				+ limit
+				+ " OFFSET  "
+				+ offset
+				+ ";";
 		List vecSalida = new ArrayList();
 		try {
 			vecSalida = getLista(cQuery);
@@ -28218,7 +28233,9 @@ public class GeneralBean implements General {
 
 					if (enviaCorreo) {
 
-						resumen = " TICKET #  " + strZero(idticket.toString(), 10) + " - " + resumen;
+						resumen = " TICKET #  "
+								+ strZero(idticket.toString(), 10) + " - "
+								+ resumen;
 						salida = enviarCorreos(idgrupo, idusuario, "ALTA",
 								resumen, descripcion, conn);
 
@@ -28497,7 +28514,7 @@ public class GeneralBean implements General {
 		boolean flag = true;
 		String destino = "";
 		// CAMILEADA
-		//salida = accion;
+		// salida = accion;
 		if (idgrupo == null) {
 			idgrupo = new BigDecimal(-1);
 		} else if (idusuario == null) {
@@ -28509,12 +28526,11 @@ public class GeneralBean implements General {
 			while (iterGrupo.hasNext()) {
 				String[] datosGrupo = (String[]) iterGrupo.next();
 				destino = datosGrupo[0];
-				flag = sendMail(resumen, descripcion, destino,
-						null);
+				flag = sendMail(resumen, descripcion, destino, null);
 				if (!flag) {
 					salida = "Ha fallado el envío de correo interno.";
 				}
-				//log.info("se envio ? " + flag);
+				// log.info("se envio ? " + flag);
 			}
 		} else if (idusuario.longValue() > 0) {
 			destino = ObtenerMailUsuario(idusuario, conn);

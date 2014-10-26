@@ -19,6 +19,7 @@ Fecha de ultima modificacion: -
 <%@ page import="java.util.Iterator" %> 
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 // captura de variables comunes
 String codigo    = request.getParameter("codigo");
@@ -228,23 +229,15 @@ tituCol[4] = "des_indice_pl";
 tituCol[5] = "Audit";
 
 try{
-   javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-   Object objgen = context.lookup("General");
-   GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-   General gene =   sGen.create();   	    
-   // INSTANCIAR EL MODULO CONTABLE 
-   Object object = context.lookup("Contable");
-   ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   Contable repo =   sHome.create();   	    
-   
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();
    
    if (accion != null){
 	    String resultadoBaja ="";
       if (accion.equalsIgnoreCase("baja")){
 			   pk1 = codigo.substring(0, codigo.indexOf("|"));
 			   pk2 = codigo.substring(codigo.indexOf("|") + 1);
-	       resultadoBaja = repo.delPlanAjus (new Long(pk1), new Long(pk2), new BigDecimal(session.getAttribute("empresa").toString() ) ); 			
+	       resultadoBaja = contable.delPlanAjus (new Long(pk1), new Long(pk2), new BigDecimal(session.getAttribute("empresa").toString() ) ); 			
 		  }         
       %><script>alert('Se Elimino el Registro Correctamente,  Cuenta ' +  <%=pk1%>  +  ' Ajuste '  +  <%=pk2%>);</script><%
    }
@@ -256,11 +249,11 @@ try{
    java.util.List PlanAjustes = new java.util.ArrayList();	 
    if (buscar==null ) buscar = "";
    if ( buscar.trim().equals("")){
-     PlanAjustes = repo.getPlanAjusTod(ejercicioActivo, new BigDecimal(session.getAttribute("empresa").toString() ));       
+     PlanAjustes = contable.getPlanAjusTod(ejercicioActivo, new BigDecimal(session.getAttribute("empresa").toString() ));       
    }
    else
    { 	
-     PlanAjustes = repo.getPlanAjusOcu(ejercicioActivo,buscar.trim(), new BigDecimal(session.getAttribute("empresa").toString() ));  
+     PlanAjustes = contable.getPlanAjusOcu(ejercicioActivo,buscar.trim(), new BigDecimal(session.getAttribute("empresa").toString() ));  
    }
    iterPlanAjustes = PlanAjustes.iterator();      
    totReg = PlanAjustes.size();   

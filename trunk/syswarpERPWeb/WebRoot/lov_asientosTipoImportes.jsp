@@ -8,6 +8,8 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
+
 <%
 Strings str = new Strings();
 
@@ -89,17 +91,10 @@ try{
 	java.util.List AsientosTipo =  new ArrayList();
 	Iterator iterAsientosTipo=null;
   int totReg  = 0;	 
-	javax.naming.Context context = new javax.naming.InitialContext();
-	// INSTANCIAR EL MODULO CONTABLE 
-	Object object = context.lookup("Contable");
-	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-	Contable repo =   sHome.create(); 
-	
-	Object objgen = context.lookup("General");
-	GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-	General gene =   sGen.create();        
+	Contable contable = Common.getContable();
+	General general = Common.getGeneral();         
 		if (!codigo.equals("")) {   	  	      
-			AsientosTipo =  repo.getAsientosTipoPK(ejercicioActivo, Integer.parseInt(codigo),new BigDecimal(session.getAttribute("empresa").toString() )); 
+			AsientosTipo =  contable.getAsientosTipoPK(ejercicioActivo, Integer.parseInt(codigo),new BigDecimal(session.getAttribute("empresa").toString() )); 
 			iterAsientosTipo = AsientosTipo.iterator();      
 			totReg = AsientosTipo.size();     
 			boolean existenReg = false;
@@ -189,7 +184,7 @@ try{
 					nroRenglon++; 
 					ht.put( "cuenta", cuentas[i] );
 					ht.put("detalle", detalles[i]);
-					ht.put("importe", gene.getNumeroFormateado( Float.parseFloat( importes[i] ) , 10, decimales)  );
+					ht.put("importe", general.getNumeroFormateado( Float.parseFloat( importes[i] ) , 10, decimales)  );
 					ht.put("tipomov", tiposmov[i] );      
 					ht.put("descripcion_mov", descripcion_mov);      	
 					ht2.put(  nroRenglon + "" , ht);

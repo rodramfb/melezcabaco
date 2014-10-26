@@ -10,6 +10,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.Ref" %>
 <%@ page import="java.sql.ResultSetMetaData" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%@ include file="session.jspf"%>
 <%
 
@@ -26,23 +27,20 @@ Report repo = null;
 String titu_parametro = "";
 int nGrafico = 1;
 String cGrafico = "";
-try{
-   javax.naming.Context context = new javax.naming.InitialContext();  
-   Object objgen = context.lookup("Report");
-   ReportHome sGen = (ReportHome) javax.rmi.PortableRemoteObject.narrow(objgen, ReportHome.class);
-   repo =   sGen.create();   	    
+try {
+	Report report = Common.getReport();
    // capturo todas los parametros 
    Enumeration enumE = htPar.keys();
    while(enumE.hasMoreElements()){
        String values = (String) enumE.nextElement();
-       String variable        = repo.par2var(values);
+       String variable        = report.par2var(values);
        variable = request.getParameter(variable);       
        htParWithPar.put(values, variable);       
    }        
    // hasta aca hice request de todas las variables y cargue mi hashtable con todo listo
    
    // ahora ejecuto
-   java.util.List     param = repo.getParametros(htParWithPar);
+   java.util.List     param = report.getParametros(htParWithPar);
    java.util.Iterator iterParam = param.iterator();   
    while(iterParam.hasNext()){ 
          String[] sCampos = (String[]) iterParam.next();
@@ -50,7 +48,7 @@ try{
          String descripcion     = sCampos[2];
          String parametro       = sCampos[1];
          String idtipoparametro = sCampos[3];         
-         String variable = request.getParameter( repo.par2var(parametro) );                  
+         String variable = request.getParameter( report.par2var(parametro) );                  
          titu_parametro +=" "+descripcion+" : " + variable;         
          if (iterParam.hasNext()){
            titu_parametro += " , ";
@@ -59,7 +57,7 @@ try{
        
    
   
-    rsTablas = repo.getTablasReportes( new Integer(idreporte)  );
+    rsTablas = report.getTablasReportes( new Integer(idreporte)  );
     
    }
    catch (Exception ex) {
@@ -98,8 +96,8 @@ try{
     String ds  = rsTablas.getString("iddatasource");        
     String idtabla = rsTablas.getString("idtabla");  
     titulo_tabla =rsTablas.getString("tabla");        
-    String queryDepurado = repo.setQueryParametros(qry, htParWithPar );        
-    java.sql.ResultSet rsTbSalida = repo.getConnectionDS(new Integer(ds), queryDepurado);
+    String queryDepurado = report.setQueryParametros(qry, htParWithPar );        
+    java.sql.ResultSet rsTbSalida = report.getConnectionDS(new Integer(ds), queryDepurado);
     java.sql.ResultSetMetaData rsMD = rsTbSalida.getMetaData();	
     
 %>
@@ -134,10 +132,10 @@ try{
 </table>   
   <%
    // ahora reviso a ver si tiene graficos relacionados con la tabla
-    if(repo.hasGraficosTablas( new Integer (idtabla) )){
+    if(report.hasGraficosTablas( new Integer (idtabla) )){
        
        System.out.println("la tabla tiene graficos relacionados");
-       java.sql.ResultSet rsGrafTablas = repo.getGraficosTablas( new Integer (idtabla) );
+       java.sql.ResultSet rsGrafTablas = report.getGraficosTablas( new Integer (idtabla) );
        while(rsGrafTablas.next()){
          String strGrafico = "";
          boolean imprime_titulos_graficos = rsGrafTablas.getBoolean("imprime_titulos");
@@ -150,16 +148,16 @@ try{
          String tipo_grafico     = rsGrafTablas.getString("idtipografico");
          String datasource       = rsGrafTablas.getString("iddatasource");
          String nombre_grafico   = rsGrafTablas.getString("grafico");         
-         String queryDepuradoGrafico = repo.setQueryParametros(qry_grafico, htParWithPar );     
+         String queryDepuradoGrafico = report.setQueryParametros(qry_grafico, htParWithPar );     
          String queryDepuradoGrafico2 = "";
          String queryDepuradoGrafico3 = "";         
 
-         if(qry_grafico2 != null) queryDepuradoGrafico2 = repo.setQueryParametros(qry_grafico2, htParWithPar );     
-         if(qry_grafico3 != null) queryDepuradoGrafico3 = repo.setQueryParametros(qry_grafico3, htParWithPar );     
+         if(qry_grafico2 != null) queryDepuradoGrafico2 = report.setQueryParametros(qry_grafico2, htParWithPar );     
+         if(qry_grafico3 != null) queryDepuradoGrafico3 = report.setQueryParametros(qry_grafico3, htParWithPar );     
 
          ++nGrafico;
          cGrafico = session.getId() + nGrafico + ".jpg";
-         java.sql.ResultSet rsG = repo.getConnectionDS(new Integer(datasource),queryDepuradoGrafico);         
+         java.sql.ResultSet rsG = report.getConnectionDS(new Integer(datasource),queryDepuradoGrafico);         
          // todo: discriminar por cualquier tipo de grafico
          if (tipo_grafico.equalsIgnoreCase("1") ){ // 3dpie         
          %>
@@ -167,7 +165,7 @@ try{
            <tr>
              <td>
          <%
-            strGrafico = repo.GenerarGraficosPie3D(cGrafico,nombre_grafico,rsG);
+            strGrafico = report.GenerarGraficosPie3D(cGrafico,nombre_grafico,rsG);
             out.write("<img src=reportes/"+strGrafico+" border=0>"   );
          %>
              </td>
@@ -182,7 +180,7 @@ try{
            <tr>
              <td>
          <%       
-            strGrafico = repo.GenerarGraficosXY(cGrafico,nombre_grafico,rsG);
+            strGrafico = report.GenerarGraficosXY(cGrafico,nombre_grafico,rsG);
             out.write("<img src=reportes/"+strGrafico+" border=0>"   );
          %>
              </td>
@@ -197,7 +195,7 @@ try{
            <tr>
              <td>
          <%       
-            strGrafico = repo.GenerarGraficosBar3D(cGrafico,nombre_grafico,rsG);
+            strGrafico = report.GenerarGraficosBar3D(cGrafico,nombre_grafico,rsG);
             out.write("<img src=reportes/"+strGrafico+" border=0>"   );
          %>
              </td>

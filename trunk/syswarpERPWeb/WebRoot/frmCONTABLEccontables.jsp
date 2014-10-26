@@ -5,6 +5,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 Strings str = new Strings();
 String accion = request.getParameter("accion");
@@ -65,12 +66,8 @@ if(_nivel == 1) readonly = "readonly='true'";
 	
 
 // instancio el contable
-Contable repo = null;
 try{
-   	javax.naming.Context context = new javax.naming.InitialContext();   
-   	Object object = context.lookup("Contable");
-   	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-    repo =   sHome.create();   	      
+	Contable contable = Common.getContable();
    }
    catch (Exception ex) {
      java.io.CharArrayWriter cw = new java.io.CharArrayWriter();
@@ -80,7 +77,7 @@ try{
 
 if(grabacion == null && accion.equalsIgnoreCase("Modificacion") && codigo != null ){
    readonly1 = "readonly='false'";  
-   java.util.List cuentas = repo.getCuentasPK(ejercicioActivo, new Long(Long.parseLong(codigo)), new BigDecimal(session.getAttribute("empresa").toString() )); 
+   java.util.List cuentas = contable.getCuentasPK(ejercicioActivo, new Long(Long.parseLong(codigo)), new BigDecimal(session.getAttribute("empresa").toString() )); 
    java.util.Iterator iterCuentas   = cuentas.iterator();
 	 while(iterCuentas.hasNext()){  
 	    String[] sCampos = (String[]) iterCuentas.next(); 
@@ -113,7 +110,7 @@ if(grabacion == null && accion.equalsIgnoreCase("Modificacion") && codigo != nul
 			
 			// tengo que recuperar valores para las descripciones de centros de costos.
 			 if (cent_cost.toUpperCase() != ""){ 
-			    java.util.List cc1 = repo.getCenCostoPK(cent_cost.toUpperCase(), new BigDecimal(session.getAttribute("empresa").toString() ));
+			    java.util.List cc1 = contable.getCenCostoPK(cent_cost.toUpperCase(), new BigDecimal(session.getAttribute("empresa").toString() ));
 			    java.util.Iterator icc1   = cc1.iterator();
 			    while(icc1.hasNext()){  
 			    String[] sCC = (String[]) icc1.next(); 
@@ -121,7 +118,7 @@ if(grabacion == null && accion.equalsIgnoreCase("Modificacion") && codigo != nul
 			 }
 			 }	
 			 if (cent_cost1.toUpperCase() != ""){
-			    java.util.List cc2 = repo.getCenCostoPK(cent_cost1.toUpperCase(), new BigDecimal(session.getAttribute("empresa").toString() ));
+			    java.util.List cc2 = contable.getCenCostoPK(cent_cost1.toUpperCase(), new BigDecimal(session.getAttribute("empresa").toString() ));
 			    java.util.Iterator icc2   = cc2.iterator();
 			    while(icc2.hasNext()){  
 			    String[] sCC = (String[]) icc2.next(); 
@@ -158,7 +155,7 @@ if(grabacion != null && accion.equalsIgnoreCase("Alta")){
    	if(ajustable.equalsIgnoreCase("on"))   ajustable ="S";
    	if(resultado.equalsIgnoreCase("on"))   resultado ="S";
    	
-    String respuesta = repo.CuentaSave(ejercicioActivo, new Long(Long.parseLong(idcuenta)), cuenta.toUpperCase(), imputable.toUpperCase(), new Integer(nivel), ajustable.toUpperCase(), resultado.toUpperCase(), cent_cost.toUpperCase() , cent_cost1.toUpperCase(), usuario, new BigDecimal(session.getAttribute("empresa").toString() ));
+    String respuesta = contable.CuentaSave(ejercicioActivo, new Long(Long.parseLong(idcuenta)), cuenta.toUpperCase(), imputable.toUpperCase(), new Integer(nivel), ajustable.toUpperCase(), resultado.toUpperCase(), cent_cost.toUpperCase() , cent_cost1.toUpperCase(), usuario, new BigDecimal(session.getAttribute("empresa").toString() ));
    
 	if(!respuesta.equalsIgnoreCase("OK")){
 	   %><script>alert('<%=respuesta%>');</script><%  	
@@ -181,7 +178,7 @@ if(grabacion != null && accion.equalsIgnoreCase("Modificacion") && codigo != nul
 				 
 
 	 	 
-   String respuesta = repo.CuentaSaveOrUpdate(ejercicioActivo, cuenta.toUpperCase(), imputable.toUpperCase(), new Integer(nivel), ajustable.toUpperCase(), resultado.toUpperCase(), cent_cost.toUpperCase() ,cent_cost1.toUpperCase(), usuario, new Long(Long.parseLong(idcuenta)), new BigDecimal(session.getAttribute("empresa").toString() ));
+   String respuesta = contable.CuentaSaveOrUpdate(ejercicioActivo, cuenta.toUpperCase(), imputable.toUpperCase(), new Integer(nivel), ajustable.toUpperCase(), resultado.toUpperCase(), cent_cost.toUpperCase() ,cent_cost1.toUpperCase(), usuario, new Long(Long.parseLong(idcuenta)), new BigDecimal(session.getAttribute("empresa").toString() ));
    
   if(!respuesta.equalsIgnoreCase("OK")){
 	 %><script>alert('<%=respuesta%>');</script><%  	

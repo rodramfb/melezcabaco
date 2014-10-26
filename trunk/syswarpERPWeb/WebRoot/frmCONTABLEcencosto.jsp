@@ -4,6 +4,7 @@
 <%@ page import="javax.naming.directory.*" %>
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 
 String accion = request.getParameter("accion");
@@ -38,12 +39,8 @@ System.out.println("nivel "+ _nivel);
 	if (descripcion==null) descripcion="";
 	
 // instancio el contable
-Contable repo = null;
-try{
-   	javax.naming.Context context = new javax.naming.InitialContext();   
-   	Object object = context.lookup("Contable");
-   	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-    repo =   sHome.create();   	      
+try {
+	Contable contable = Common.getContable();
    }
    catch (Exception ex) {
      java.io.CharArrayWriter cw = new java.io.CharArrayWriter();
@@ -53,7 +50,7 @@ try{
 
 
 if(grabacion == null && accion.equalsIgnoreCase("modificacion") && codigo != null ){
-   java.util.List Centrodecosto = repo.getCenCostoPK(codigo, new BigDecimal(session.getAttribute("empresa").toString() ) ); 
+   java.util.List Centrodecosto = contable.getCenCostoPK(codigo, new BigDecimal(session.getAttribute("empresa").toString() ) ); 
    java.util.Iterator iterCentrodeCosto   = Centrodecosto.iterator();
 	 while(iterCentrodeCosto.hasNext()){  
 	    String[] sCampos = (String[]) iterCentrodeCosto.next(); 
@@ -63,7 +60,7 @@ if(grabacion == null && accion.equalsIgnoreCase("modificacion") && codigo != nul
 }
 
 if(grabacion != null && accion.equalsIgnoreCase("alta")){ 	 
-  String respuesta = repo.cenCostoSave(descripcion.toUpperCase(), usuario,new BigDecimal(session.getAttribute("empresa").toString() ) ); 
+  String respuesta = contable.cenCostoSave(descripcion.toUpperCase(), usuario,new BigDecimal(session.getAttribute("empresa").toString() ) ); 
  	response.sendRedirect(formulario);	 
 }
 
@@ -71,7 +68,7 @@ if(grabacion != null && accion.equalsIgnoreCase("modificacion") && codigo != nul
    System.out.println("idcencosto: " + idcencosto);
 	 System.out.println("descripcion: " + descripcion);
 	 
-   String respuesta = repo.cenCostoSaveOrUpdate(descripcion.toUpperCase(), usuario, new Integer(codigo),new BigDecimal(session.getAttribute("empresa").toString() ) ); 
+   String respuesta = contable.cenCostoSaveOrUpdate(descripcion.toUpperCase(), usuario, new Integer(codigo),new BigDecimal(session.getAttribute("empresa").toString() ) ); 
    System.out.println("Respuesta: " + respuesta);
 	 response.sendRedirect(formulario);
  
