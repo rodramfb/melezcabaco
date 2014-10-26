@@ -9,6 +9,7 @@
 package ar.com.syswarp.web.ejb;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.sql.Connection;
 
@@ -17,11 +18,11 @@ import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
-import java.math.*;
-import java.util.*;
-import ar.com.syswarp.ejb.*;
+
 import ar.com.syswarp.api.Common;
+import ar.com.syswarp.ejb.General;
 
 public class BeanAsistenteparaAltadeUsuariosFrm implements SessionBean,
 		Serializable {
@@ -117,7 +118,8 @@ public class BeanAsistenteparaAltadeUsuariosFrm implements SessionBean,
 					return;
 				} else {
 					this.idusuario = Common.getNumberFromString(this.mensaje);
-					if (this.idusuario != null && !idusuario.equals(BigDecimal.ZERO)) {
+					if (this.idusuario != null
+							&& !idusuario.equals(BigDecimal.ZERO)) {
 						this.mensaje = "Usuario generado correctamente.";
 					} else {
 						this.mensaje = "Usuario no se ha generado.";
@@ -153,7 +155,8 @@ public class BeanAsistenteparaAltadeUsuariosFrm implements SessionBean,
 						return false;
 					} else if (compare > 0) {
 						this.mensaje = "El usuario fue creado exitosamente, será redirigido";
-						response.sendRedirect("asistente2abm.jsp?idusuario=" + idusuario);
+						response.sendRedirect("asistente2abm.jsp?idusuario="
+								+ idusuario);
 						return true;
 					}
 				}
