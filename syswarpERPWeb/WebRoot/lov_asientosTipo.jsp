@@ -7,6 +7,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@page import="ar.com.syswarp.api.Common"%>
 <%
 Strings str = new Strings();
 String asiento   = request.getParameter("asiento");	
@@ -70,17 +71,10 @@ java.util.List AsientosTipo =  new ArrayList();
 Iterator iterAsientosTipo=null;
 int totReg  = 0;
 try{ 
-	javax.naming.Context context = new javax.naming.InitialContext();
-	// INSTANCIAR EL MODULO CONTABLE 
-	Object object = context.lookup("Contable");
-	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-	Contable repo =   sHome.create(); 
-	
-	Object objgen = context.lookup("General");
-	GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-	General gene =   sGen.create();        
+	Contable contable = Common.getContable(); 
+	General general = Common.getGeneral();
 					
-	AsientosTipo =  repo.getAsientosTipoDetalleOcu(ejercicioActivo, asiento, new BigDecimal(session.getAttribute("empresa").toString() )); 
+	AsientosTipo =  contable.getAsientosTipoDetalleOcu(ejercicioActivo, asiento, new BigDecimal(session.getAttribute("empresa").toString() )); 
 	iterAsientosTipo = AsientosTipo.iterator();      
 	totReg = AsientosTipo.size();     
 

@@ -20,6 +20,7 @@
 <%@ include file="session.jspf"%>
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <% 
 try{
 Strings str = new Strings();
@@ -64,17 +65,14 @@ try {
 
     String cReporteXML = "proveedoresvtofac";    
 	
-	javax.naming.Context context = new javax.naming.InitialContext();
-	Object object = context.lookup("Report");
-    ReportHome sHome = (ReportHome) javax.rmi.PortableRemoteObject.narrow(object, ReportHome.class);
-	Report repo = sHome.create();
+	Report report = Common.getReport();
 	
 	Map parameters = new HashMap(); 	
     parameters.put("fechavtodesdeStr", BCF.getFechavtodesdeStr());
     parameters.put("fechavtohastaStr", BCF.getFechavtohastaStr());
 	
 	 
-	byte[] bytes = repo.getOpenReport(cReporteXML,parameters);
+	byte[] bytes = report.getOpenReport(cReporteXML,parameters);
 
     response.setContentType("application/pdf"); 
     response.setContentLength(bytes.length); 

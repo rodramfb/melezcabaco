@@ -38,13 +38,6 @@ String hostname  =  request.getRemoteHost();
 				*/		
      
 				// INSTANCIAR EL MODULO GENERAL
-				/*
-				javax.naming.Context context = new javax.naming.InitialContext();
-				Object object = context.lookup("General");
-				GeneralHome sHome = (GeneralHome) javax.rmi.PortableRemoteObject
-						.narrow(object, GeneralHome.class);
-				General repo = sHome.create();
-				*/
 				GeneralBean repo = new GeneralBean();
 				
 				// VALIDO EL USUARIO
@@ -161,13 +154,6 @@ String hostname  =  request.getRemoteHost();
 				   session.setAttribute("numeroremitos4", numeroremitos4);			   
 				}
 
-				// INSTANCIAR EL MODULO CONTABLE
-				/* 
-				Object objectContable = context.lookup("Contable");
-				ContableHome sHomeContable = (ContableHome) javax.rmi.PortableRemoteObject
-						.narrow(objectContable, ContableHome.class);
-				Contable contableHome = sHomeContable.create();
-				*/
 				ContableBean contableHome = new ContableBean();
 				 
 				// PRUEBAS DE ALCANCE DE VARIABLES DE SESSION

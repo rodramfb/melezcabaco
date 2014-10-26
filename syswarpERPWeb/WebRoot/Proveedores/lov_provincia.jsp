@@ -9,6 +9,7 @@
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.math.*" %>
 <%@ page import="ar.com.syswarp.ejb.*"%>
+<%@ page import="ar.com.syswarp.api.Common"%>
 
 <%		
 String idprovincia   = request.getParameter("idprovincia");
@@ -96,14 +97,10 @@ if (!idprovincia.equals("")) {
    java.util.List Prov   =  new ArrayList();
    Iterator iterProvincia=null;
    int totReg  = 0;
-   try{
-   	javax.naming.Context context = new javax.naming.InitialContext();
-   	// INSTANCIAR EL MODULO CONTABLE 
-   	Object object = context.lookup("Proveedores");
-   	ProveedoresHome sHome = (ProveedoresHome) javax.rmi.PortableRemoteObject.narrow(object, ProveedoresHome.class);
-   	Proveedores repo =   sHome.create();   	     
+   try {
+   		Proveedores proveedores = Common.getProveedores();
 		if (!idprovincia.equals("")) {    
-	      Prov =  repo.getProveedoProvinciasOcuLOV(idprovincia);
+	      Prov =  proveedores.getProveedoProvinciasOcuLOV(idprovincia);
       	iterProvincia = Prov.iterator();      
    	    totReg = Prov.size();
 		}		     

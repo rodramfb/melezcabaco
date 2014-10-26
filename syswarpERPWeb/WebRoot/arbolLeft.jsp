@@ -43,13 +43,6 @@ String salida = "";
 try {
 
 	idusuario = new BigDecimal( session.getAttribute("idusuario").toString() );
-	javax.naming.Context context = new javax.naming.InitialContext();
-	// INSTANCIAR EL MODULO GENERAL
-	/*
-	Object object = context.lookup("General");
-	GeneralHome sHome = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(object, GeneralHome.class);
-	General repo =   sHome.create();
-	*/
 	GeneralBean repo = new GeneralBean();
   	   	      
 	if (idusuario != null) {

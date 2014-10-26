@@ -7,6 +7,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 Strings str = new Strings();
 String asiento_desde   = str.esNulo(request.getParameter("asiento_desde"));	
@@ -85,17 +86,10 @@ if (!asiento_desde.equals("")) {
 	 float[] totalesParciales = new float[2];
 	 float[] totalesGenerales = new float[2];	 
    try{ 
-   	javax.naming.Context context = new javax.naming.InitialContext();
-   	// INSTANCIAR EL MODULO CONTABLE 
-   	Object object = context.lookup("Contable");
-   	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   	Contable repo =   sHome.create(); 
-   	// INSTANCIAR EL MODULO GENERAL    	
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    General gene =   sGen.create();        
-  	  	      
-   	Asientos =  repo.getLibroDiario(ejercicioActivo, new Long (asiento_desde), new Long (asiento_hasta),new BigDecimal(session.getAttribute("empresa").toString() ) ); 
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();  	  	      
+
+   	Asientos =  contable.getLibroDiario(ejercicioActivo, new Long (asiento_desde), new Long (asiento_hasta),new BigDecimal(session.getAttribute("empresa").toString() ) ); 
    	iterAsientos = Asientos.iterator();      
    	totReg = Asientos.size();     
 
@@ -109,7 +103,7 @@ if (!asiento_desde.equals("")) {
 			String cmp_nroasiento = sCampos[0] ;
 			String cmp_renglon = sCampos[1] ;
 			String cmp_tipomov = sCampos[2] ;
-			//String cmp_fecha =   gene.TimestampToStrDDMMYYYY ( gene.StrToTimestampDDMMYYYYHHMISE( sCampos[3] ) )  ;//sCampos[3]  ; //
+			//String cmp_fecha =   general.TimestampToStrDDMMYYYY ( general.StrToTimestampDDMMYYYYHHMISE( sCampos[3] ) )  ;//sCampos[3]  ; //
 			String cmp_fecha =   sCampos[3]   ;//sCampos[3]  ; // 16/10/2008 : tenia un error en el formato
 			 
 			String cmp_detalle =   sCampos[4]  ;
@@ -132,8 +126,8 @@ if (!asiento_desde.equals("")) {
 				<td width="43%" class="fila-det-border" >Totales Asiento </td>
 				<td width="13%" class="fila-det-border" >&nbsp;</td>
 				<td width="35%" class="fila-det-border" >&nbsp;</td>
-				<td width="9%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesParciales[0], 10, 2) %></div></td> 
-				<td width="9%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesParciales[1], 10, 2) %></div></td>
+				<td width="9%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesParciales[0], 10, 2) %></div></td> 
+				<td width="9%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesParciales[1], 10, 2) %></div></td>
 			</tr> 		
 			<% 
 				  totalesParciales[0]=0;
@@ -197,8 +191,8 @@ if (!asiento_desde.equals("")) {
 				<td width="43%" class="fila-det-border" >Totales Asiento </td>
 				<td width="13%" class="fila-det-border" >&nbsp;</td>
 				<td width="35%" class="fila-det-border" >&nbsp;</td>
-				<td width="9%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesParciales[0], 10, 2) %></div></td> 
-				<td width="9%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesParciales[1], 10, 2) %></div></td>
+				<td width="9%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesParciales[0], 10, 2) %></div></td> 
+				<td width="9%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesParciales[1], 10, 2) %></div></td>
 			</tr> 	
 			 <tr > 
 				<td  height="3"  colspan="5" class=fila-encabezado ></td>
@@ -210,13 +204,13 @@ if (!asiento_desde.equals("")) {
 			</tr> 	
 			 <tr  class="fila-det-bold"  > 
 				<td colspan="3" class="fila-det-border" >Total D&eacute;bito</td>
-				<td width="9%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesGenerales[0], 10, 2) %></div></td> 
+				<td width="9%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesGenerales[0], 10, 2) %></div></td> 
 				<td width="9%" class="fila-det-border" >&nbsp;</td>
 			</tr> 
 			 <tr  class="fila-det-bold"  > 
 				<td colspan="3" class="fila-det-border" >Total Cr&eacute;dito </td>
 				<td width="9%" class="fila-det-border" >&nbsp;</td> 
-				<td width="9%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesGenerales[1], 10, 2) %></div></td>
+				<td width="9%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesGenerales[1], 10, 2) %></div></td>
 			</tr> 													
 		</table>
 			<%	

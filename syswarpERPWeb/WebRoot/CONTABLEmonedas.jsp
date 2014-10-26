@@ -19,6 +19,7 @@ Fecha de ultima modificacion: -
 <%@ page import="java.util.Iterator" %> 
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 // captura de variables comunes
 
@@ -230,21 +231,13 @@ tituCol[5] = "Detalle";
 tituCol[6] = "Audit";
 
 try{
-   javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-   Object objgen = context.lookup("General");
-   GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-   General gene =   sGen.create();   	    
-   // INSTANCIAR EL MODULO CONTABLE 
-   Object object = context.lookup("Contable");
-   ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   Contable repo =   sHome.create();   	    
-   
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();   
    
    if (accion != null){
 	    String resultadoBaja ="";
       if (accion.equalsIgnoreCase("baja")){
-	        resultadoBaja = repo.delMonedas(new java.lang.Integer(codigo),new BigDecimal(session.getAttribute("empresa").toString() )); 			   			
+	        resultadoBaja = contable.delMonedas(new java.lang.Integer(codigo),new BigDecimal(session.getAttribute("empresa").toString() )); 			   			
 		  }         
       %><script>alert('Se elimino el Registro Correctamente!');</script><%
    }
@@ -256,11 +249,11 @@ try{
    java.util.List Monedas = new java.util.ArrayList();	 
    if (buscar==null ) buscar = "";
    if ( buscar.trim().equals("")){	 
-     Monedas = repo.getMonedas(new BigDecimal(session.getAttribute("empresa").toString() ));       
+     Monedas = contable.getMonedas(new BigDecimal(session.getAttribute("empresa").toString() ));       
    }
    else
    {
-	   Monedas = repo.getMonedas(buscar.trim(),new BigDecimal(session.getAttribute("empresa").toString() ));    
+	   Monedas = contable.getMonedas(buscar.trim(),new BigDecimal(session.getAttribute("empresa").toString() ));    
    }
    iterMonedas = Monedas.iterator();      
    totReg = Monedas.size();   

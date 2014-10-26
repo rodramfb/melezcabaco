@@ -4,7 +4,7 @@
 <%//@ include file="session.jspf"%>
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.util.*"%>
-<%@ page import="java.math.*"%> 
+<%@ page import="java.math.*"%>
 <%
 	try {
 
@@ -96,13 +96,6 @@
         //
         BigDecimal idgeneracion = new BigDecimal( Common.setNotNull( request.getParameter("idgeneracion") ).equals("") ? "0"  : request.getParameter("idgeneracion"));   
  
-        /*
-		javax.naming.Context context = new javax.naming.InitialContext();
-		Object object = context.lookup("Report");
-		ReportHome sHome = (ReportHome) javax.rmi.PortableRemoteObject.narrow(object, ReportHome.class);
-		Report repo = sHome.create();
-        */
-		
         ReportBean repo = new ReportBean();
 
 		Map parameters = new HashMap();

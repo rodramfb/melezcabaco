@@ -7,7 +7,7 @@
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.math.BigDecimal" %>
-
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 Strings str = new Strings();
 
@@ -84,22 +84,15 @@ Iterator IterMeses        = null;
 </script>
 <%	
 // instancio el contable
-Contable repo = null;
-General gene =  null;   	    
-try{
-	// instanciar bean general
-	javax.naming.Context context = new javax.naming.InitialContext();
-	// INSTANCIAR EL MODULO GENERAL 
-	Object objgen = context.lookup("General");
-	GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-	gene =   sGen.create();   	  
-	List meses = gene.getGlobalMeses();
+try {
+	General general = Common.getGeneral();
+
+	List meses = general.getGlobalMeses();
 	IterMeses = meses.iterator();
-	// INSTANCIAR EL MODULO CONTABLE 
-	Object object = context.lookup("Contable");
-	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-	repo =   sHome.create();   
-	List ejercicioContables = repo.getEjerciciosAll(new BigDecimal(session.getAttribute("empresa").toString() ));
+
+	Contable contable = Common.getContable();
+
+	List ejercicioContables = contable.getEjerciciosAll(new BigDecimal(session.getAttribute("empresa").toString() ));
 	iterEjercicios = ejercicioContables.iterator();		
 	%>
 	<link rel = "stylesheet" href = "<%= pathskin %>">
@@ -215,7 +208,7 @@ try{
 	    !mesDesde.equalsIgnoreCase("") &&  
 			!mesHasta.equalsIgnoreCase("") ){
 
-		List saldoCuentas    = repo.getSaldoCuentasPeriodoAll( Integer.parseInt(anio),  Integer.parseInt(mesDesde), Integer.parseInt(mesHasta),new BigDecimal(session.getAttribute("empresa").toString() ) );
+		List saldoCuentas    = contable.getSaldoCuentasPeriodoAll( Integer.parseInt(anio),  Integer.parseInt(mesDesde), Integer.parseInt(mesHasta),new BigDecimal(session.getAttribute("empresa").toString() ) );
 		iterSaldoCuentas   = saldoCuentas.iterator();
 		boolean existenReg = false;
 		boolean esPrimero  = true;
@@ -230,9 +223,9 @@ try{
 			String resultado =  str.esNulo(sCampos[4]);
 			String centcost  =  str.esNulo(sCampos[5]);
 			String centcost1 =  str.esNulo(sCampos[6]);			
-			String debe      =  str.esNulo(gene.getNumeroFormateado( Float.parseFloat(sCampos[7] ), 3 , 3 ) );
-			String haber     =  str.esNulo( gene.getNumeroFormateado( Float.parseFloat(sCampos[8] ), 3 , 3 ));
-			String saldo     =  str.esNulo( gene.getNumeroFormateado( Float.parseFloat(sCampos[9] ), 3 , 3 ));
+			String debe      =  str.esNulo(general.getNumeroFormateado( Float.parseFloat(sCampos[7] ), 3 , 3 ) );
+			String haber     =  str.esNulo( general.getNumeroFormateado( Float.parseFloat(sCampos[8] ), 3 , 3 ));
+			String saldo     =  str.esNulo( general.getNumeroFormateado( Float.parseFloat(sCampos[9] ), 3 , 3 ));
       if(!esImputable.equalsIgnoreCase(imputable)){
 			  if (color_fondo.equals("fila-det-verde")) color_fondo = "fila-det";
 			  else color_fondo = "fila-det-verde"; 
@@ -265,7 +258,7 @@ try{
 			  <td width="44%" class="fila-det-border" >&nbsp; <%= str.getNivelStr(".", Integer.parseInt(nivel) * 2) %> <%= cuenta %></td>
 			  <td width="15%" class="fila-det-border" ><div align="right" class="<%=  clasePos %>"> <%= debe %></div></td>
 			  <td width="14%" class="fila-det-border" ><div align="right" class="<%=  clasePos %>"> <%= haber %></div></td>
-			  <td width="14%" class="fila-det-border" ><div align="right" class="<%= gene.colorSaldo(saldo, clasePos, claseNeg) %>"> <%= saldo %></div></td>
+			  <td width="14%" class="fila-det-border" ><div align="right" class="<%= general.colorSaldo(saldo, clasePos, claseNeg) %>"> <%= saldo %></div></td>
 			</tr> 
 		<%
 		}

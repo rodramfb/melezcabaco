@@ -1,4 +1,5 @@
-<%
+
+<%@page import="java.math.BigDecimal"%><%
  response.setHeader("Cache-Control", "no-cache");
  response.setHeader("Pragma","no-cache");
  response.setDateHeader("Expires",0);
@@ -7,9 +8,6 @@
    Copyrigth(r) sysWarp S.R.L. 
    Fecha de creacion: Fri Oct 27 16:35:02 GMT-03:00 2006 
    Observaciones: 
-      .
-
-
 */ 
 %>
 
@@ -42,6 +40,15 @@ String usuario    = session.getAttribute("usuario").toString();
 <%-- EJECUTAR SETEO DE PROPIEDADES --%>
 <jsp:setProperty name="BFFF" property="*" />
 <%
+// --> new feature
+BigDecimal id_usuario = Common.getNumberFromString(request.getParameter("idusuario"));
+System.out.println(String.format("id_usuario: %s", id_usuario));
+if (id_usuario == null) {
+	System.out.println(String.format("id_usuario es null"));
+	id_usuario = BigDecimal.ZERO;
+}
+ BFFF.setIdusuario(id_usuario);
+ //
  BFFF.setResponse(response);
  BFFF.setRequest(request);   
  BFFF.ejecutarValidacion();
@@ -59,8 +66,8 @@ String usuario    = session.getAttribute("usuario").toString();
 </head>
 <%
 // titulos para las columnas
-tituCol[0] = "Codigo";
-tituCol[1] = "Grupo";
+tituCol[0] = "Codigo PRUEBAS";
+tituCol[1] = "Grupo PRUEBAS";
 
 java.util.List generalgrupo = new java.util.ArrayList();
 generalgrupo= BFFF.getGlobalgrupoList();
@@ -69,7 +76,7 @@ iterGeneralgrupo = generalgrupo.iterator();
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 <form action="asistente2abm.jsp" method="POST" name="frm">
-<input name="idusuario" type="text" value="<%=BFFF.getIdusuario()%>" >
+<input name="idusuario" id="idusuario" type="hidden" value="<%=BFFF.getIdusuario()%>" >
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class=color-tabletrim>
   <tr class="text-globales">
     <td width="100%" height="24" colspan="10" background="imagenes/dialogtop.gif">
@@ -135,6 +142,8 @@ catch (Exception ex) {
    java.io.CharArrayWriter cw = new java.io.CharArrayWriter();
    java.io.PrintWriter pw = new java.io.PrintWriter(cw,true);
    ex.printStackTrace(pw);
-  System.out.println("ERROR (" + pagina + ") : "+ex);   
+  System.out.println("ERROR (" + pagina + ") : "+ex);
+    System.out.println(String.format("Exception: %s", ex.getMessage()));
+  ex.printStackTrace();
 }%>
 

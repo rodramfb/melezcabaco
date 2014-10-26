@@ -19,6 +19,7 @@ Fecha de ultima modificacion: -
 <%@ page import="java.util.Iterator" %> 
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 // captura de variables comunes
 String codigo         = request.getParameter("codigo");
@@ -232,22 +233,14 @@ tituCol[8] = "Centro de Costo 2";
 tituCol[9] = "Audit";
 
 try{
-   javax.naming.Context context = new javax.naming.InitialContext();
-
-   // INSTANCIAR EL MODULO GENERAL 
-   Object objgen = context.lookup("General");
-   GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-   General gene =   sGen.create();   	    
-   // INSTANCIAR EL MODULO CONTABLE 
-   Object object = context.lookup("Contable");
-   ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   Contable repo =   sHome.create();   	    
+ 	General general = Common.getGeneral();
+	Contable contable = Common.getContable(); 	    
    
    
    if (accion != null){
 	   String resultadoBaja ="";
       if (accion.equalsIgnoreCase("Baja")){		 
-	      resultadoBaja = repo.delContable(ejercicioActivo, new Long(Long.parseLong(codigo)),new BigDecimal(session.getAttribute("empresa").toString() )); 
+	      resultadoBaja = contable.delContable(ejercicioActivo, new Long(Long.parseLong(codigo)),new BigDecimal(session.getAttribute("empresa").toString() )); 
       }    
       if (resultadoBaja.equalsIgnoreCase("OK")){
          %><script>alert('Se Borro la Cuenta ' + <%=Long.parseLong(codigo)%> + ' en forma correcta');</script><%
@@ -263,11 +256,11 @@ try{
    java.util.List cuentas = new java.util.ArrayList();	 
    if (buscar==null ) buscar = "";
    if (buscar.trim().equals("")){	 
-      cuentas = repo.getCuentasTod(ejercicioActivo,new BigDecimal(session.getAttribute("empresa").toString() ));       
+      cuentas = contable.getCuentasTod(ejercicioActivo,new BigDecimal(session.getAttribute("empresa").toString() ));       
    }
    else
    {
-	   cuentas = repo.getCuentasOcu(ejercicioActivo, buscar.trim(),new BigDecimal(session.getAttribute("empresa").toString() ));    
+	   cuentas = contable.getCuentasOcu(ejercicioActivo, buscar.trim(),new BigDecimal(session.getAttribute("empresa").toString() ));    
    }
    iterCuentas = cuentas.iterator();      
    totReg = cuentas.size();   

@@ -1,5 +1,6 @@
 <%@ page import="java.util.Collection, java.util.Iterator, java.lang.*, java.util.*, ar.com.syswarp.ejb.*"%>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -41,18 +42,10 @@ String imagenmenu = "";
 String salida = "";
 
    try{
-   	javax.naming.Context context = new javax.naming.InitialContext();
-   	// INSTANCIAR EL MODULO GENERAL
-   	Object object = context.lookup("General");
-   	GeneralHome sHome = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(object, GeneralHome.class);
-   	General repo =   sHome.create();   	      
+   	General general = Common.getGeneral();
    	if (idusuario != null){
-
-//
-       menu = repo.getMenuTreeJSScroll(idusuario);
-//
-       //menu =  repo.getMenuTreeJS(idusuario);
-	   imagenmenu = repo.getImagenescustomapprelativepath() + repo.getImagencustommenu();
+       menu = general.getMenuTreeJSScroll(idusuario);
+	   imagenmenu = general.getImagenescustomapprelativepath() + general.getImagencustommenu();
    	}   	
    	
    }

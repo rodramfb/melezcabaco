@@ -6,6 +6,7 @@
 <%@ page import="java.math.*" %>
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="ar.com.syswarp.validar.*" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <% 
   Strings str = new Strings();
  //   String ctapresupuesto   =""; 
@@ -81,13 +82,9 @@ if (!ctapresupuesto.equals("*")) {
    java.util.List cuentasContables =  new ArrayList();
    Iterator iterCuentasContables=null;
    int totReg  = 0;
-   try{
-   	javax.naming.Context context = new javax.naming.InitialContext();
-   	// INSTANCIAR EL MODULO CONTABLE 
-   	Object object = context.lookup("Contable");
-   	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   	Contable repo =   sHome.create();   	      
-   	cuentasContables =  repo.getCuentasOcu(ejercicioActivo, ctapresupuesto, idempresa);
+   try {
+		Contable contable = Common.getContable();
+   	cuentasContables =  contable.getCuentasOcu(ejercicioActivo, ctapresupuesto, idempresa);
    	iterCuentasContables = cuentasContables.iterator();      
    	totReg = cuentasContables.size();     
    }

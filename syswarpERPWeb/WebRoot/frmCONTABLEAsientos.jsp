@@ -9,6 +9,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.math.BigDecimal" %>
 <%@ page import="ar.com.syswarp.api.*" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 String ayudalink  = "ayuda.jsp?idayuda=3";  // link a las ayudas en linea de cada punto
 Strings str = new Strings();
@@ -63,23 +64,15 @@ Hashtable ht = new Hashtable();
 Hashtable ht2 = ( session.getAttribute("ht2") != null ? (Hashtable)(session.getAttribute("ht2")) : new Hashtable() );
 
 
-try{
-    // instanciar bean general
-    javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    gene =   sGen.create();   	    
-    // INSTANCIAR EL MODULO CONTABLE 
-    Object object = context.lookup("Contable");
-    ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-    repo =   sHome.create();  
+try {
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();  
 		
 		Timestamp fDesde = (Timestamp) session.getAttribute("fechaEjercicioActivoDesde");
 		Timestamp fHasta = (Timestamp) session.getAttribute("fechaEjercicioActivoHasta");
 	  int ejercicioActivo =  Integer.parseInt( (String)session.getAttribute("ejercicioActivo") );				
-		String strFDesde = gene.TimestampToStrDDMMYYYY(fDesde) ;
-		String strFHasta = gene.TimestampToStrDDMMYYYY(fHasta);
+		String strFDesde = general.TimestampToStrDDMMYYYY(fDesde) ;
+		String strFHasta = general.TimestampToStrDDMMYYYY(fHasta);
 
 
 
@@ -105,7 +98,7 @@ try{
 
 		if(accion.equalsIgnoreCase("modificacion") && codigo != null ){   
 			if(!grabar.equalsIgnoreCase("")){
-				respuesta = repo.AsientoUpd(ejercicioActivo, new Long( Long.parseLong(codigo) ) , gene.StrToTimestampDDMMYYYY(fecha),  leyenda, tipo_asiento,	 ht2, usuario, new BigDecimal(session.getAttribute("empresa").toString() ));
+				respuesta = contable.AsientoUpd(ejercicioActivo, new Long( Long.parseLong(codigo) ) , general.StrToTimestampDDMMYYYY(fecha),  leyenda, tipo_asiento,	 ht2, usuario, new BigDecimal(session.getAttribute("empresa").toString() ));
 				str.wLog("UPDATE: " + respuesta, 2); 	
 				ht2 = new Hashtable();
 				session.setAttribute("ht2", ht2); 
@@ -115,7 +108,7 @@ try{
 					ht2 = new Hashtable();
 					java.util.List Asientos =  new ArrayList();
 					Iterator iterAsientos=null;			
-					Asientos =  repo.getAsientosPK(ejercicioActivo, new Long ( Long.parseLong(codigo) ),new BigDecimal(session.getAttribute("empresa").toString() ) ); 
+					Asientos =  contable.getAsientosPK(ejercicioActivo, new Long ( Long.parseLong(codigo) ),new BigDecimal(session.getAttribute("empresa").toString() ) ); 
 					iterAsientos = Asientos.iterator();      
 					while ( iterAsientos.hasNext() ) {
 						ht = new Hashtable();
@@ -123,7 +116,7 @@ try{
 						codigo = sCampos[0] ;
 						nroRenglon = Integer.parseInt(sCampos[1] );
 						tipomov = sCampos[2] ;
-						fecha =  gene.TimestampToStrDDMMYYYY ( gene.StrToTimestampDDMMYYYYHHMISE( sCampos[3] ) )   ;
+						fecha =  general.TimestampToStrDDMMYYYY ( general.StrToTimestampDDMMYYYYHHMISE( sCampos[3] ) )   ;
 						detalle =   sCampos[4]  ;
 						leyenda =   sCampos[5]  ;
 						cuenta =   sCampos[6]  ;
@@ -151,12 +144,12 @@ try{
 			ht2 = new Hashtable();
 			session.setAttribute("ht2", ht2); 
 			if(!grabar.equalsIgnoreCase("") && codigo !=null ){	
-				respuesta = repo.AsientoDel(ejercicioActivo,  new Long(codigo), new BigDecimal(session.getAttribute("empresa").toString() )  );		 
+				respuesta = contable.AsientoDel(ejercicioActivo,  new Long(codigo), new BigDecimal(session.getAttribute("empresa").toString() )  );		 
 			} 
 			else{
 				java.util.List Asientos =  new ArrayList();
 				Iterator iterAsientos=null;			
-				Asientos =  repo.getAsientosPK(ejercicioActivo, new Long ( Long.parseLong(codigo) ),new BigDecimal(session.getAttribute("empresa").toString() ) ); 
+				Asientos =  contable.getAsientosPK(ejercicioActivo, new Long ( Long.parseLong(codigo) ),new BigDecimal(session.getAttribute("empresa").toString() ) ); 
 				iterAsientos = Asientos.iterator();      
 				while ( iterAsientos.hasNext() ) {
 					ht = new Hashtable();
@@ -164,14 +157,14 @@ try{
 					codigo = sCampos[0] ;
 					nroRenglon = Integer.parseInt(sCampos[1] );
 					tipomov = sCampos[2] ;
-					fecha =  gene.TimestampToStrDDMMYYYY ( gene.StrToTimestampDDMMYYYYHHMISE( sCampos[3] ) )   ;
+					fecha =  general.TimestampToStrDDMMYYYY ( general.StrToTimestampDDMMYYYYHHMISE( sCampos[3] ) )   ;
 					detalle =   sCampos[4]  ;
 					leyenda =   sCampos[5]  ;
 					cuenta =   sCampos[6]  ;
 					importe =   sCampos[7]  ;
 					ht.put("cuenta", cuenta);
 					ht.put("detalle", detalle);
-					ht.put("importe", gene.getNumeroFormateado( Float.parseFloat( importe ) , 10, decimales)  );
+					ht.put("importe", general.getNumeroFormateado( Float.parseFloat( importe ) , 10, decimales)  );
 					ht.put("tipomov", tipomov);    
 					descripcion_mov = tipomov.equalsIgnoreCase("1") ? "Debe": "Haber" ;  
 					debe = descripcion_mov.equalsIgnoreCase("Debe") ?  sCampos[7]  : "";
@@ -185,14 +178,14 @@ try{
 		}
 		
 		if(!grabar.equalsIgnoreCase("") && accion.equalsIgnoreCase("alta")){
-            respuesta = repo.AsientoSave(ejercicioActivo, null , gene.StrToTimestampDDMMYYYY(fecha),  leyenda, tipo_asiento,	 ht2, usuario, new BigDecimal(session.getAttribute("empresa").toString() ));
+            respuesta = contable.AsientoSave(ejercicioActivo, null , general.StrToTimestampDDMMYYYY(fecha),  leyenda, tipo_asiento,	 ht2, usuario, new BigDecimal(session.getAttribute("empresa").toString() ));
 			ht2 = new Hashtable();
 			session.setAttribute("ht2", ht2); 
 		}
 
-    balanceAsiento 	= repo.getBalanceAsiento(ht2);
+    balanceAsiento 	= contable.getBalanceAsiento(ht2);
 
-		//float balancea = repo.getBalanceAsiento(ht2).floatValue();		
+		//float balancea = contable.getBalanceAsiento(ht2).floatValue();		
 		BigDecimal balancea = balanceAsiento[0] ;	
 		totalDebe =	balanceAsiento[1] ;	    
 		totalHaber =	balanceAsiento[2] ;	    
@@ -461,8 +454,8 @@ try{
 					 <tr class="fila-det-verde" > 
 							<td class="fila-det-border" >&nbsp;  </td> 
 							<td class="fila-det-border" >&nbsp;  </td>
-					   <td class="fila-det-border" ><div align="left">Total Debe : <%= totalDebe %><%//= gene.getNumeroFormateado( totalDebe, 10, decimales) %>&nbsp;</div></td>
-							<td class="fila-det-border" > Total Haber : <%= totalHaber  %><%//= gene.getNumeroFormateado( totalHaber, 10, decimales)  %></td>
+					   <td class="fila-det-border" ><div align="left">Total Debe : <%= totalDebe %><%//= general.getNumeroFormateado( totalDebe, 10, decimales) %>&nbsp;</div></td>
+							<td class="fila-det-border" > Total Haber : <%= totalHaber  %><%//= general.getNumeroFormateado( totalHaber, 10, decimales)  %></td>
 							<td class="fila-det-border" >&nbsp;  </td>
 					  </tr>
 					 <tr class="text-globales" >

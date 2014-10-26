@@ -13,6 +13,7 @@
 <%@ page import="ar.com.syswarp.api.*" %> 
 <%//@ include file="session.jspf"%>
 <%@ page import="java.math.BigDecimal" %> 
+<%@ page import="ar.com.syswarp.api.Common"%>
 <html>
 <head>
 <title>Consulta de Conjuntos</title>
@@ -41,13 +42,9 @@
 <%  
     
   try {
-    BC repo = null;
-    javax.naming.Context context = new javax.naming.InitialContext();
-    Object object = context.lookup("BC");
-    BCHome sHome = (BCHome) javax.rmi.PortableRemoteObject.narrow(object, BCHome.class);
-    repo = sHome.create();
+    BC bc = Common.getBc();
 	String sp = "spInterfaceConjuntosAll";
-	java.sql.ResultSet rsConsulta = repo.getTransaccion(sp, "'A'"); 
+	java.sql.ResultSet rsConsulta = bc.getTransaccion(sp, "'A'"); 
 	if (rsConsulta != null) {
 		boolean existenReg = false;
 		boolean esPrimero = true;

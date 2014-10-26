@@ -5,6 +5,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 
 java.util.Calendar hoy = new java.util.GregorianCalendar();
@@ -108,24 +109,14 @@ function validar(){
 Contable repo = null;
 General gene =  null;   	    
 try{
-    // instanciar bean general
-    javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    gene =   sGen.create();   	  
- 
-    // INSTANCIAR EL MODULO CONTABLE 
-    Object object = context.lookup("Contable");
-    ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-    repo =   sHome.create();   
-				
-				
-       
+
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();
+
 	   if(ejercicio != null && !ejercicio.equals("") && fdesde !=null && !fdesde.equals("") && fhasta !=null && !fhasta.equals("")  ){
-	      java.sql.Timestamp  fdes    =  gene.StrToTimestampDDMMYYYY(fdesde);
-	      java.sql.Timestamp  fhas    =  gene.StrToTimestampDDMMYYYY(fhasta);	   
-          if(!repo.setEjercicio(Integer.valueOf(ejercicio).intValue(), fdes, fhas, usuario, new BigDecimal(session.getAttribute("empresa").toString() ))){
+	      java.sql.Timestamp  fdes    =  general.StrToTimestampDDMMYYYY(fdesde);
+	      java.sql.Timestamp  fhas    =  general.StrToTimestampDDMMYYYY(fhasta);	   
+          if(!contable.setEjercicio(Integer.valueOf(ejercicio).intValue(), fdes, fhas, usuario, new BigDecimal(session.getAttribute("empresa").toString() ))){
   			     %><script>alert('Error: no se pudo crear el ejercicio solicitado, por favor verifique');</script><%
 				  }
 				  else{				   

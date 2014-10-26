@@ -21,19 +21,18 @@ Copy and paste the following where you want your map search control to appear. D
 <%@ page import="java.sql.*" %>
 <%@ page import="java.math.BigDecimal" %>
 <%@ page import="ar.com.syswarp.api.*" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
  <%
  	// INSTANCIAR EL MODULO clientes
      String idDomicilio    = request.getParameter("iddomicilio");
      String idempresa    = request.getParameter("idempresa");
      System.out.println("iddomicilio " + idDomicilio );
      Clientes repo = null;
-     javax.naming.Context context = new javax.naming.InitialContext(); 
-     Object object = context.lookup("Clientes");
-     ClientesRemote sHome = (ClientesRemote) javax.rmi.PortableRemoteObject.narrow(object, ClientesRemote.class);
-     repo =   sHome.create();
-     String titulo    = repo.getGoogleMapTitulo(new BigDecimal(idempresa),new BigDecimal(idDomicilio));  
-     String domicilio = repo.getGoogleMapDomicilio(new BigDecimal(idempresa),new BigDecimal(idDomicilio));
-     String key = repo.getGmapKeyID().trim();
+
+		Clientes clientes = Common.getClientes();
+     String titulo    = clientes.getGoogleMapTitulo(new BigDecimal(idempresa),new BigDecimal(idDomicilio));  
+     String domicilio = clientes.getGoogleMapDomicilio(new BigDecimal(idempresa),new BigDecimal(idDomicilio));
+     String key = clientes.getGmapKeyID().trim();
      System.out.println(key);
  %> 
   

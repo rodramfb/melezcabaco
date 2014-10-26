@@ -23,6 +23,8 @@ import ar.com.syswarp.ejb.*;
 import ar.com.syswarp.api.Common;
 
 public class BeanAsistenteparaAltadeusuariosAbm implements SessionBean, Serializable {
+	private static final long serialVersionUID = -8472737991162409646L;
+
 	static Logger log = Logger.getLogger(BeanAsistenteparaAltadeusuariosAbm.class);
 
 	private SessionContext context;

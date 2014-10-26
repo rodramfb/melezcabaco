@@ -20,6 +20,7 @@ Fecha de ultima modificacion: -
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 
 <%
 Strings str = new Strings();
@@ -205,19 +206,12 @@ tituCol[1] = "Cód.";
 tituCol[2] = "Descripción Asiento Tipo";
 tituCol[3] = "Audit.";
 try{
-   javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-   Object objgen = context.lookup("General");
-   GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-   General gene =   sGen.create();   	    
-   // INSTANCIAR EL MODULO CONTABLE 
-   Object object = context.lookup("Contable");
-   ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   Contable repo =   sHome.create();   	    
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable(); 	    
    if (accion != null){
 	   String resultadoBaja ="";
       if (accion.equalsIgnoreCase("Baja")){		 
-	      resultadoBaja = repo.AsientoTipoDel(ejercicioActivo, new Long(Long.parseLong(codigo)),new BigDecimal(session.getAttribute("empresa").toString() )); 
+	      resultadoBaja = contable.AsientoTipoDel(ejercicioActivo, new Long(Long.parseLong(codigo)),new BigDecimal(session.getAttribute("empresa").toString() )); 
       }    
       if (resultadoBaja.equalsIgnoreCase("OK")){
          %><script>alert('Se Borro la Cuenta ' + <%=Long.parseLong(codigo)%> + ' en forma correcta');</script><%
@@ -233,10 +227,10 @@ try{
    java.util.List AsientosTipo = new java.util.ArrayList();	 
    if (buscar==null ) buscar = "";
    if (buscar.trim().equals("")){	 
-      AsientosTipo = repo.getAsientosTipoAll(new BigDecimal(session.getAttribute("empresa").toString() ));       
+      AsientosTipo = contable.getAsientosTipoAll(new BigDecimal(session.getAttribute("empresa").toString() ));       
    }
    else{
-	   AsientosTipo = repo.getAsientosTipoOcu( buscar.trim(),new BigDecimal(session.getAttribute("empresa").toString() ) );    
+	   AsientosTipo = contable.getAsientosTipoOcu( buscar.trim(),new BigDecimal(session.getAttribute("empresa").toString() ) );    
    }
    iterAsientosTipo = AsientosTipo.iterator();      
    totReg = AsientosTipo.size();   

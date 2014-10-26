@@ -7,6 +7,7 @@
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 Strings str = new Strings();
 Iterator iterEjercicios   = null;
@@ -47,24 +48,15 @@ System.out.println("nivel "+ _nivel);
 	if (indice==null)      indice="";
 	
 // instancio el contable
-Contable repo = null;
-General gene =  null;   	    
 java.util.Iterator iterMes=null;
 try{
-    // instanciar bean general
-    
-    javax.naming.Context context = new javax.naming.InitialContext();
-   // INSTANCIAR EL MODULO GENERAL 
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    gene =   sGen.create();   	    
-    // INSTANCIAR EL MODULO CONTABLE 
-    Object object = context.lookup("Contable");
-    ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-    repo =   sHome.create();   	        
-	meses =  gene.getGlobalMeses();    
+
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();
+   	        
+	meses =  general.getGlobalMeses();    
     iterMes = meses.iterator();
-	List ejercicioContables = repo.getEjerciciosAll(new BigDecimal(session.getAttribute("empresa").toString() ));
+	List ejercicioContables = contable.getEjerciciosAll(new BigDecimal(session.getAttribute("empresa").toString() ));
 	iterEjercicios = ejercicioContables.iterator();	
 		
 }	   
@@ -76,7 +68,7 @@ try{
 }  
 
 if(grabacion == null && accion.equalsIgnoreCase("modificacion") && codigo != null ){
-   java.util.List Ajustes = repo.getAjustePK(new Integer(codigo), new BigDecimal(session.getAttribute("empresa").toString() )); 
+   java.util.List Ajustes = contable.getAjustePK(new Integer(codigo), new BigDecimal(session.getAttribute("empresa").toString() )); 
    java.util.Iterator iterAjustes   = Ajustes.iterator();
 	 while(iterAjustes.hasNext()){  
 	    String[] sCampos = (String[]) iterAjustes.next(); 
@@ -88,7 +80,7 @@ if(grabacion == null && accion.equalsIgnoreCase("modificacion") && codigo != nul
 }
 
 if(grabacion != null && accion.equalsIgnoreCase("alta")){ 	 
-  String respuesta = repo.AjusteSave(Integer.valueOf(anio).intValue(), Integer.valueOf(mes).intValue(), new Float(indice), usuario, new BigDecimal(session.getAttribute("empresa").toString() ));	
+  String respuesta = contable.AjusteSave(Integer.valueOf(anio).intValue(), Integer.valueOf(mes).intValue(), new Float(indice), usuario, new BigDecimal(session.getAttribute("empresa").toString() ));	
 	if(!respuesta.equalsIgnoreCase("OK")){
 	   %><script>alert('<%=respuesta%>');</script><%  	
 	}
@@ -105,7 +97,7 @@ if(grabacion != null && accion.equalsIgnoreCase("Modificacion") && codigo != nul
 	 System.out.println("anio: " + anio);
 	 System.out.println("mes: " + mes);
 	 System.out.println("indice: " + indice); 		 
-   String respuesta = repo.AjusteSaveOrUpdate(Integer.valueOf(anio).intValue(), Integer.valueOf(mes).intValue(), new Float(indice), usuario, new Integer(codigo),new BigDecimal(session.getAttribute("empresa").toString() ));
+   String respuesta = contable.AjusteSaveOrUpdate(Integer.valueOf(anio).intValue(), Integer.valueOf(mes).intValue(), new Float(indice), usuario, new Integer(codigo),new BigDecimal(session.getAttribute("empresa").toString() ));
    System.out.println("Respuesta: " + respuesta);
 	 response.sendRedirect(formulario);
 }

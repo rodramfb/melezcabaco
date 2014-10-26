@@ -5,6 +5,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 java.util.Calendar hoy = new java.util.GregorianCalendar();
 java.sql.Date  fHoy    = new java.sql.Date( hoy.getTime().getTime() );
@@ -43,16 +44,9 @@ System.out.println("nivel "+ _nivel);
 	
 	
 // instancio el contable
-Contable repo = null;
-General gene =  null;   	 
 try{
-   	javax.naming.Context context = new javax.naming.InitialContext();   
-   	Object object = context.lookup("Contable");
-   	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-    repo =   sHome.create();  
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    gene =   sGen.create();     
+   	Contable contable = Common.getContable();
+   	General general = Common.getGeneral();  
    }
    catch (Exception ex) {
      java.io.CharArrayWriter cw = new java.io.CharArrayWriter();
@@ -61,13 +55,13 @@ try{
   }  
 
 if(grabacion == null && accion.equalsIgnoreCase("Modificacion") && codigo != null ){
-   java.util.List monedas = repo.getMonedasPK(new Integer(codigo),new BigDecimal(session.getAttribute("empresa").toString() )); 
+   java.util.List monedas = contable.getMonedasPK(new Integer(codigo),new BigDecimal(session.getAttribute("empresa").toString() )); 
    java.util.Iterator itermonedas   = monedas.iterator();
 	 while(itermonedas.hasNext()){  
 	    String[] sCampos = (String[]) itermonedas.next(); 
 		  idmoneda  = sCampos[0];
 			moneda = sCampos[1];
-			hasta_mo =  gene.TimestampToStrDDMMYYYY ( gene.StrToTimestampDDMMYYYYHHMISE( sCampos[2] ) )   ;
+			hasta_mo =  TimestampToStrDDMMYYYY ( StrToTimestampDDMMYYYYHHMISE( sCampos[2] ) )   ;
 			ceros_mo = sCampos[3];
 			detalle = sCampos[4];		
 	 }	 
@@ -79,7 +73,7 @@ if(grabacion != null && accion.equalsIgnoreCase("Alta")){
 	   System.out.println("hasta_mo: " + hasta_mo);
 	   System.out.println("ceros_mo: " + ceros_mo); 
 	   System.out.println("detalle: " + detalle); 			
-     String respuesta = repo.monedasSave(moneda.toUpperCase(), gene.StrToTimestampDDMMYYYY(hasta_mo), Integer.parseInt(ceros_mo), detalle.toUpperCase(), usuario, new BigDecimal(session.getAttribute("empresa").toString() ));	
+     String respuesta = contable.monedasSave(moneda.toUpperCase(), StrToTimestampDDMMYYYY(hasta_mo), Integer.parseInt(ceros_mo), detalle.toUpperCase(), usuario, new BigDecimal(session.getAttribute("empresa").toString() ));	
 	   if(respuesta.equalsIgnoreCase("OK")){
 	      %><script>alert('Se dio de Alta Correctamente');</script><% 
 		    System.out.println("Respuesta: " + respuesta);
@@ -97,7 +91,7 @@ if(grabacion != null && accion.equalsIgnoreCase("Modificacion") && codigo != nul
 	 System.out.println("ceros_mo: " + ceros_mo); 
 	 System.out.println("detalle: " + detalle); 
 	 System.out.println("usuario: " + usuario);			 
-   String respuesta = repo.monedasSaveOrUpdate(Long.parseLong(idmoneda), moneda.toUpperCase(), gene.StrToTimestampDDMMYYYY(hasta_mo), Integer.parseInt(ceros_mo), detalle.toUpperCase(), usuario, new BigDecimal(session.getAttribute("empresa").toString() ));	
+   String respuesta = contable.monedasSaveOrUpdate(Long.parseLong(idmoneda), moneda.toUpperCase(), general.StrToTimestampDDMMYYYY(hasta_mo), Integer.parseInt(ceros_mo), detalle.toUpperCase(), usuario, new BigDecimal(session.getAttribute("empresa").toString() ));	
 	 if(respuesta.equalsIgnoreCase("OK")){
 	    %><script>alert('Se Modifico Correctamente');</script><% 
 		  System.out.println("Respuesta: " + respuesta);

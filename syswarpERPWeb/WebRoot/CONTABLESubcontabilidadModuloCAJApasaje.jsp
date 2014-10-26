@@ -7,6 +7,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 Strings str = new Strings();
 String fecha_desde   = str.esNulo(request.getParameter("fecha_desde"));	
@@ -137,21 +138,14 @@ if (!fecha_desde.equals("")) {
 	 float[] totalesParciales = new float[2];
 	 float[] totalesGenerales = new float[2];	 
    try{ 
-   	javax.naming.Context context = new javax.naming.InitialContext();
-   	// INSTANCIAR EL MODULO CONTABLE 
-   	Object object = context.lookup("Contable");
-   	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-   	Contable repo =   sHome.create(); 
-   	// INSTANCIAR EL MODULO GENERAL    	
-    Object objgen = context.lookup("General");
-    GeneralHome sGen = (GeneralHome) javax.rmi.PortableRemoteObject.narrow(objgen, GeneralHome.class);
-    General gene =   sGen.create();      
+	General general = Common.getGeneral();
+	Contable contable = Common.getContable();
   	  	
-   	Asientos =  repo.getLibroDiarioSC(ejercicioActivo, fecha_desde,fecha_hasta,new BigDecimal(session.getAttribute("empresa").toString() ),vista ); 
+   	Asientos =  contable.getLibroDiarioSC(ejercicioActivo, fecha_desde,fecha_hasta,new BigDecimal(session.getAttribute("empresa").toString() ),vista ); 
     if (pasaje.equalsIgnoreCase("SI")){
        System.out.println("Hago el pasaje");
-       //String resultadoPasaje = repo.setLibroDiarioSC(ejercicioActivo, fecha_desde,fecha_hasta,new BigDecimal(session.getAttribute("empresa").toString() ),vista ); 
-       String resultadoPasaje = repo.setLibroDiarioSC(ejercicioActivo, fecha_desde,fecha_hasta,vista,usuario ,new BigDecimal(session.getAttribute("empresa").toString()) ); 
+       //String resultadoPasaje = contable.setLibroDiarioSC(ejercicioActivo, fecha_desde,fecha_hasta,new BigDecimal(session.getAttribute("empresa").toString() ),vista ); 
+       String resultadoPasaje = contable.setLibroDiarioSC(ejercicioActivo, fecha_desde,fecha_hasta,vista,usuario ,new BigDecimal(session.getAttribute("empresa").toString()) ); 
 
     } else {
        System.out.println("NO Hago el pasaje");
@@ -171,7 +165,7 @@ if (!fecha_desde.equals("")) {
 			String cmp_nroasiento = sCampos[0] ;
 			String cmp_renglon = sCampos[1] ;
 			String cmp_tipomov = sCampos[2] ;
-			String cmp_fecha =   gene.TimestampToStrDDMMYYYY ( gene.StrToTimestampDDMMYYYYHHMISE( sCampos[3] ) )  ;//sCampos[3]  ; // 
+			String cmp_fecha =   general.TimestampToStrDDMMYYYY ( general.StrToTimestampDDMMYYYYHHMISE( sCampos[3] ) )  ;//sCampos[3]  ; // 
 			String cmp_detalle =   sCampos[4]  ;
 			String cmp_leyenda =   sCampos[5]  ;
 			String cmp_cuenta  =   sCampos[6]  ;
@@ -192,8 +186,8 @@ if (!fecha_desde.equals("")) {
 				<td width="32%" class="fila-det-border" >Totales Asiento </td>
 				<td width="26%" class="fila-det-border" >&nbsp;</td>
 				<td width="20%" class="fila-det-border" >&nbsp;</td>
-			    <td width="15%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesParciales[0], 10, 3) %></div></td> 
-			    <td width="7%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesParciales[1], 10, 3) %></div></td>
+			    <td width="15%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesParciales[0], 10, 3) %></div></td> 
+			    <td width="7%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesParciales[1], 10, 3) %></div></td>
 			</tr> 		
 			<% 
 				  totalesParciales[0]=0;
@@ -256,8 +250,8 @@ if (!fecha_desde.equals("")) {
 			 <tr  class="fila-det"  > 
 				<td width="32%" class="fila-det-border" >Totales Asiento </td>
 				<td width="26%" class="fila-det-border" >&nbsp;</td>
-				<td width="20%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesParciales[0], 10, 3) %></div></td>
-			   <td width="15%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesParciales[1], 10, 3) %></div></td> 
+				<td width="20%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesParciales[0], 10, 3) %></div></td>
+			   <td width="15%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesParciales[1], 10, 3) %></div></td> 
 			   <td width="7%" class="fila-det-border" ><div align="right"></div></td>
 			</tr> 	
 			 <tr > 
@@ -271,12 +265,12 @@ if (!fecha_desde.equals("")) {
 			 <tr  class="fila-det-bold"  > 
 				<td colspan="3" class="fila-det-border" ><div align="left">Total D&eacute;bito</div></td>
 			   <td width="15%" class="fila-det-border" ><div align="right"></div></td> 
-				<td width="7%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesGenerales[0], 10, 3) %></div></td>
+				<td width="7%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesGenerales[0], 10, 3) %></div></td>
 			</tr> 
 			 <tr  class="fila-det-bold"  > 
 				<td colspan="3" class="fila-det-border" >Total Cr&eacute;dito </td>
 				<td width="15%" class="fila-det-border" >&nbsp;</td> 
-			   <td width="7%" class="fila-det-border" ><div align="right"><%= gene.getNumeroFormateado(totalesGenerales[1], 10, 3) %></div></td>
+			   <td width="7%" class="fila-det-border" ><div align="right"><%= general.getNumeroFormateado(totalesGenerales[1], 10, 3) %></div></td>
 			</tr> 													
   </table>
   

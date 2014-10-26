@@ -15,6 +15,7 @@ response.setDateHeader("Expires",0);
 <%@ page import="java.util.Set" %>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%@ include file="session.jspf"%>
 
 <%
@@ -32,14 +33,11 @@ ResultSet tablas = null;
 Hashtable htPar = new Hashtable();
 Report repo = null;
 int idImagen = 0;
-try{
-   javax.naming.Context context = new javax.naming.InitialContext();  
-   Object objgen = context.lookup("Report");
-   ReportHome sGen = (ReportHome) javax.rmi.PortableRemoteObject.narrow(objgen, ReportHome.class);
-   repo =   sGen.create();   	          
-   if (repo.hasTablasReportes(new Integer(idreporte)) ){
+try {
+	Report report = Common.getReport();
+   if (report.hasTablasReportes(new Integer(idreporte)) ){
       // resuelvo el titulo_general del reporte
-     reportes = repo.getReportesPK( Long.parseLong(idreporte));
+     reportes = report.getReportesPK( Long.parseLong(idreporte));
      iterReportes = reportes.iterator();
      while(iterReportes.hasNext()){ 
          String[] sCampos = (String[]) iterReportes.next(); 
@@ -47,13 +45,13 @@ try{
          session.setAttribute("titulo_general", titulo_general);
      } 
      // recorro las tablas del reporte para hacer el rejunte de parametros
-     tablas = repo.getTablasReportes(new Integer(idreporte));
+     tablas = report.getTablasReportes(new Integer(idreporte));
      
      while(tablas.next()){
        // traigo todos los parametros existentes
        String qry = tablas.getString("query_consulta");       
        Hashtable ht = new Hashtable();
-       ht = repo.getParametros(qry);              
+       ht = report.getParametros(qry);              
        Enumeration enumE = ht.keys();
 	   while(enumE.hasMoreElements()){
            String values = (String) enumE.nextElement();           
@@ -106,7 +104,7 @@ function validarCampos() {
     <td >
 			<table>
 			<% 
-						param = repo.getParametros(htPar);
+						param = report.getParametros(htPar);
 						iterParam = param.iterator();
 						while(iterParam.hasNext()){       
 							 String[] sCampos = (String[]) iterParam.next();
@@ -116,7 +114,7 @@ function validarCampos() {
 							 String idtipoparametro = sCampos[3];
 							 String vq              = sCampos[4];
 							 String ds              = sCampos[5];
-							 String variable        = repo.par2var(parametro);
+							 String variable        = report.par2var(parametro);
 							 /*
 								posibles tipos de parametros
 								1. consulta sql
@@ -127,7 +125,7 @@ function validarCampos() {
 							 //todo: resolver todos los tipos.
 							 java.sql.ResultSet rsCombo = null;
 							 if (idtipoparametro.equalsIgnoreCase("1")){ // query
-									rsCombo = repo.getConnectionDS(new Integer(ds), vq);
+									rsCombo = report.getConnectionDS(new Integer(ds), vq);
 							 }
 							 
 			%>     

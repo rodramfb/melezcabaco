@@ -4,7 +4,8 @@
 <%@ page import="ar.com.syswarp.api.*" %> 
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="java.util.*"%>
-<%@ page import="java.math.*"%> 
+<%@ page import="java.math.*"%>
+<%@ page import="ar.com.syswarp.api.Common"%> 
 <%
  	String resultado = "  "; 
  try {
@@ -16,10 +17,8 @@
  	Strings str = new Strings();
  	String idempresa = str.esNulo( session.getAttribute("empresa") + "" );
      if(idempresa.equals("")) idempresa = "1";
- 	javax.naming.Context context = new javax.naming.InitialContext();
- 	Object object = context.lookup("Clientes");
- 	ClientesRemote sHome = (ClientesRemote) javax.rmi.PortableRemoteObject.narrow(object, ClientesRemote.class);
- 	Clientes repo = sHome.create();
+     
+     Clientes clientes = Common.getClientes();
      System.out.println("PASO PREVIO A getCalculoBulto ");
      if(Common.setNotNull(ejecutar).equalsIgnoreCase("SI") ){
        System.out.println("LLAMANDO A getCalculoBulto ");
@@ -27,7 +26,7 @@
        System.out.println("BULTO SUCURSAL: " + sucursal  ); 
        System.out.println("BULTO REMITO  : " + nroremito  );  
  	  
- 	  resultado =  repo.getCalculoBulto(new BigDecimal(sucursal), new BigDecimal(nroremito), new BigDecimal(1)) + "" ;  
+ 	  resultado =  clientes.getCalculoBulto(new BigDecimal(sucursal), new BigDecimal(nroremito), new BigDecimal(1)) + "" ;  
 
        System.out.println("RESULTADO EN BULTOS " + resultado); 
      }

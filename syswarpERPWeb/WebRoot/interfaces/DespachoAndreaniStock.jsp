@@ -4,6 +4,7 @@
 <%@ page import="ar.com.syswarp.api.*" %> 
 <%@ page import="ar.com.syswarp.ejb.*" %> 
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 String titulo     = "Despacho Andreani";
 String mensajeerror = "";
@@ -193,10 +194,8 @@ try{
          if(usuarioalt.length()>17) usuarioalt = usuarioalt.substring(0, 16);
 		 if (usuarioalt.indexOf(":IF") == -1) usuarioalt += ":IF" ;
 		}
-		javax.naming.Context context = new javax.naming.InitialContext();
-		Object object = context.lookup("BC");
-		BCHome sHome = (BCHome) javax.rmi.PortableRemoteObject.narrow(object, BCHome.class);
-		repo = sHome.create();
+		
+		BC bc = Common.getBc();
 
     if(Integer.parseInt(ejecutar) == 2){ 
 		  
@@ -227,7 +226,7 @@ try{
 				}
 				
 				if(mensajeerror.equalsIgnoreCase("")){
-			    resultado=repo.InterfaseDbBacoDeltaDespachoAndreani(deposito1,	deposito2, hrDesde, hrHasta, htSeleccion , "OBS.", usuarioalt,  new BigDecimal(idempresa));
+			    resultado=bc.InterfaseDbBacoDeltaDespachoAndreani(deposito1,	deposito2, hrDesde, hrHasta, htSeleccion , "OBS.", usuarioalt,  new BigDecimal(idempresa));
 		      for(int j=0;j<3;j++)
 					  mensaje += str.esNulo(resultado[j]).equals("") ?  "" : resultado[j] + "<br>";	 			
 				}
@@ -239,11 +238,11 @@ try{
 		}
 
 		System.out.println(mensajeerror);			  
-		rsStockConjunto = repo.getTransaccion("spInterfacesStockConjuntoAndreani", deposito2 + ", " + hrDesde + ", " + hrHasta ); 
-		//rsStockConjunto = repo.callSpInterfacesStockConjuntoTmp(new BigDecimal(deposito2), new BigDecimal(idempresa));
+		rsStockConjunto = bc.getTransaccion("spInterfacesStockConjuntoAndreani", deposito2 + ", " + hrDesde + ", " + hrHasta ); 
+		//rsStockConjunto = bc.callSpInterfacesStockConjuntoTmp(new BigDecimal(deposito2), new BigDecimal(idempresa));
 		
 		
-		//resultado = repo.InterfaseDbBacoDeltaMovSalida( conjunto,new BigDecimal(idempresa),  usuarioalt);
+		//resultado = bc.InterfaseDbBacoDeltaMovSalida( conjunto,new BigDecimal(idempresa),  usuarioalt);
 		/*
 		  for(int j=0;j<3;j++)
 		  mensaje += str.esNulo(resultado[j]).equals("") ?  "" : resultado[j] + " <br>";

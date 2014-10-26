@@ -6,6 +6,7 @@
 <%@ page import="ar.com.syswarp.ejb.*"%>
 <%@ page import="ar.com.syswarp.validar.*" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 
 Strings str = new Strings();
@@ -49,12 +50,8 @@ if(_nivel == 1) readonly = "readonly='true'";
 System.out.println(readonly);
 System.out.println("nivel "+ _nivel);
 // instancio el contable
-Contable repo = null;
-try{
-	javax.naming.Context context = new javax.naming.InitialContext();   
-	Object object = context.lookup("Contable");
-	ContableHome sHome = (ContableHome) javax.rmi.PortableRemoteObject.narrow(object, ContableHome.class);
-	repo =   sHome.create(); 
+try {
+	Contable contable = Common.getContable();
   //ACCEDE DESDE OTRA URL, LIMPIA LA LISTA DE SESSION.
 	if(referente.indexOf(pagina) < 0){
 	  ListaAbmAsientoTipo = new ArrayList();
@@ -96,13 +93,13 @@ try{
 	}
   //CARGA LA LISTA CON LOS VALORES DEL ASIENTO TIPO, POR PRIMERA Y UNICA VEZ.	
 	if(grabacion == null && accion.equalsIgnoreCase("Modificacion") && codigo != null  ){
-		 ListaAbmAsientoTipo = repo.getAsientosTipoPK(ejercicioActivo, Integer.parseInt(codigo), new BigDecimal(session.getAttribute("empresa").toString() )); 
+		 ListaAbmAsientoTipo = contable.getAsientosTipoPK(ejercicioActivo, Integer.parseInt(codigo), new BigDecimal(session.getAttribute("empresa").toString() )); 
 		 session.setAttribute("ListaAbmAsientoTipo", ListaAbmAsientoTipo);
   }	 	      
 
 	if(!grabar.equalsIgnoreCase("") && accion.equalsIgnoreCase("Alta")){ 
     // AsientoTipoSave(int idEjercicio, Long idAsientoUpd,	String leyenda, List AsientoTipo, String usuarioalt)
-		String respuesta = repo.AsientoTipoSave(ejercicioActivo, null, leyenda, ListaAbmAsientoTipo, usuario,new BigDecimal(session.getAttribute("empresa").toString() ));
+		String respuesta = contable.AsientoTipoSave(ejercicioActivo, null, leyenda, ListaAbmAsientoTipo, usuario,new BigDecimal(session.getAttribute("empresa").toString() ));
 	  ListaAbmAsientoTipo = new ArrayList();
 	  session.setAttribute("ListaAbmAsientoTipo", ListaAbmAsientoTipo);			
 		if(respuesta.indexOf("OK") < 0 ){
@@ -116,7 +113,7 @@ try{
 	}
 	//grabo la modificacion
 	if(!grabar.equalsIgnoreCase("") && accion.equalsIgnoreCase("Modificacion") && codigo != null ){  
-		String respuesta = repo.AsientoTipoUpd(ejercicioActivo, new Long(Long.parseLong(codigo)), leyenda, ListaAbmAsientoTipo, usuario,new BigDecimal(session.getAttribute("empresa").toString() ));
+		String respuesta = contable.AsientoTipoUpd(ejercicioActivo, new Long(Long.parseLong(codigo)), leyenda, ListaAbmAsientoTipo, usuario,new BigDecimal(session.getAttribute("empresa").toString() ));
 		if(respuesta.indexOf("OK") < 0 ){
 		 %><script>alert('<%=respuesta%>');</script><%  	
 		}

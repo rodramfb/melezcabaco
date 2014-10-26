@@ -7,6 +7,7 @@
 <%@ page import="java.math.*"%> 
 <%@ page import="java.text.*"%> 
 <%@ page import="java.io.*"%>  
+<%@ page import="ar.com.syswarp.api.Common"%>
 <%
 	try {
 
@@ -37,10 +38,7 @@
         String idremitoclientedesde = request.getParameter("idremitoclientedesde");
         String idremitoclientehasta = request.getParameter("idremitoclientehasta");
  
-		javax.naming.Context context = new javax.naming.InitialContext();
-		Object object = context.lookup("Report");
-		ReportHome sHome = (ReportHome) javax.rmi.PortableRemoteObject.narrow(object, ReportHome.class);
-		Report repo = sHome.create();
+ 		Report report = Common.getReport();
 		Map parameters = new HashMap();
 
 		parameters.put("idempresa",  idempresa );
@@ -58,7 +56,7 @@
 		parameters.put("genTelefonosEmpresa",  genTelefonosEmpresa );  
 		parameters.put("idremitoclientedesde",  idremitoclientedesde );
 		parameters.put("idremitoclientehasta",  idremitoclientehasta );  
-        //parameters.put("subreport_dir", repo.getJrxmlpath() );
+        //parameters.put("subreport_dir", report.getJrxmlpath() );
         
   
 
@@ -88,9 +86,9 @@
 		  parameters.put("idpedido",  col  );
 		}
 		
-		//byte[] bytes = repo.getOpenReportImpresiones(plantillaImpresionJRXML, parameters);
-        //repo.saveByteToFile(bytes, repo.getClientesRemitosPath() + name );
-        System.out.println("repo.getJrxmlpath(): NO MAS SUBREPORT_DIR *** / " ); 
+		//byte[] bytes = report.getOpenReportImpresiones(plantillaImpresionJRXML, parameters);
+        //report.saveByteToFile(bytes, report.getClientesRemitosPath() + name );
+        System.out.println("report.getJrxmlpath(): NO MAS SUBREPORT_DIR *** / " ); 
 
 
 	}

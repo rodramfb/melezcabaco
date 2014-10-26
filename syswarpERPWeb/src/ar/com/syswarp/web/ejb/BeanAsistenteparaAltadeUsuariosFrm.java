@@ -23,21 +23,25 @@ import java.util.*;
 import ar.com.syswarp.ejb.*;
 import ar.com.syswarp.api.Common;
 
-public class BeanAsistenteparaAltadeUsuariosFrm implements SessionBean, Serializable {
+public class BeanAsistenteparaAltadeUsuariosFrm implements SessionBean,
+		Serializable {
+	private static final long serialVersionUID = -661562088971827628L;
+
 	private SessionContext context;
 
-	static Logger log = Logger.getLogger(BeanAsistenteparaAltadeUsuariosFrm.class);
+	static Logger log = Logger
+			.getLogger(BeanAsistenteparaAltadeUsuariosFrm.class);
 
 	private String validar = "";
 
 	private BigDecimal idusuario = BigDecimal.valueOf(-1);
-	
+
 	private BigDecimal idempresa;
 
 	private String usuario = "";
-	
+
 	private String siguiente = "";
-	  
+
 	private Connection dbconn;
 
 	private String clave = "";
@@ -45,7 +49,7 @@ public class BeanAsistenteparaAltadeUsuariosFrm implements SessionBean, Serializ
 	private String email = "";
 
 	private String nombre = "";
-	
+
 	private String enviar = "";
 
 	private String habilitado = "";
@@ -90,42 +94,72 @@ public class BeanAsistenteparaAltadeUsuariosFrm implements SessionBean, Serializ
 	}
 
 	public void ejecutarSentenciaDML() {
+		if (idusuario != null && idusuario.compareTo(BigDecimal.ZERO) > 0) {
+			return;
+		}
 		try {
 			General globalusuarios = Common.getGeneral();
 			if (!this.validar.equalsIgnoreCase("")) {
 				this.mensaje = globalusuarios.globalusuariosCreate(
 						this.usuario, this.clave, this.email, this.nombre,
-						this.habilitado, this.usuarioalt, this.idpuesto,this.idempresa);
-				
-				
-				if(Common.esEntero(this.mensaje)){
-					this.idusuario = new BigDecimal(this.mensaje);
-					this.mensaje = "Usuario generado correctamente.";
+						this.habilitado, this.usuarioalt, this.idpuesto,
+						this.idempresa);
+
+				log.error(String.format("Returned message: %s", this.mensaje));
+				System.out.println(String.format("Returned message: %s",
+						this.mensaje));
+
+				if (this.mensaje == null) {
+					this.mensaje = "Mensaje es null";
+					return;
+				} else if (mensaje.trim().equalsIgnoreCase("null")) {
+					this.mensaje = "Mensaje es el texto null";
+					return;
+				} else {
+					this.idusuario = Common.getNumberFromString(this.mensaje);
+					if (this.idusuario != null && !idusuario.equals(BigDecimal.ZERO)) {
+						this.mensaje = "Usuario generado correctamente.";
+					} else {
+						this.mensaje = "Usuario no se ha generado.";
+					}
 				}
-				
-				
+
+				// if(Common.esEntero(this.mensaje)){
+				// this.idusuario = new BigDecimal(this.mensaje);
+				// this.mensaje = "Usuario generado correctamente.";
+				// }
+
 			}
 
-			
-			
 		} catch (Exception ex) {
 			log.error(" ejecutarSentenciaDML() : " + ex);
 		}
 	}
 
-
 	public boolean ejecutarValidacion() {
 		try {
-		if (!this.siguiente.equalsIgnoreCase("")) {
-		   if (idusuario.compareTo(new BigDecimal(0)) == -1) {
-				this.mensaje = "Por favor debe ingresar un usuario,grabar y despues hacer siguiente!";
-				return false;
-			} 
-		    response.sendRedirect("asistente2abm.jsp");
-		    return true;
-		}
+			if (!this.siguiente.equalsIgnoreCase("")) {
+				if (idusuario == null) {
+					this.mensaje = "Id Usuario es null";
+					return false;
+				} else {
+					System.out.println("IDUSUARIO: " + idusuario);
+					int compare = idusuario.compareTo(BigDecimal.ZERO);
+					if (compare < 0) {
+						this.mensaje = "Por favor debe ingresar un usuario, grabar y despues hacer siguiente!";
+						return false;
+					} else if (compare == 0) {
+						this.mensaje = "El usuario no fue creado o no se ha retornado el id desde la base de datos";
+						return false;
+					} else if (compare > 0) {
+						this.mensaje = "El usuario fue creado exitosamente, será redirigido";
+						response.sendRedirect("asistente2abm.jsp?idusuario=" + idusuario);
+						return true;
+					}
+				}
 
-			
+			}
+
 			if (!this.validar.equalsIgnoreCase("")) {
 				if (!this.accion.equalsIgnoreCase("baja")) {
 					// 1. nulidad de campos
@@ -163,7 +197,7 @@ public class BeanAsistenteparaAltadeUsuariosFrm implements SessionBean, Serializ
 				this.ejecutarSentenciaDML();
 			} else {
 				if (!this.accion.equalsIgnoreCase("alta")) {
-					//getDatosGlobalusuarios();
+					// getDatosGlobalusuarios();
 				}
 			}
 		} catch (Exception e) {
