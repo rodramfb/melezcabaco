@@ -93,22 +93,29 @@ public class BeanVClientesRemitosDistribucionAbm implements SessionBean,
 		Clientes clientes = Common.getClientes();
 		try {
 
-			this.totalRegistros = clientes.getTotalEntidad(
-					"vClientesRemitosDistribucion", this.idempresa);
-			this.totalPaginas = (this.totalRegistros / this.limit) + 1;
-			if (this.totalPaginas < this.paginaSeleccion)
-				this.paginaSeleccion = this.totalPaginas;
-			this.offset = (this.paginaSeleccion - 1) * this.limit;
-			if (this.totalRegistros == this.limit) {
-				this.offset = 0;
-				this.totalPaginas = 1;
-			}
 			this.vClientesRemitosDistribucionList = clientes
 					.getVClientesRemitosDistribucionPK(this.idremitocliente,
 							this.idempresa);
 
-			if (this.totalRegistros < 1)
+			this.totalRegistros = vClientesRemitosDistribucionList.size();
+			
+			this.totalPaginas = (this.totalRegistros / this.limit) + 1;
+
+			if (this.totalPaginas < this.paginaSeleccion) {
+				this.paginaSeleccion = this.totalPaginas;
+			}
+
+			this.offset = (this.paginaSeleccion - 1) * this.limit;
+
+			if (this.totalRegistros == this.limit) {
+				this.offset = 0;
+				this.totalPaginas = 1;
+			}
+
+			if (this.totalRegistros < 1) {
 				this.mensaje = "No existen registros.";
+			}
+			
 		} catch (Exception e) {
 			log.error("ejecutarValidacion()" + e);
 		}

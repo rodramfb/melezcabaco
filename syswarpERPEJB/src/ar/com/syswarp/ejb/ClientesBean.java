@@ -12007,7 +12007,7 @@ public class ClientesBean implements Clientes {
 	// grabacion de un nuevo registro NOTA: no se tiene en cuenta el primer
 	// registro por PK y los datos de auditoria solo usuarioalt
 
-	public String pedidosestadosCreate(String estado, String usuarioalt)
+	public String pedidosestadosCreate(String estado, String usuarioalt, BigDecimal idempresa)
 			throws EJBException {
 		String salida = "NOOK";
 		// validaciones de datos:
@@ -12016,6 +12016,8 @@ public class ClientesBean implements Clientes {
 			salida = "Error: No se puede dejar sin datos (nulo) el campo: estado ";
 		if (usuarioalt == null)
 			salida = "Error: No se puede dejar sin datos (nulo) el campo: usuarioalt ";
+		if (idempresa == null)
+			salida = "Error: No se puede dejar sin datos (nulo) el campo: idempresa ";
 		// 2. sin nada desde la pagina
 		if (estado.equalsIgnoreCase(""))
 			salida = "Error: No se puede dejar vacio el campo: estado ";
@@ -12028,11 +12030,12 @@ public class ClientesBean implements Clientes {
 			bError = false;
 		try {
 			if (!bError) {
-				String ins = "INSERT INTO PEDIDOSESTADOS(estado, usuarioalt ) VALUES (?, ?)";
+				String ins = "INSERT INTO PEDIDOSESTADOS(estado, usuarioalt, idempresa) VALUES (?, ?, ?)";
 				PreparedStatement insert = dbconn.prepareStatement(ins);
 				// seteo de campos:
 				insert.setString(1, estado);
 				insert.setString(2, usuarioalt);
+				insert.setBigDecimal(3, idempresa);
 				int n = insert.executeUpdate();
 				if (n == 1)
 					salida = "Alta Correcta";
@@ -12054,7 +12057,7 @@ public class ClientesBean implements Clientes {
 	// registro por PK y los datos de auditoria
 
 	public String pedidosestadosCreateOrUpdate(BigDecimal idestado,
-			String estado, String usuarioact) throws EJBException {
+			String estado, String usuarioact, BigDecimal idempresa) throws EJBException {
 		Calendar hoy = new GregorianCalendar();
 		Timestamp fechaact = new Timestamp(hoy.getTime().getTime());
 		String salida = "NOOK";
@@ -12083,6 +12086,7 @@ public class ClientesBean implements Clientes {
 				total = rsSalida.getInt(1);
 			PreparedStatement insert = null;
 			String sql = "";
+			boolean canProceed = true;
 			if (!bError) {
 				if (total > 0) { // si existe hago update
 					sql = "UPDATE PEDIDOSESTADOS SET estado=?, usuarioact=?, fechaact=? WHERE idestado=?;";
@@ -12092,16 +12096,24 @@ public class ClientesBean implements Clientes {
 					insert.setTimestamp(3, fechaact);
 					insert.setBigDecimal(4, idestado);
 				} else {
-					String ins = "INSERT INTO PEDIDOSESTADOS(estado, usuarioalt ) VALUES (?, ?)";
-					insert = dbconn.prepareStatement(ins);
-					// seteo de campos:
-					String usuarioalt = usuarioact; // esta variable va a
-					// proposito
-					insert.setString(1, estado);
-					insert.setString(2, usuarioalt);
+					if (idempresa == null) {
+						salida = "Error: No se puede dejar sin datos (nulo) el campo: idempresa ";
+						canProceed = false;
+					} else {
+						String ins = "INSERT INTO PEDIDOSESTADOS(estado, usuarioalt, idempresa) VALUES (?, ?)";
+						insert = dbconn.prepareStatement(ins);
+						// seteo de campos:
+						String usuarioalt = usuarioact; // esta variable va a
+						// proposito
+						insert.setString(1, estado);
+						insert.setString(2, usuarioalt);
+						insert.setBigDecimal(3, idempresa);
+					}
 				}
-				insert.executeUpdate();
-				salida = "Alta Correcta.";
+				if (canProceed) {
+					insert.executeUpdate();
+					salida = "Alta Correcta.";
+				}
 			}
 		} catch (SQLException sqlException) {
 			salida = "Imposible dar de alta el registro.";

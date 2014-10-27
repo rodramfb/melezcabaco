@@ -2,15 +2,6 @@
  response.setHeader("Cache-Control", "no-cache");
  response.setHeader("Pragma","no-cache");
  response.setDateHeader("Expires",0);
-/* 
-   Grilla para la entidad: vPedidosEstado
-   Copyrigth(r) sysWarp S.R.L. 
-   Fecha de creacion: Thu Apr 16 08:42:23 GYT 2009 
-   Observaciones: 
-      .
-
-
-*/ 
 %>
 
 <%@ page import="javax.servlet.http.*"%>

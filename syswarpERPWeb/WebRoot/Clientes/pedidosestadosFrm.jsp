@@ -17,6 +17,7 @@
 
 %>
 <%@ page import="javax.servlet.http.*" %>
+<%@ page import="java.math.*" %> 
 <%@ page import="ar.com.syswarp.api.*" %>
 <%@ include file="session.jspf"%>
 <% 
@@ -46,6 +47,8 @@ String pathscript = session.getAttribute("pathscript").toString();
  BPF.setRequest(request);
  BPF.setUsuarioalt( session.getAttribute("usuario").toString() );
  BPF.setUsuarioact( session.getAttribute("usuario").toString() );
+ //BPF.setIdempresa(BigDecimal.valueOf(session.getAttribute("empresa").toString()));
+ BPF.setIdempresa( new BigDecimal( session.getAttribute("empresa").toString() ));
  BPF.ejecutarValidacion();
  %>
 <form action="pedidosestadosFrm.jsp" method="post" name="frm">
@@ -86,5 +89,6 @@ catch (Exception ex) {
    java.io.PrintWriter pw = new java.io.PrintWriter(cw,true);
    ex.printStackTrace(pw);
   System.out.println("ERROR (" + pagina + ") : "+ex);   
+  ex.printStackTrace();
 }%>
 

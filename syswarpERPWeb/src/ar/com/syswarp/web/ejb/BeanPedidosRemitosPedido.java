@@ -84,28 +84,29 @@ public class BeanPedidosRemitosPedido implements SessionBean, Serializable {
 		Clientes clientes = Common.getClientes();
 		try {
 
-			String entidad = "("
-					+ "SELECT DISTINCT r.idremitocliente, d.idpedido_cabe, r.nrosucursal, r.nroremitocliente,  "
-					+ "       r.idempresa,r.usuarioalt,r.usuarioact,r.fechaalt,r.fechaact "
-					+ "  FROM pedidos_deta d "
-					+ "       INNER JOIN clientesremitos r ON d.idremitocliente = r.idremitocliente AND d.idempresa = r.idempresa "
-					+ ") entidad";
-			this.totalRegistros = clientes.getTotalEntidadFiltro(entidad,
-					" WHERE idpedido_cabe = " + this.idpedido, this.idempresa);
-			this.totalPaginas = (this.totalRegistros / this.limit) + 1;
-			if (this.totalPaginas < this.paginaSeleccion)
-				this.paginaSeleccion = this.totalPaginas;
-			this.offset = (this.paginaSeleccion - 1) * this.limit;
-			if (this.totalRegistros == this.limit) {
-				this.offset = 0;
-				this.totalPaginas = 1;
-			}
 			this.pedidosCambioEstadosLogList = clientes
 					.getPedidosRemitosXPedidos(this.idpedido, this.tipopedido,
 							this.idempresa);
 
-			if (this.totalRegistros < 1)
+			this.totalRegistros = pedidosCambioEstadosLogList.size();
+			
+			this.totalPaginas = (this.totalRegistros / this.limit) + 1;
+
+			if (this.totalPaginas < this.paginaSeleccion) {
+				this.paginaSeleccion = this.totalPaginas;
+			}
+
+			this.offset = (this.paginaSeleccion - 1) * this.limit;
+
+			if (this.totalRegistros == this.limit) {
+				this.offset = 0;
+				this.totalPaginas = 1;
+			}
+
+			if (this.totalRegistros < 1) {
 				this.mensaje = "No existen registros.";
+			}
+			
 		} catch (Exception e) {
 			log.error("ejecutarValidacion()" + e);
 		}

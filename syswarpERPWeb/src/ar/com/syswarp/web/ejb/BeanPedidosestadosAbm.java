@@ -44,7 +44,7 @@ public class BeanPedidosestadosAbm implements SessionBean, Serializable {
 	private String ocurrencia = "";
 
 	private BigDecimal idestado;
-	
+
 	private BigDecimal idempresa;
 
 	private String mensaje = "";
@@ -114,7 +114,8 @@ public class BeanPedidosestadosAbm implements SessionBean, Serializable {
 			if (buscar) {
 				String[] campos = { "idestado", "estado" };
 				this.totalRegistros = pedidosestados.getTotalEntidadOcu(
-						"pedidosestados", campos, this.ocurrencia, this.idempresa);
+						"pedidosestados", campos, this.ocurrencia,
+						this.idempresa);
 				this.totalPaginas = (this.totalRegistros / this.limit) + 1;
 				if (this.totalPaginas < this.paginaSeleccion)
 					this.paginaSeleccion = this.totalPaginas;
@@ -128,8 +129,8 @@ public class BeanPedidosestadosAbm implements SessionBean, Serializable {
 				this.pedidosestadosList = pedidosestados.getPedidosestadosOcu(
 						this.limit, this.offset, this.ocurrencia);
 			} else {
-				this.totalRegistros = pedidosestados
-						.getTotalEntidad("pedidosestados", this.idempresa);
+				this.totalRegistros = pedidosestados.getTotalEntidad(
+						"pedidosestados", this.idempresa);
 				this.totalPaginas = (this.totalRegistros / this.limit) + 1;
 				if (this.totalPaginas < this.paginaSeleccion)
 					this.paginaSeleccion = this.totalPaginas;
