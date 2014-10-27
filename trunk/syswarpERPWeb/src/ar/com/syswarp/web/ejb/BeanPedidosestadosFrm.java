@@ -30,6 +30,8 @@ public class BeanPedidosestadosFrm implements SessionBean, Serializable {
 
 	private BigDecimal idestado = BigDecimal.valueOf(-1);
 
+	private BigDecimal idempresa;
+
 	private String estado = "";
 
 	private String usuarioalt;
@@ -71,8 +73,7 @@ public class BeanPedidosestadosFrm implements SessionBean, Serializable {
 		try {
 			Clientes pedidosestados = Common.getClientes();
 			if (this.accion.equalsIgnoreCase("alta"))
-				this.mensaje = pedidosestados.pedidosestadosCreate(this.estado,
-						this.usuarioalt);
+				this.mensaje = pedidosestados.pedidosestadosCreate(this.estado, this.usuarioalt, this.idempresa);
 			else if (this.accion.equalsIgnoreCase("modificacion"))
 				this.mensaje = pedidosestados.pedidosestadosUpdate(
 						this.idestado, this.estado, this.usuarioact);
@@ -210,4 +211,13 @@ public class BeanPedidosestadosFrm implements SessionBean, Serializable {
 	public void setUsuarioact(String usuarioact) {
 		this.usuarioact = usuarioact;
 	}
+
+	public BigDecimal getIdempresa() {
+		return idempresa;
+	}
+
+	public void setIdempresa(BigDecimal idempresa) {
+		this.idempresa = idempresa;
+	}
+
 }

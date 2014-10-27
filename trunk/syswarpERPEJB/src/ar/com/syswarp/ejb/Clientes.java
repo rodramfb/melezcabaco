@@ -952,11 +952,11 @@ public interface Clientes  {
 	public String pedidosestadosDelete(BigDecimal idestado)
 			throws RemoteException;
 
-	public String pedidosestadosCreate(String estado, String usuarioalt)
+	public String pedidosestadosCreate(String estado, String usuarioalt, BigDecimal idempresa)
 			throws RemoteException;
 
 	public String pedidosestadosCreateOrUpdate(BigDecimal idestado,
-			String estado, String usuarioact) throws RemoteException;
+			String estado, String usuarioact, BigDecimal idempresa) throws RemoteException;
 
 	public String pedidosestadosUpdate(BigDecimal idestado, String estado,
 			String usuarioact) throws RemoteException;
