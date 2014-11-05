@@ -8,12 +8,14 @@
  */
 package ar.com.syswarp.web.ejb;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
@@ -46,7 +48,7 @@ public class BeanBacoRefTipoOperacionesAbm implements SessionBean, Serializable 
 
 	private String ocurrencia = "";
 
-	private BigDecimal idtipooperacion;
+	private BigDecimal idtipooperacion = BigDecimal.ZERO;
 
 	private String mensaje = "";
 
@@ -78,7 +80,6 @@ public class BeanBacoRefTipoOperacionesAbm implements SessionBean, Serializable 
 	}
 
 	public boolean ejecutarValidacion() {
-		RequestDispatcher dispatcher = null;
 		Clientes clientes = Common.getClientes();
 		try {
 			if (this.accion.equalsIgnoreCase("baja")) {
@@ -93,16 +94,12 @@ public class BeanBacoRefTipoOperacionesAbm implements SessionBean, Serializable 
 				if (idtipooperacion.longValue() < 0) {
 					this.mensaje = "Debe seleccionar un registro a modificar.";
 				} else {
-					dispatcher = request
-							.getRequestDispatcher("bacoRefTipoOperacionesFrm.jsp");
-					dispatcher.forward(request, response);
+					goToForm();
 					return true;
 				}
 			}
 			if (this.accion.equalsIgnoreCase("alta")) {
-				dispatcher = request
-						.getRequestDispatcher("bacoRefTipoOperacionesFrm.jsp");
-				dispatcher.forward(request, response);
+				goToForm();
 				return true;
 			}
 			if (!this.ocurrencia.trim().equalsIgnoreCase("")) {
@@ -151,6 +148,10 @@ public class BeanBacoRefTipoOperacionesAbm implements SessionBean, Serializable 
 			log.error("ejecutarValidacion()" + e);
 		}
 		return true;
+	}
+
+	private void goToForm() throws ServletException, IOException {
+		request.getRequestDispatcher("bacoRefTipoOperacionesFrm.jsp").forward(request, response);
 	}
 
 	public BigDecimal getIdempresa() {

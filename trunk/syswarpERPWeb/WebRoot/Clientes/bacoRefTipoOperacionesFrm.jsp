@@ -3,18 +3,6 @@
  response.setHeader("Cache-Control", "no-cache");
  response.setHeader("Pragma","no-cache");
  response.setDateHeader("Expires",0);
-/* 
-   Formulario de carga para la entidad: bacoRefTipoOperaciones
-   Copyrigth(r) sysWarp S.R.L. 
-   Fecha de creacion: Fri Jul 02 09:36:21 ART 2010 
-   Observaciones: 
-      . Revisar los nombres de las clases instanciadas
-      . Se prevee el primer campo como autonumerico
-      . Se omiten los campos de auditorias
-
-
-*/ 
-
 %>
 <%@ page import="javax.servlet.http.*" %>
 <%@ page import="java.util.*" %>
@@ -43,6 +31,15 @@ String pathscript = session.getAttribute("pathscript").toString();
  <jsp:setProperty name="BBRTOF" property="*" />
  <% 
  String titulo = BBRTOF.getAccion().toUpperCase() + " DE TIPO OPERACIONES" ;
+ // --> new feature
+ /*BigDecimal id_tipo_operacion = Common.getNumberFromString(request.getParameter("idtipooperacion"));
+ System.out.println(String.format("id_tipo_operacion: %s", id_tipo_operacion));
+ if (id_tipo_operacion == null) {
+ 	System.out.println(String.format("id_tipo_operacion es null"));
+ 	id_tipo_operacion = BigDecimal.ZERO;
+ }
+ BBRTOF.setIdtipooperacion(id_tipo_operacion);*/
+ //
  BBRTOF.setResponse(response);
  BBRTOF.setRequest(request);
  BBRTOF.setUsuarioalt( session.getAttribute("usuario").toString() );
