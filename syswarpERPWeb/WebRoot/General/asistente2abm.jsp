@@ -66,8 +66,8 @@ if (id_usuario == null) {
 </head>
 <%
 // titulos para las columnas
-tituCol[0] = "Codigo PRUEBAS";
-tituCol[1] = "Grupo PRUEBAS";
+tituCol[0] = "Codigo";
+tituCol[1] = "Grupo";
 
 java.util.List generalgrupo = new java.util.ArrayList();
 generalgrupo= BFFF.getGlobalgrupoList();

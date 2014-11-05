@@ -397,12 +397,6 @@ public class BeanPedidos_cabeFrm implements SessionBean, Serializable {
 					this.asignarValidar((Hashtable) session
 							.getAttribute("htArticulosInOutOK"));
 
-				// this.totalDebe = getTotalesAsiento((Hashtable) session
-				// .getAttribute("htArticulosInOutOK"), 11);
-
-				// 20090922 - EJV
-				// this.getTotalesAsiento((Hashtable) session
-				// .getAttribute("htArticulosInOutOK"), 11);
 
 				if (this.accion.equalsIgnoreCase("recarga")) {
 					// reiniciaIds();
@@ -462,7 +456,6 @@ public class BeanPedidos_cabeFrm implements SessionBean, Serializable {
 				}
 
 			} else
-				// log.info("entrooooooooooooooo");
 				this.idtarjeta = new BigDecimal(-1);
 
 			if (!this.validar.equalsIgnoreCase("")) {
@@ -476,13 +469,6 @@ public class BeanPedidos_cabeFrm implements SessionBean, Serializable {
 					this.mensaje = "No se puede dejar vacio el campo Cliente. ";
 					return false;
 				}
-
-				// --> 20110207 - EJV - Mantis - 671
-				// if (fechapedido == null || fechapedido.trim().equals("")) {
-				// this.mensaje =
-				// "No se puede dejar vacio el campo Fecha Pedido. ";
-				// return false;
-				// }
 
 				if (!Common.isFormatoFecha(this.fechapedido)
 						|| !Common.isFechaValida(this.fechapedido)) {

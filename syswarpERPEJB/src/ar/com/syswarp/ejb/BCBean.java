@@ -1,28 +1,31 @@
 package ar.com.syswarp.ejb;
 
-
-import java.rmi.RemoteException;
-import javax.ejb.EJBException;
-import javax.ejb.SessionBean;
-import javax.ejb.SessionContext;
-import javax.ejb.CreateException;
-import javax.ejb.Stateless;
-import javax.naming.Context;
-
-import java.io.*;
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.*;
-import java.sql.Date;
+import java.rmi.RemoteException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Enumeration;
+import java.util.GregorianCalendar;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
-import org.postgresql.*; //import javax.sql.*;
-import java.util.*;
+import javax.ejb.CreateException;
+import javax.ejb.EJBException;
+import javax.ejb.SessionContext;
+import javax.ejb.Stateless;
 
-import org.apache.log4j.*;
-import org.postgresql.jdbc2.TimestampUtils;
-
-import ar.com.syswarp.db.Postgres;
-import ar.com.syswarp.ejb.*;
+import org.apache.log4j.Logger;
 
 /**
  * XDoclet-based session bean. The class must be declared public according to
@@ -42,8 +45,7 @@ import ar.com.syswarp.ejb.*;
 public class BCBean implements BC {
 
 	/** The session context */
-//	private SessionContext context;
-
+	// private SessionContext context;
 	GeneralBean gb = new GeneralBean();
 
 	/* conexion a la base de datos */
@@ -132,7 +134,7 @@ public class BCBean implements BC {
 	 */
 	public void setSessionContext(SessionContext newContext)
 			throws EJBException {
-		
+
 	}
 
 	public void ejbRemove() throws EJBException, RemoteException {
@@ -8129,7 +8131,7 @@ public class BCBean implements BC {
 		return resultado;
 	}
 
-	public    List getClientesDomiciliosPK(BigDecimal iddomicilio,
+	public List getClientesDomiciliosPK(BigDecimal iddomicilio,
 			BigDecimal idempresa, Connection pgconn) throws EJBException {
 		ResultSet rsSalida = null;
 		String cQuery = ""
@@ -8176,7 +8178,7 @@ public class BCBean implements BC {
 		return vecSalida;
 	}
 
-	public   String InterFacesGenerarPedido(BigDecimal idpedidoDelta,
+	public String InterFacesGenerarPedido(BigDecimal idpedidoDelta,
 			BigDecimal idcampacabeDelta, BigDecimal idcliente,
 			BigDecimal idsucuclie, Timestamp fechapedido,
 			BigDecimal idcondicion, String obsarmado, String obsentrega,
@@ -9636,51 +9638,6 @@ public class BCBean implements BC {
 		return new String[] { salida, alerta };
 	}
 
-	public static String interfacesPreconformacionTotalRemitosPedido(
-			BigDecimal idpedidocabedelta, Properties props)
-			throws EJBException, SQLException {
-
-		Connection mssqlConn = null;
-		ResultSet rs = null;
-		String salida = "0";
-
-		try {
-
-			String msurl = props.getProperty("sconn.url").trim();
-			String msclase = props.getProperty("sconn.clase").trim();
-			String susuario = props.getProperty("sconn.usuario").trim();
-			String sclave = props.getProperty("sconn.clave").trim();
-			Class.forName(msclase);
-			mssqlConn = DriverManager.getConnection(msurl, susuario, sclave);
-			if (mssqlConn == null)
-				throw new Exception(
-						"No fue posible crear una conexion a MSSQL.");
-
-			Statement stms = mssqlConn.createStatement();
-			String cQuery = ""
-					+ "SELECT dbo.fuInterfacesAnularPedidoPrecTotalRemitos("
-					+ idpedidocabedelta + ")";
-
-			rs = stms.executeQuery(cQuery);
-
-			if (rs != null && rs.next()) {
-				salida = rs.getString(1);
-			}
-
-			log.info("TOTAL REMITOS PEDIDO: " + salida);
-
-		} catch (Exception e) {
-
-			log.error("interfacesPreconformacionTotalRemitosPedido(): " + e);
-
-		}
-
-		closeResultset(rs);
-		mssqlConn.close();
-
-		return salida;
-	}
-
 	public static String interfacesPreconformacionTotalPedidosRemito(
 			String xnremito, Properties props) throws EJBException,
 			SQLException {
@@ -9725,60 +9682,6 @@ public class BCBean implements BC {
 
 		return salida;
 	}
-
-	public static String interfacesPreconformacionGetPedidosRemito(
-			BigDecimal idpedidocabedelta, Properties props)
-			throws EJBException, SQLException {
-
-		Connection mssqlConn = null;
-		ResultSet rs = null;
-		String xnremito = "0";
-
-		try {
-
-			String msurl = props.getProperty("sconn.url").trim();
-			String msclase = props.getProperty("sconn.clase").trim();
-			String susuario = props.getProperty("sconn.usuario").trim();
-			String sclave = props.getProperty("sconn.clave").trim();
-			Class.forName(msclase);
-			mssqlConn = DriverManager.getConnection(msurl, susuario, sclave);
-			if (mssqlConn == null)
-				throw new Exception(
-						"No fue posible crear una conexion a MSSQL.");
-
-			Statement stms = mssqlConn.createStatement();
-			String cQuery = ""
-					+ "SELECT xnremito FROM distribucion_ventas WHERE idpedidocabedelta = "
-					+ idpedidocabedelta + "";
-
-			rs = stms.executeQuery(cQuery);
-
-			if (rs != null && rs.next()) {
-				do {
-
-					if (rs.getString(1) != null) {
-						xnremito = rs.getString(1);
-						break;
-					}
-
-				} while (rs.next());
-			}
-
-			log.info("XNEREMITO: " + xnremito);
-
-		} catch (Exception e) {
-
-			log.error("interfacesPreconformacionGetPedidosRemito(): " + e);
-
-		}
-
-		closeResultset(rs);
-		mssqlConn.close();
-
-		return xnremito;
-	}
-
-	// por primary key (primer campo por defecto)
 
 	public static void closeResultset(ResultSet rs) {
 
@@ -10336,7 +10239,7 @@ public class BCBean implements BC {
 					insert = dbconn.prepareStatement(ins);
 					// seteo de campos:
 					String usuarioalt = usuarioact; // esta variable va a
-													// proposito
+					// proposito
 					insert.setString(1, estado);
 					insert.setString(2, fechasn);
 					insert.setBigDecimal(3, idempresa);
