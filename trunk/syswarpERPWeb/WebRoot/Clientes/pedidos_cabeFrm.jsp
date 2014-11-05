@@ -1,4 +1,4 @@
-<%@page language="java"%>
+S<%@page language="java"%>
 <%
  response.setHeader("Cache-Control", "no-cache");
  response.setHeader("Pragma","no-cache");
@@ -24,15 +24,6 @@
 <% 
 try{
 Strings str = new Strings();
-
-
-Enumeration e = request.getParameterNames();
-while(e.hasMoreElements()){
- 
-  String k = e.nextElement().toString();
-  //System.out.println("K: " + k + " /  VALOR: " + request.getParameter(k));
-
-}
 
 String pathskin = session.getAttribute("pathskin").toString();
 String pathscript = session.getAttribute("pathscript").toString();
@@ -129,18 +120,6 @@ out.write(array);
 		
 			var domicilio = eval ('datosDomicilio' + iddomicilio);
 			
-			/*
-			
-			for(var i=0; i<document.frm.idvendedor.length;i++){
-				if(document.frm.idvendedor.options[i].value == domicilio[2]){
-					//alert(" VALOR OPTIONS: " + document.frm.idvendedor.options[i].value + " / idvendedor: " + domicilio[2]);
-					document.frm.idvendedor.options[i].selected = true;
-					break;
-				}
-			}	
-			
-			*/
-	
 			document.frm.idexpreso.value = domicilio[0];
 			document.frm.expreso.value = domicilio[1];
 			document.frm.telefonos.value = domicilio[3] + ' / ' +  domicilio[4] ;
@@ -155,13 +134,8 @@ out.write(array);
 		}
 	}
 	else{
-		//document.frm.idvendedor.options[0].selected = true;
-		//document.frm.idexpreso.options[0].selected = true;	  
-    document.frm.expreso.value = '';
+	    document.frm.expreso.value = '';
 		document.frm.idexpreso.value = '-1';
-    //document.frm.vendedor.value = '';
-		//document.frm.idvendedor.value = '-1';
-
 	}
 }
 
@@ -175,9 +149,7 @@ function getDetalleTarjeta(obj){
   var warn = obj.options[obj.selectedIndex].style.backgroundColor;
 	if(obj.selectedIndex != 0){
 		if( warn != ""){
-			//overlib(obj.options[obj.selectedIndex].id, STICKY, CAPTION, 'TARJETA VENCIDA - INHABILITADA: IMPOSIBLE UTILIZAR',TIMEOUT,5000,HAUTO,VAUTO, WIDTH,350,BGCOLOR, warn, CAPCOLOR, '#FF0000');
 			overlib(obj.options[obj.selectedIndex].id, STICKY, CAPTION, 'ATENCION: TARJETA VENCIDA - INHABILITADA !!',TIMEOUT,5000,HAUTO,VAUTO, WIDTH,350,BGCOLOR, warn, CAPCOLOR, '#FF0000');
-			//obj.selectedIndex = 0;
 		}
 		else{
 			overlib(obj.options[obj.selectedIndex].id, STICKY, CAPTION, 'DETALLE TARJETA ',TIMEOUT,5000,HAUTO,VAUTO,WIDTH,350);
@@ -196,8 +168,6 @@ function limpiarArticulos(obj){
     } 
   }
 
-  //alert('INDICE ACTUAL LISTA: ' + indiceActualLista + '  /  ' + obj.options[indiceActualLista].text );
-
   if(ventana &&  !ventana.closed ) ventana.close();
 	if(existeDetalle){
 		if( confirm('Esta acción eliminará los artículos \ncargados hasta el momento. Confirma de todos modos?') ){
@@ -205,7 +175,6 @@ function limpiarArticulos(obj){
 			return true; 
 		}
 		else{ 
-      //alert('DEBERIA VOLVER AL INDEX : ' + indiceActualLista + '  /  ' + obj.options[indiceActualLista].text );
 			obj.options[indiceActualLista].selected = true;
       return false;
 		}	
@@ -214,13 +183,11 @@ function limpiarArticulos(obj){
 }
 
 function mostrarMensaje(mensaje){
-	//overlib( mensaje , STICKY, CAPTION, '[INFO]',TIMEOUT,25000,HAUTO,VAUTO,WIDTH,350,BGCOLOR,'#FF9900');
 	overlib( mensaje , STICKY, CAPTION, '[INFO]',TIMEOUT,25000,FIXX,0,FIXY,0,WIDTH,350,BGCOLOR,'#FF9900');  
 }
 
 function detalleDomicilio(detalle){
 	overlib( detalle , STICKY, CAPTION, '[INFO]',TIMEOUT,25000,HAUTO,VAUTO, LEFT, OFFSETX , 50, WIDTH,350,BGCOLOR,'#FF9900');
-	//overlib( mensaje , STICKY, CAPTION, '[INFO]',TIMEOUT,25000,FIXX,0,FIXY,0,WIDTH,350,BGCOLOR,'#FF9900');
 }
 
 function setPorcentajeAplicado(obj, indice){

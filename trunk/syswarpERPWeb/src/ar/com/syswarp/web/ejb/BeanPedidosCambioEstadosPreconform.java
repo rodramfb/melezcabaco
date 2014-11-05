@@ -9,17 +9,22 @@
 package ar.com.syswarp.web.ejb;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
-import java.math.*;
-import java.util.*;
-import ar.com.syswarp.ejb.*;
+
 import ar.com.syswarp.api.Common;
+import ar.com.syswarp.ejb.Clientes;
 
 public class BeanPedidosCambioEstadosPreconform implements SessionBean,
 		Serializable {
@@ -171,36 +176,6 @@ public class BeanPedidosCambioEstadosPreconform implements SessionBean,
 				return true;
 			}
 
-			this.bacoTotalRemitosPedido = Common.getClientes()
-					.callInterfacesPreconformacionTotalRemitosPedido(
-							this.idpedido);
-
-			if (Integer.parseInt(this.bacoTotalRemitosPedido) < 2) {
-
-				this.bacoTotalPedidosRemito = Common.getClientes()
-						.callInterfacesPreconformacionTotalPedidosRemito(
-								this.idpedido, 0);
-				if (Integer.parseInt(this.bacoTotalPedidosRemito) > 1) {
-					this.bacoAlerta = "REMITO CON MAS DE UN PEDIDO, INFORME A SISTEMAS . ";
-				}
-
-			} else {
-
-				this.bacoAlerta = "PEDIDO CON MAS DE UN REMITO, INFORME A SISTEMAS . ";
-
-			}
-
-			if (!this.bacoAlerta.equals("")
-					&& Common
-							.setNotNull(
-									request.getSession().getAttribute(
-											"ismanager")
-											+ "").equalsIgnoreCase("N")) {
-
-				this.autorizado = false;
-
-			}
-
 			this.getDatosPedido();
 
 			this.listPedidosEstados = Common.getClientes()
@@ -266,7 +241,7 @@ public class BeanPedidosCambioEstadosPreconform implements SessionBean,
 					}
 
 					if (!isAutorizado()) {
-						this.mensaje = "No es posible efectuar esta acci�n, su perfil no lo permite.";
+						this.mensaje = "No es posible efectuar esta acción, su perfil no lo permite.";
 						return false;
 
 					}

@@ -73,10 +73,11 @@ public class ClientesBean implements Clientes {
 	QueryManager queryManager = QueryManager.getInstance(log);
 
 	/***********************
-	****    Managers    ****
-	***********************/
+	 **** Managers ****
+	 ***********************/
 	AccionContactoManager accionContactoManager = new AccionContactoManager(log);
-	ResultadoContactoManager resultadoContactoManager = new ResultadoContactoManager(log);
+	ResultadoContactoManager resultadoContactoManager = new ResultadoContactoManager(
+			log);
 
 	private Connection conexion;
 
@@ -5291,47 +5292,6 @@ public class ClientesBean implements Clientes {
 
 				if (properties == null || properties.isEmpty())
 					properties = this.props;
-
-				try {
-
-					String conmutador = "";
-
-					if (conmutador.equals("")) {
-						BCBean b = new BCBean();
-						b.InterFacesGenerarPedido(idpedido_cabe, idcampacabe,
-								idcliente, idsucuclie, fechapedido,
-								idcondicion, obsarmado, obsentrega, totaliva,
-								idprioridad, idzona, idtarjeta, cuotas,
-								origenpedido, total, cotizacion, htArticulos,
-								usuarioalt, idempresa, properties);
-
-					} else if (conmutador.equals("D1")) {
-
-						// PRUEBAS PARA LA GENERACION DE CAMPANIA EN BACO ...
-
-						// BCBean.getSetCampaniaActivaBaco(idempresa,
-						// usuarioalt, dbconn, dbconn);
-
-					} else {
-
-						log
-								.warn(" ----------------               !!  ATENCION !!            ----------------");
-						log
-								.warn("|                                                                                  |");
-						log
-								.warn("|  INTERFACE PEDIDOS DELTA < - >BACO APAGADA       |");
-						log
-								.warn("|                                                                                  |");
-						log
-								.warn(" ----------------                      ***                      -----------------");
-
-					}
-
-				} catch (Exception eBC) {
-					log
-							.error("EXC - pedidosNormalesCreate(.....), al ejecutarse INTERFACE BACO / pedido ["
-									+ idpedido_cabe + "] : " + eBC);
-				}
 
 			}
 
@@ -12007,8 +11967,8 @@ public class ClientesBean implements Clientes {
 	// grabacion de un nuevo registro NOTA: no se tiene en cuenta el primer
 	// registro por PK y los datos de auditoria solo usuarioalt
 
-	public String pedidosestadosCreate(String estado, String usuarioalt, BigDecimal idempresa)
-			throws EJBException {
+	public String pedidosestadosCreate(String estado, String usuarioalt,
+			BigDecimal idempresa) throws EJBException {
 		String salida = "NOOK";
 		// validaciones de datos:
 		// 1. nulidad de campos
@@ -12057,7 +12017,8 @@ public class ClientesBean implements Clientes {
 	// registro por PK y los datos de auditoria
 
 	public String pedidosestadosCreateOrUpdate(BigDecimal idestado,
-			String estado, String usuarioact, BigDecimal idempresa) throws EJBException {
+			String estado, String usuarioact, BigDecimal idempresa)
+			throws EJBException {
 		Calendar hoy = new GregorianCalendar();
 		Timestamp fechaact = new Timestamp(hoy.getTime().getTime());
 		String salida = "NOOK";
@@ -32580,8 +32541,6 @@ public class ClientesBean implements Clientes {
 				.getTimeInMillis());
 
 		try {
-			// properties.load(ClientesBean.class
-			// .getResourceAsStream("system.properties"));
 			iterator = getClientestablaivaAll(100, 0, idempresa).iterator();
 			while (iterator.hasNext()) {
 				String[] iva = (String[]) iterator.next();
@@ -32598,14 +32557,7 @@ public class ClientesBean implements Clientes {
 
 				BigDecimal curIdCliente = new BigDecimal(-1);
 				BigDecimal idcliente = new BigDecimal(-1);
-				// 20100211 EJV Mantis 383
 				BigDecimal idtipoiva = new BigDecimal(-1);
-
-				// for (int z = 0; z < 5; z++)
-				// log.info("-@-");
-				// listOpenFiles();
-				// for (int z = 0; z < 5; z++)
-				// log.info("-@-");
 
 				long pid = pid();
 
@@ -32617,7 +32569,6 @@ public class ClientesBean implements Clientes {
 
 						if (curIdCliente.longValue() > 0) {
 
-							/*----*/
 							List listCliente = getClientesClientesPK(
 									curIdCliente, idempresa);
 
@@ -32627,20 +32578,12 @@ public class ClientesBean implements Clientes {
 
 								BigDecimal idsucursal = new BigDecimal(-1); // *
 
-								// --
-
 								BigDecimal idcondicion = new BigDecimal(
 										datos[8]);
 								BigDecimal idvendedor = new BigDecimal(
 										datos[27]);
 								BigDecimal idlista = new BigDecimal(datos[16]);
 								BigDecimal idmoneda = new BigDecimal(datos[14]);
-								// --------------------------------->
-								// 20100211 EJV Mantis 383
-								// BigDecimal idtipoiva = new
-								// BigDecimal(datos[6]);
-								// <---------------------------------
-								//
 								BigDecimal porcentajeTipoIva = new BigDecimal(
 										htPorcentajeIva.get(
 												idtipoiva.toString())
@@ -32664,15 +32607,13 @@ public class ClientesBean implements Clientes {
 									BigDecimal idzona = new BigDecimal(
 											datosDom[19] != null ? datosDom[19]
 													: "-1");
-									// 20100804 - EJV - Reasignacion -->
+
 									BigDecimal idanexolocalidad = new BigDecimal(
 											datosDom[39] != null ? datosDom[39]
 													: "-1");
-									// <--
 
 									BigDecimal idtarjeta = new BigDecimal(-1);// *
 
-									// Valores forzados.-->
 									BigDecimal comision = new BigDecimal(0);// *
 									BigDecimal ordencompra = new BigDecimal(0);// *
 									String obsarmado = "";// *
@@ -32687,26 +32628,11 @@ public class ClientesBean implements Clientes {
 									BigDecimal totaliva = new BigDecimal(-1);// *
 									BigDecimal idprioridad = new BigDecimal(1);// *
 									BigDecimal cuotas = new BigDecimal(1);// *
-									// Valores forzados.<--
-
-									// EJV - 20090925
-									// totaliva = new BigDecimal(
-									// GeneralBean
-									// .getNumeroFormateado(
-									// Float
-									// .parseFloat((grandTotal
-									// .doubleValue()
-									// * (1 + porcentajeTipoIva
-									// .doubleValue() / 100) + "")),
-									// 10, 2));
 
 									totaliva = new BigDecimal(grandTotal
 											.doubleValue()
 											+ grandTotalIva.doubleValue());
-									// < ---
 
-									// 20110802 - EJV - Mantis 759 -->
-									// idtarjeta = new BigDecimal(-1);// *
 									if (idcondicion.intValue() == 5) {
 										idtarjeta = getTarjetaClienteERyPO(
 												curIdCliente, hoy, anio, mes,
@@ -32718,129 +32644,6 @@ public class ClientesBean implements Clientes {
 
 									}
 
-									// // Condicion asociada a tarjetas de
-									// credito.
-									// if (idcondicion.longValue() == 5) {
-									//
-									// /*
-									// *
-									// t.idtarjeta,t.idtarjetacredito,tm.tarjetacredito
-									// * ,t.idcliente,t.idtipotarjeta,tt.
-									// * tipotarjeta, t
-									// * .nrotarjeta,t.nrocontrol
-									// * ,t.fecha_emision::DATE ,
-									// * t.fecha_vencimiento
-									// * ::DATE,t.titular,t.orden,t .activa,
-									// * t.idempresa,t.usuarioalt,t.usuarioact
-									// * ,t.fechaalt,t.fechaact
-									// */
-									//
-									// List listaTarjetasCredito =
-									// getClienteTarjetasCliente(
-									// 100, 0, curIdCliente, idempresa);
-									//
-									// if (listaTarjetasCredito != null
-									// && !listaTarjetasCredito
-									// .isEmpty()) {
-									//
-									// Iterator iter = listaTarjetasCredito
-									// .iterator();
-									//
-									// // java.sql.Date hoy = new
-									// // java.sql.Date(
-									// // Calendar.getInstance()
-									// // .getTimeInMillis());
-									//
-									// while (iter.hasNext()) {
-									//
-									// String datosTarjeta[] = (String[]) iter
-									// .next();
-									//
-									// // || (datosTarjeta[12])-
-									// // 20110126 - EJV - Mantis 667
-									// if (datosTarjeta[12] == null
-									// || !(datosTarjeta[12])
-									// .equalsIgnoreCase("S")) {
-									//
-									// status =
-									// "ER: condicion de pago Tarjeta: tarjeta inactiva para cliente:"
-									// + curIdCliente;
-									// // 20110126 - EJV Mantis 667
-									// //
-									// (java.sql.Date.valueOf(datosTarjeta[9]).after(hoy))
-									// } else if (java.sql.Date
-									// .valueOf(
-									// datosTarjeta[9])
-									// .before(hoy)) {
-									// status =
-									// "ER: condicion de pago Tarjeta: tarjeta vencida para cliente:"
-									// + curIdCliente;
-									// } else {
-									//
-									// idtarjeta = new BigDecimal(
-									// datosTarjeta[0]);
-									// status = "";
-									//
-									// break;
-									// }
-									//
-									// // 20110126 - EJV Mantis 667 -->
-									// if (!status
-									// .equalsIgnoreCase(""))
-									// pedidosEntregaRegularLogCreate(
-									// curIdCliente,
-									// new BigDecimal(anio),
-									// new BigDecimal(mes),
-									// status, idempresa,
-									// usuarioalt);
-									// // <--
-									// status = "";
-									// // --> 20110405 - EJV Mantis 700
-									// // Si no hay tarjetas que
-									// // cumplan las condiciones de
-									// // validez, se asigna como
-									// // default la de orden uno (1) o
-									// // en su defecto alguna
-									// // existente.
-									// // 20110630 - EJV -- > Siempre
-									// // asignar alguna.
-									// if (datosTarjeta[12]
-									// .equalsIgnoreCase("S"))
-									// // <--
-									// idtarjeta = new BigDecimal(
-									// datosTarjeta[0]);
-									// else if (idtarjeta.longValue() < 1
-									// || datosTarjeta[11]
-									// .equalsIgnoreCase("1"))
-									// // <--
-									// idtarjeta = new BigDecimal(
-									// datosTarjeta[0]);
-									// else if (idtarjeta.longValue() < 1)
-									// // <--
-									// idtarjeta = new BigDecimal(
-									// datosTarjeta[0]);
-									// // <--
-									// }
-									//
-									// } else {
-									//
-									// status =
-									// "ER: condicion de pago Tarjeta: no hay tarjeta asociada para cliente:"
-									// + curIdCliente;
-									//
-									// log.warn(status);
-									//
-									// }
-									//
-									// if (cuotas.intValue() == 0) {
-									// cuotas = new BigDecimal(1);
-									// }
-									//
-									// }
-									// <--
-
-									// aca poner pedidosCreate
-
 									BigDecimal idcampacabe = null;
 
 									log
@@ -32848,9 +32651,7 @@ public class ClientesBean implements Clientes {
 													+ curIdCliente);
 									if (status.equalsIgnoreCase("")) {
 
-										// 20110124 - EJV - Mantis 597 -->
 										BigDecimal idpromocion = null;
-										// <--
 
 										String[] resultado = pedidosNormalesCreate(
 												idcampacabe, idestado,
@@ -32901,8 +32702,6 @@ public class ClientesBean implements Clientes {
 								log.warn(status);
 							}
 
-							/*----*/
-
 							if (!status.equalsIgnoreCase(""))
 								pedidosEntregaRegularLogCreate(curIdCliente,
 										new BigDecimal(anio), new BigDecimal(
@@ -32919,13 +32718,8 @@ public class ClientesBean implements Clientes {
 					}
 
 					status = "";
-					// para el total decabecera del pedido.
 
 					idestado = rsEntregas.getBigDecimal("idestado");
-					// BigDecimal idmotivo =
-					// rsEntregas.getBigDecimal("idmotivo");
-					// BigDecimal idpreferencia = rsEntregas
-					// .getBigDecimal("idpreferencia");
 					String codigo_st = rsEntregas.getString("codigo_st");
 					BigDecimal cantidad = rsEntregas.getBigDecimal("cantidad");
 					BigDecimal codigo_dt = rsEntregas
@@ -32943,21 +32737,6 @@ public class ClientesBean implements Clientes {
 					log.debug("============================= ");
 					log.debug("- cliente : " + idcliente);
 
-					/*
-					 * EJV - 20090925
-					 */
-
-					// BigDecimal tipoiva_st = GeneralBean.setNull(
-					// new BigDecimal(datosArticulo[24]), 0);
-					// BigDecimal porciva_st = new BigDecimal(
-					// datosArticulo[26]);
-					// BigDecimal totaliva_st = new BigDecimal(
-					// datosArticulo[27]);
-					// BigDecimal cantidad_sb = new BigDecimal(
-					// datosArticulo[28]);
-					// BigDecimal compromiso_sb = new BigDecimal(
-					// datosArticulo[29]);
-					// String inventa_st = datosArticulo[30];
 					BigDecimal tipoiva_st = rsEntregas
 							.getBigDecimal("tipoiva_st");
 					BigDecimal porciva_st = rsEntregas
@@ -32971,11 +32750,7 @@ public class ClientesBean implements Clientes {
 					String inventa_st = rsEntregas.getString("tipoiva_st");
 					String tipograv_exen = rsEntregas
 							.getString("tipograv_exen");
-					// --------------------------------->
-					// 20100211 EJV Mantis 383
 					idtipoiva = rsEntregas.getBigDecimal("idtipoiva");
-					// <---------------------------------
-					/**/
 
 					String[] datosArticulo = new String[33];
 					datosArticulo[0] = codigo_st;
@@ -32989,10 +32764,7 @@ public class ClientesBean implements Clientes {
 					datosArticulo[19] = porc_descuento.toString();
 					datosArticulo[20] = porc_descuento.toString();
 					datosArticulo[13] = unimed_st;
-					// <<ejv
-					// TODO: Motivo descuento.
 					datosArticulo[21] = idmotivodescuento;
-					// EJV 20090925
 					datosArticulo[24] = tipoiva_st.toString();
 					datosArticulo[26] = porciva_st.toString();
 					datosArticulo[27] = totaliva_st.toString();
@@ -33005,10 +32777,6 @@ public class ClientesBean implements Clientes {
 					grandTotalIva = new Double(grandTotalIva.doubleValue()
 							+ totaliva_st.doubleValue());
 
-					// log.warn("A - codigo_st: " + codigo_st);
-					// for (int m = 0; m < datosArticulo.length; m++)
-					// log.info("datosArticulo [" + m + "]:"
-					// + datosArticulo[m]);
 					htArticulos.put(codigo_st, datosArticulo);
 
 					if (contador % 10 == 0) {
@@ -33016,11 +32784,6 @@ public class ClientesBean implements Clientes {
 					}
 
 				}
-
-				// /////////////////////////////////////////////////////////////
-				/* ENCAPSULAR --> */
-
-				/*----*/
 
 				if (idcliente != null && idcliente.longValue() > -1) {
 
@@ -33033,17 +32796,10 @@ public class ClientesBean implements Clientes {
 
 						BigDecimal idsucursal = new BigDecimal(-1); // *
 
-						// --
-
 						BigDecimal idcondicion = new BigDecimal(datos[8]);
 						BigDecimal idvendedor = new BigDecimal(datos[27]);
 						BigDecimal idlista = new BigDecimal(datos[16]);
 						BigDecimal idmoneda = new BigDecimal(datos[14]);
-						// --------------------------------->
-						// 20100211 EJV Mantis 383
-						// BigDecimal idtipoiva = new BigDecimal(datos[6]);
-						// <---------------------------------
-						//
 						BigDecimal porcentajeTipoIva = new BigDecimal(
 								htPorcentajeIva.get(idtipoiva.toString())
 										.toString());
@@ -33062,10 +32818,8 @@ public class ClientesBean implements Clientes {
 							BigDecimal idzona = new BigDecimal(
 									datosDom[19] != null ? datosDom[19] : "-1");
 
-							// 20100804 - EJV - Reasignacion -->
 							BigDecimal idanexolocalidad = new BigDecimal(
 									datosDom[39] != null ? datosDom[39] : "-1");
-							// <--
 
 							BigDecimal idtarjeta = new BigDecimal(-1);// *
 
@@ -33084,25 +32838,10 @@ public class ClientesBean implements Clientes {
 							BigDecimal totaliva = new BigDecimal(-1);// *
 							BigDecimal idprioridad = new BigDecimal(1);// *
 							BigDecimal cuotas = new BigDecimal(1);// *
-							// Valores forzados.<--
-
-							// EJV - 20090925
-							// totaliva = new BigDecimal(
-							// GeneralBean
-							// .getNumeroFormateado(
-							// Float
-							// .parseFloat((grandTotal
-							// .doubleValue()
-							// * (1 + porcentajeTipoIva
-							// .doubleValue() / 100) + "")),
-							// 10, 2));
 
 							totaliva = new BigDecimal(grandTotal.doubleValue()
 									+ grandTotalIva.doubleValue());
-							// < ---
 
-							// Condicion asociada a tarjetas de credito.
-							// 20110802 - EJV - Mantis 759 -->
 							if (idcondicion.intValue() == 5) {
 								idtarjeta = getTarjetaClienteERyPO(idcliente,
 										hoy, anio, mes, true, "ER", idempresa,
@@ -33113,126 +32852,8 @@ public class ClientesBean implements Clientes {
 								}
 							}
 
-							// if (idcondicion.longValue() == 5) {
-							//
-							// /*
-							// *
-							// t.idtarjeta,t.idtarjetacredito,tm.tarjetacredito
-							// * ,t.idcliente,t.idtipotarjeta,tt.tipotarjeta,
-							// * t
-							// * .nrotarjeta,t.nrocontrol,t.fecha_emision::DATE
-							// * ,
-							// * t.fecha_vencimiento::DATE,t.titular,t.orden,t
-							// * .activa,
-							// * t.idempresa,t.usuarioalt,t.usuarioact
-							// * ,t.fechaalt,t.fechaact
-							// */
-							//
-							// List listaTarjetasCredito =
-							// getClienteTarjetasCliente(
-							// 100, 0, idcliente, idempresa);
-							//
-							// if (listaTarjetasCredito != null
-							// && !listaTarjetasCredito.isEmpty()) {
-							//
-							// Iterator iter = listaTarjetasCredito
-							// .iterator();
-							//
-							// // java.sql.Date hoy = new java.sql.Date(
-							// // Calendar.getInstance()
-							// // .getTimeInMillis());
-							//
-							// while (iter.hasNext()) {
-							//
-							// String datosTarjeta[] = (String[]) iter
-							// .next();
-							// // || (datosTarjeta[12]) 20110126 - EJV
-							// // Mantis 667
-							// if (datosTarjeta[12] == null
-							// || !(datosTarjeta[12])
-							// .equalsIgnoreCase("S")) {
-							// status =
-							// "ER(Last): condicion de pago Tarjeta: tarjeta inactiva para cliente:"
-							// + idcliente;
-							// // 20110126 - EJV Mantis 667
-							// //
-							// (java.sql.Date.valueOf(datosTarjeta[9]).after(hoy))
-							// } else if (java.sql.Date.valueOf(
-							// datosTarjeta[9]).before(hoy)) {
-							// status =
-							// "ER(Last): condicion de pago Tarjeta: tarjeta vencida para cliente:"
-							// + idcliente;
-							// } else {
-							//
-							// idtarjeta = new BigDecimal(
-							// datosTarjeta[0]);
-							// status = "";
-							//
-							// break;
-							// }
-							//
-							// // 20110126 - EJV Mantis 667 -->
-							// if (!status.equalsIgnoreCase(""))
-							// pedidosEntregaRegularLogCreate(
-							// idcliente, new BigDecimal(
-							// anio),
-							// new BigDecimal(mes),
-							// status, idempresa,
-							// usuarioalt);
-							// // <--
-							// status = "";
-							// // <--
-							// status = "";
-							// // --> 20110405 - EJV Mantis 700
-							// // Si no hay tarjetas que
-							// // cumplan las condiciones de
-							// // validez, se asigna como
-							// // default la de orden uno (1) o en su
-							// // defecto alguna existente.
-							// // 20110630 - EJV -- > Siempre
-							// // asignar alguna.
-							// if (datosTarjeta[12]
-							// .equalsIgnoreCase("S"))
-							// // <--
-							// idtarjeta = new BigDecimal(
-							// datosTarjeta[0]);
-							// else if (idtarjeta.longValue() < 1
-							// || datosTarjeta[11]
-							// .equalsIgnoreCase("1"))
-							// // <--
-							// idtarjeta = new BigDecimal(
-							// datosTarjeta[0]);
-							// else if (idtarjeta.longValue() < 1)
-							// // <--
-							// idtarjeta = new BigDecimal(
-							// datosTarjeta[0]);
-							// // <--
-							//
-							// }
-							//
-							// } else {
-							//
-							// status =
-							// "ER(Last): condicion de pago Tarjeta: no hay tarjeta asociada para cliente:"
-							// + idcliente;
-							//
-							// log.warn(status);
-							//
-							// }
-							//
-							// if (cuotas.intValue() == 0) {
-							// cuotas = new BigDecimal(1);
-							// }
-							//
-							// }
-							// <--
-
-							// aca poner pedidosCreate
-
 							BigDecimal idcampacabe = null;
-							// 20110124 - EJV - Mantis 597 -->
 							BigDecimal idpromocion = null;
-							// <--
 
 							log.info("(LAST)LLAMADA A PC CLIENTE --> "
 									+ idcliente);
@@ -35910,42 +35531,6 @@ public class ClientesBean implements Clientes {
 					.error("Error excepcion public String pedidosCambioEstadosLogCreate(.....)"
 							+ ex);
 		}
-		return salida;
-	}
-
-	public String callInterfacesPreconformacionTotalRemitosPedido(
-			BigDecimal idpedidocabedelta) throws EJBException {
-
-		String salida = "0";
-
-		try {
-
-			salida = BCBean.interfacesPreconformacionTotalRemitosPedido(
-					idpedidocabedelta, props);
-
-		} catch (Exception e) {
-			log.error("callInterfacesPreconformacionTotalRemitosPedido: " + e);
-		}
-
-		return salida;
-	}
-
-	public String callInterfacesPreconformacionTotalPedidosRemito(
-			BigDecimal idpedidocabedelta, int totalRemitos) throws EJBException {
-		String xnremito = "";
-		String salida = "";
-		try {
-
-			xnremito = BCBean.interfacesPreconformacionGetPedidosRemito(
-					idpedidocabedelta, props);
-
-			salida = BCBean.interfacesPreconformacionTotalPedidosRemito(
-					xnremito, props);
-
-		} catch (Exception e) {
-			log.error("callInterfacesPreconformacionTotalPedidosRemito: " + e);
-		}
-
 		return salida;
 	}
 
@@ -50713,7 +50298,7 @@ public class ClientesBean implements Clientes {
 				+ "            INNER JOIN sascanalescontactos cc on (sc.idcanalcontacto = cc.idcanalcontacto) "
 				+ "            INNER JOIN sasmotivoscontactos mc on (sc.idmotivocontacto = mc.idmotivocontacto) "
 				+ "            INNER JOIN sasaccionescontactos ac on (sc.idaccioncontacto = ac.idaccioncontacto) "
-				+ "            INNER JOIN sasresultadoscontactos rc on (sc.idresultadocontacto = rc.idresultadocontacto) "				
+				+ "            INNER JOIN sasresultadoscontactos rc on (sc.idresultadocontacto = rc.idresultadocontacto) "
 				+ "            INNER JOIN clientesclientes cl on (sc.idcliente = cl.idcliente)  "
 				+ " WHERE sc.idcliente = " + idcliente.toString()
 				+ "     AND sc.idempresa = " + idempresa.toString()
@@ -50866,16 +50451,20 @@ public class ClientesBean implements Clientes {
 		if (usuarioalt.equalsIgnoreCase(""))
 			salida = "Error: No se puede dejar vacio el campo: usuarioalt ";
 
-		idaccioncontacto = idaccioncontacto != null && idaccioncontacto.longValue() <= 0 ? null : idaccioncontacto;
-		idresultadocontacto = idresultadocontacto != null && idresultadocontacto.longValue() <= 0 ? null : idresultadocontacto;
-		
+		idaccioncontacto = idaccioncontacto != null
+				&& idaccioncontacto.longValue() <= 0 ? null : idaccioncontacto;
+		idresultadocontacto = idresultadocontacto != null
+				&& idresultadocontacto.longValue() <= 0 ? null
+				: idresultadocontacto;
+
 		// fin validaciones
 		boolean bError = true;
 		if (salida.equalsIgnoreCase("NOOK"))
 			bError = false;
 		try {
 			if (!bError) {
-//				String ins = "INSERT INTO SASCONTACTOS(descripcion, idtipocontacto, idcanalcontacto, idmotivocontacto, usuarioalt, fechaalt ,idempresa,idcliente) VALUES (?, ?, ?, ?, ?, ?,?,?)";
+				// String ins =
+				// "INSERT INTO SASCONTACTOS(descripcion, idtipocontacto, idcanalcontacto, idmotivocontacto, usuarioalt, fechaalt ,idempresa,idcliente) VALUES (?, ?, ?, ?, ?, ?,?,?)";
 				String ins = "INSERT INTO SASCONTACTOS(descripcion, idtipocontacto, idcanalcontacto, idmotivocontacto, idaccioncontacto, idresultadocontacto, usuarioalt, fechaalt, idempresa, idcliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				PreparedStatement insert = dbconn.prepareStatement(ins);
 				// seteo de campos:
@@ -50934,14 +50523,17 @@ public class ClientesBean implements Clientes {
 			salida = "Error: No se puede dejar sin datos (nulo) el campo: idaccioncontacto ";
 		if (idresultadocontacto == null)
 			salida = "Error: No se puede dejar sin datos (nulo) el campo: idresultadocontacto ";
-		
+
 		// 2. sin nada desde la pagina
 		if (descripcion.equalsIgnoreCase(""))
 			salida = "Error: No se puede dejar vacio el campo: descripcion ";
 
-		idaccioncontacto = idaccioncontacto != null && idaccioncontacto.longValue() <= 0 ? null : idaccioncontacto;
-		idresultadocontacto = idresultadocontacto != null && idresultadocontacto.longValue() <= 0 ? null : idresultadocontacto;
-		
+		idaccioncontacto = idaccioncontacto != null
+				&& idaccioncontacto.longValue() <= 0 ? null : idaccioncontacto;
+		idresultadocontacto = idresultadocontacto != null
+				&& idresultadocontacto.longValue() <= 0 ? null
+				: idresultadocontacto;
+
 		// fin validaciones
 		boolean bError = true;
 		if (salida.equalsIgnoreCase("NOOK"))
@@ -50959,7 +50551,8 @@ public class ClientesBean implements Clientes {
 			String sql = "";
 			if (!bError) {
 				if (total > 0) { // si existe hago update
-//					sql = "UPDATE SASCONTACTOS SET descripcion=?, idtipocontacto=?, idcanalcontacto=?, idmotivocontacto=?, usuarioact=?, fechaact=?, idempresa=?, idcliente =? WHERE idcontacto=?;";
+				// sql =
+				// "UPDATE SASCONTACTOS SET descripcion=?, idtipocontacto=?, idcanalcontacto=?, idmotivocontacto=?, usuarioact=?, fechaact=?, idempresa=?, idcliente =? WHERE idcontacto=?;";
 					sql = "UPDATE SASCONTACTOS SET descripcion=?, idtipocontacto=?, idcanalcontacto=?, idmotivocontacto=?, idaccioncontacto=?, idresultadocontacto=?, usuarioact=?, fechaact=?, idempresa=?, idcliente =? WHERE idcontacto=?;";
 					insert = dbconn.prepareStatement(sql);
 					insert.setString(1, descripcion);
@@ -50974,7 +50567,8 @@ public class ClientesBean implements Clientes {
 					insert.setBigDecimal(10, idcliente);
 					insert.setBigDecimal(11, idcontacto);
 				} else {
-//					String ins = "INSERT INTO SASCONTACTOS(descripcion, idtipocontacto, idcanalcontacto, idmotivocontacto, usuarioalt, fechaalt, idempresa, idcliente ) VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+					// String ins =
+					// "INSERT INTO SASCONTACTOS(descripcion, idtipocontacto, idcanalcontacto, idmotivocontacto, usuarioalt, fechaalt, idempresa, idcliente ) VALUES (?, ?, ?, ?, ?, ?, ?,?)";
 					String ins = "INSERT INTO SASCONTACTOS(descripcion, idtipocontacto, idcanalcontacto, idmotivocontacto, idaccioncontacto, idresultadocontacto, usuarioalt, fechaalt, idempresa, idcliente ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					insert = dbconn.prepareStatement(ins);
 					// seteo de campos:
@@ -51032,9 +50626,12 @@ public class ClientesBean implements Clientes {
 		if (descripcion.equalsIgnoreCase(""))
 			salida = "Error: No se puede dejar vacio el campo: descripcion ";
 
-		idaccioncontacto = idaccioncontacto != null && idaccioncontacto.longValue() <= 0 ? null : idaccioncontacto;
-		idresultadocontacto = idresultadocontacto != null && idresultadocontacto.longValue() <= 0 ? null : idresultadocontacto;
-		
+		idaccioncontacto = idaccioncontacto != null
+				&& idaccioncontacto.longValue() <= 0 ? null : idaccioncontacto;
+		idresultadocontacto = idresultadocontacto != null
+				&& idresultadocontacto.longValue() <= 0 ? null
+				: idresultadocontacto;
+
 		// fin validaciones
 		boolean bError = true;
 		if (salida.equalsIgnoreCase("NOOK"))
@@ -51052,7 +50649,8 @@ public class ClientesBean implements Clientes {
 			String sql = "";
 			if (!bError) {
 				if (total > 0) { // si existe hago update
-//					sql = "UPDATE SASCONTACTOS SET descripcion=?, idtipocontacto=?, idcanalcontacto=?, idmotivocontacto=?, usuarioact=?, fechaact=?, idempresa=? WHERE idcontacto=?;";
+				// sql =
+				// "UPDATE SASCONTACTOS SET descripcion=?, idtipocontacto=?, idcanalcontacto=?, idmotivocontacto=?, usuarioact=?, fechaact=?, idempresa=? WHERE idcontacto=?;";
 					sql = "UPDATE SASCONTACTOS SET descripcion=?, idtipocontacto=?, idcanalcontacto=?, idmotivocontacto=?, idaccioncontacto=?, idresultadocontacto=?, usuarioact=?, fechaact=?, idempresa=? WHERE idcontacto=?;";
 					insert = dbconn.prepareStatement(sql);
 					insert.setString(1, descripcion);
@@ -56990,7 +56588,7 @@ public class ClientesBean implements Clientes {
 			String ocurrencia, BigDecimal idempresa) throws EJBException {
 		String cQuery = ""
 				+ "SELECT idctacte,idcliente,operacion,fecha,detalle,idpedido_cabe,idempresa,usuarioalt,usuarioact,fechaalt,fechaact "
-				+ "   FROM vbacoreferidosevolucion WHERE (UPPER(IDCLIENTE) LIKE '%"
+				+ "   FROM vbacoreferidosevolucion WHERE (UPPER(IDCLIENTE::VARCHAR) LIKE '%"
 				+ ocurrencia.toUpperCase().trim() + "%')  AND idempresa = "
 				+ idempresa.toString() + " ORDER BY 4 DESC LIMIT " + limit
 				+ " OFFSET  " + offset + ";";
@@ -58889,8 +58487,9 @@ public class ClientesBean implements Clientes {
 	}
 
 	@Override
-	public List<String[]> getSasAccionesContactosPK(BigDecimal idaccioncontacto,
-			BigDecimal idempresa) throws RemoteException {
+	public List<String[]> getSasAccionesContactosPK(
+			BigDecimal idaccioncontacto, BigDecimal idempresa)
+			throws RemoteException {
 
 		return accionContactoManager.getByPK(dbconn, new AccionContacto(
 				idaccioncontacto, idempresa));
@@ -58901,8 +58500,8 @@ public class ClientesBean implements Clientes {
 			BigDecimal idcanal, BigDecimal idmotivo, BigDecimal idempresa)
 			throws RemoteException {
 
-			return accionContactoManager.getList(dbconn, 
-					new AccionContacto(null, idtipo, idcanal, idmotivo, idempresa));
+		return accionContactoManager.getList(dbconn, new AccionContacto(null,
+				idtipo, idcanal, idmotivo, idempresa));
 	}
 
 	@Override
@@ -58913,29 +58512,29 @@ public class ClientesBean implements Clientes {
 
 		return accionContactoManager.create(dbconn, new AccionContacto(null,
 				accioncontacto, idtipocontacto, idcanalcontacto,
-				idmotivocontacto, usuarioalt, null, 
-				DateAndTimeUtils.getCurrentDateAsTimestamp(), null, idempresa));
+				idmotivocontacto, usuarioalt, null, DateAndTimeUtils
+						.getCurrentDateAsTimestamp(), null, idempresa));
 	}
 
-	/*@Override
-	public String sasAccionesContactosCreateOrUpdate(
-			BigDecimal idaccioncontacto, String accioncontacto,
-			BigDecimal idtipocontacto, BigDecimal idcanalcontacto,
-			BigDecimal idmotivocontacto, String usuario, BigDecimal idempresa)
-			throws RemoteException {
-
-		return accionContactoManager.createOrUpdate(dbconn, new AccionContacto(
-				idaccioncontacto, accioncontacto, idtipocontacto, 
-				idcanalcontacto, idmotivocontacto, usuario, usuario, 
-				DateAndTimeUtils.getCurrentDateAsTimestamp(), 
-				DateAndTimeUtils.getCurrentDateAsTimestamp(), idempresa));
-	}*/
+	/*
+	 * @Override public String sasAccionesContactosCreateOrUpdate( BigDecimal
+	 * idaccioncontacto, String accioncontacto, BigDecimal idtipocontacto,
+	 * BigDecimal idcanalcontacto, BigDecimal idmotivocontacto, String usuario,
+	 * BigDecimal idempresa) throws RemoteException {
+	 * 
+	 * return accionContactoManager.createOrUpdate(dbconn, new AccionContacto(
+	 * idaccioncontacto, accioncontacto, idtipocontacto, idcanalcontacto,
+	 * idmotivocontacto, usuario, usuario,
+	 * DateAndTimeUtils.getCurrentDateAsTimestamp(),
+	 * DateAndTimeUtils.getCurrentDateAsTimestamp(), idempresa)); }
+	 */
 
 	@Override
 	public String sasAccionesContactosDelete(BigDecimal idaccioncontacto,
 			BigDecimal idempresa) throws RemoteException {
 
-		return accionContactoManager.delete(dbconn, new AccionContacto(idaccioncontacto, idempresa));
+		return accionContactoManager.delete(dbconn, new AccionContacto(
+				idaccioncontacto, idempresa));
 	}
 
 	@Override
@@ -58945,8 +58544,8 @@ public class ClientesBean implements Clientes {
 			String usuarioact, BigDecimal idempresa) throws RemoteException {
 
 		return accionContactoManager.update(dbconn, new AccionContacto(
-				idaccioncontacto, accioncontacto, idtipocontacto, idcanalcontacto, 
-				idmotivocontacto, null, usuarioact, null,  
+				idaccioncontacto, accioncontacto, idtipocontacto,
+				idcanalcontacto, idmotivocontacto, null, usuarioact, null,
 				DateAndTimeUtils.getCurrentDateAsTimestamp(), idempresa));
 	}
 
@@ -58958,21 +58557,23 @@ public class ClientesBean implements Clientes {
 	public List<String[]> getSasResultadosContactosAll(long limit, long offset,
 			BigDecimal idempresa) throws RemoteException {
 
-		return resultadoContactoManager.getAll(dbconn, new ResultadoContacto(null,
-				idempresa), limit, offset);
+		return resultadoContactoManager.getAll(dbconn, new ResultadoContacto(
+				null, idempresa), limit, offset);
 	}
 
 	@Override
 	public List<String[]> getSasResultadosContactosOcu(long limit, long offset,
 			String ocurrencia, BigDecimal idempresa) throws RemoteException {
 
-		return resultadoContactoManager.getByOcurrence(dbconn, new ResultadoContacto(
-				null, idempresa), ocurrencia, limit, offset);
+		return resultadoContactoManager.getByOcurrence(dbconn,
+				new ResultadoContacto(null, idempresa), ocurrencia, limit,
+				offset);
 	}
 
 	@Override
-	public List<String[]> getSasResultadosContactosPK(BigDecimal idresultadocontacto,
-			BigDecimal idempresa) throws RemoteException {
+	public List<String[]> getSasResultadosContactosPK(
+			BigDecimal idresultadocontacto, BigDecimal idempresa)
+			throws RemoteException {
 
 		return resultadoContactoManager.getByPK(dbconn, new ResultadoContacto(
 				idresultadocontacto, idempresa));
@@ -58983,8 +58584,8 @@ public class ClientesBean implements Clientes {
 			BigDecimal idcanal, BigDecimal idmotivo, BigDecimal idaccion,
 			BigDecimal idempresa) throws RemoteException {
 
-			return resultadoContactoManager.getList(dbconn, new ResultadoContacto(
-					null, idtipo, idcanal, idmotivo, idaccion, idempresa));
+		return resultadoContactoManager.getList(dbconn, new ResultadoContacto(
+				null, idtipo, idcanal, idmotivo, idaccion, idempresa));
 	}
 
 	@Override
@@ -58993,32 +58594,32 @@ public class ClientesBean implements Clientes {
 			BigDecimal idmotivocontacto, BigDecimal idaccioncontacto,
 			String usuarioalt, BigDecimal idempresa) throws RemoteException {
 
-		return resultadoContactoManager.create(dbconn, new ResultadoContacto(null,
-				resultadocontacto, idtipocontacto, idcanalcontacto,
-				idmotivocontacto, idaccioncontacto, usuarioalt, null, 
-				DateAndTimeUtils.getCurrentDateAsTimestamp(),
-				null, idempresa));
+		return resultadoContactoManager.create(dbconn, new ResultadoContacto(
+				null, resultadocontacto, idtipocontacto, idcanalcontacto,
+				idmotivocontacto, idaccioncontacto, usuarioalt, null,
+				DateAndTimeUtils.getCurrentDateAsTimestamp(), null, idempresa));
 	}
 
-	/*@Override
-	public String sasResultadosContactosCreateOrUpdate(
-			BigDecimal idresultadocontacto, String resultadocontacto,
-			BigDecimal idtipocontacto, BigDecimal idcanalcontacto,
-			BigDecimal idmotivocontacto, BigDecimal idaccioncontacto,
-			String usuario, BigDecimal idempresa) throws RemoteException {
-		
-		return resultadoContactoManager.createOrUpdate(dbconn, new ResultadoContacto(
-				idresultadocontacto, resultadocontacto, idtipocontacto, 
-				idcanalcontacto, idmotivocontacto, idaccioncontacto, usuario, usuario, 
-				DateAndTimeUtils.getCurrentDateAsTimestamp(), 
-				DateAndTimeUtils.getCurrentDateAsTimestamp(), idempresa));
-	}*/
+	/*
+	 * @Override public String sasResultadosContactosCreateOrUpdate( BigDecimal
+	 * idresultadocontacto, String resultadocontacto, BigDecimal idtipocontacto,
+	 * BigDecimal idcanalcontacto, BigDecimal idmotivocontacto, BigDecimal
+	 * idaccioncontacto, String usuario, BigDecimal idempresa) throws
+	 * RemoteException {
+	 * 
+	 * return resultadoContactoManager.createOrUpdate(dbconn, new
+	 * ResultadoContacto( idresultadocontacto, resultadocontacto,
+	 * idtipocontacto, idcanalcontacto, idmotivocontacto, idaccioncontacto,
+	 * usuario, usuario, DateAndTimeUtils.getCurrentDateAsTimestamp(),
+	 * DateAndTimeUtils.getCurrentDateAsTimestamp(), idempresa)); }
+	 */
 
 	@Override
 	public String sasResultadosContactosDelete(BigDecimal idresultadocontacto,
 			BigDecimal idempresa) throws RemoteException {
 
-		return resultadoContactoManager.delete(dbconn, new ResultadoContacto(idresultadocontacto, idempresa));
+		return resultadoContactoManager.delete(dbconn, new ResultadoContacto(
+				idresultadocontacto, idempresa));
 	}
 
 	@Override
@@ -59029,9 +58630,10 @@ public class ClientesBean implements Clientes {
 			throws RemoteException {
 
 		return resultadoContactoManager.update(dbconn, new ResultadoContacto(
-				idresultadocontacto, resultadocontacto, idtipocontacto, 
-				idcanalcontacto, idmotivocontacto, idaccioncontacto, null, usuarioact, null,  
-				DateAndTimeUtils.getCurrentDateAsTimestamp(), idempresa));
+				idresultadocontacto, resultadocontacto, idtipocontacto,
+				idcanalcontacto, idmotivocontacto, idaccioncontacto, null,
+				usuarioact, null, DateAndTimeUtils.getCurrentDateAsTimestamp(),
+				idempresa));
 	}
 
 }

@@ -2548,13 +2548,6 @@ public interface Clientes  {
 			BigDecimal idestadonuevo, BigDecimal idempresa, String usuarioalt)
 			throws RemoteException, SQLException;
 
-	public String callInterfacesPreconformacionTotalRemitosPedido(
-			BigDecimal idpedidocabedelta) throws RemoteException;
-
-	public String callInterfacesPreconformacionTotalPedidosRemito(
-			BigDecimal idpedidocabedelta, int totalRemitos)
-			throws RemoteException;
-
 	public List getPedidosCambioEstadosLogPedido(BigDecimal idpedido,
 			String tipopedido, BigDecimal idempresa) throws RemoteException;
 
