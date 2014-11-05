@@ -29,7 +29,7 @@ public class BeanBacoRefTipoOperacionesFrm implements SessionBean, Serializable 
 
 	private String validar = "";
 
-	private BigDecimal idtipooperacion;
+	private BigDecimal idtipooperacion = BigDecimal.ZERO;
 
 	private String tipooperacion;
 

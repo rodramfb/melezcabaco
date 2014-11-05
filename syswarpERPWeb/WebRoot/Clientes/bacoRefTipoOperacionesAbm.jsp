@@ -159,7 +159,9 @@ iterBacoRefTipoOperaciones = BacoRefTipoOperaciones.iterator();
       if (color_fondo.equals("fila-det-verde")) color_fondo = "fila-det";
       else color_fondo = "fila-det-verde";%>
    <tr onMouseOver="mOvr(this,this.className='fila-det-rojo');" onMouseOut="mOut(this,this.className='<%=color_fondo%>');" class="<%=color_fondo%>" scope="col" > 
-      <td class="fila-det-border" ><input type="radio" name="idtipooperacion" value="<%= sCampos[0]%>"></td>
+      <td class="fila-det-border" >
+      	<input type="radio" name="idtipooperacion" value="<%=sCampos[0]%>">
+      </td>
       <td class="fila-det-border" ><%=sCampos[0]%>&nbsp;</td>
       <td class="fila-det-border" ><%=sCampos[1]%>&nbsp;</td>
       <td class="fila-det-border" ><%=sCampos[2]%>&nbsp;</td>
