@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="/syswarpERPEJB"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="var" path="JBOSS_LIB/iReport.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/jasperreports-3.0.0.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/barbecue-1.1.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/commons-fileupload-1.2.1.jar"/>
+	<classpathentry kind="var" path="JBOSS_LIB/log4j-1.2.9.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.j2eedt.core.MYECLIPSE_JAVAEE_5_CONTAINER"/>
+	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
+</classpath>

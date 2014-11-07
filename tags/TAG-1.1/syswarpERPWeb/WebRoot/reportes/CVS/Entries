@@ -1,0 +1,49 @@
+/RemitoInterno.jrxml/1.1/Tue Jul 17 18:48:33 2007/-kb/
+/administracion.jsp/1.4/Fri Feb 22 14:03:40 2008/-kk/
+/asistente1.jsp/1.5/Tue Apr  1 18:47:35 2008/-kk/
+/asistente2.jsp/1.4/Fri Feb 22 14:03:40 2008/-kk/
+/asistente3.jsp/1.5/Fri Feb 22 14:03:40 2008/-kk/
+/camposAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/camposFrm.jsp/1.1/Tue Jul 17 18:48:33 2007/-kk/
+/contablelibromayor.jrxml/1.1/Tue Jul 17 18:48:33 2007/-kb/
+/dataSourcesAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/dataSourcesFrm.jsp/1.1/Tue Jul 17 18:48:33 2007/-kk/
+/graficoAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/graficoFrm.jsp/1.1/Tue Jul 17 18:48:33 2007/-kk/
+/gruposAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/gruposFrm.jsp/1.5/Mon Jan 26 19:49:39 2009/-kk/
+/gruposReportesAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/gruposReportesFrm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+D/imagenes////
+/index.html/1.1/Tue Jul 17 18:48:33 2007/-kk/
+/index.jsp/1.2/Tue Apr  1 18:47:35 2008/-kk/
+/inicial.jsp/1.2/Tue Apr  1 18:47:35 2008/-kk/
+/inicialRigth.jsp/1.1/Tue Jul 17 18:48:33 2007/-kk/
+D/jasper////
+/menu.jsp/1.4/Fri Feb 22 14:03:40 2008/-kk/
+/parametrosAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/parametrosFrm.jsp/1.1/Tue Jul 17 18:48:33 2007/-kk/
+/proveedoresctacte.jrxml/1.1/Tue Jul 17 18:48:33 2007/-kb/
+/proveedoresvtofac.jrxml/1.1/Tue Jul 17 18:48:33 2007/-kb/
+D/reportes////
+/reportesAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/reportesFrm.jsp/1.5/Mon Jan 26 19:49:39 2009/-kk/
+/reportesTablasAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/reportesTablasFrm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+D/scripts////
+/session.jspf/1.2/Tue Oct  6 18:43:05 2009/-kk/
+/setupVariablesAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/setupVariablesFrm.jsp/1.1/Tue Jul 17 18:48:33 2007/-kk/
+/tablasAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/tablasFrm.jsp/1.5/Mon Jan 26 19:49:39 2009/-kk/
+/tablasGraficosAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/tablasGraficosFrm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/tipo_graficoAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/tipo_graficoFrm.jsp/1.1/Tue Jul 17 18:48:33 2007/-kk/
+/tipo_parametroAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/tipo_parametroFrm.jsp/1.1/Tue Jul 17 18:48:33 2007/-kk/
+/usuariosAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/usuariosFrm.jsp/1.5/Mon Jan 26 19:49:39 2009/-kk/
+/usuariosGruposAbm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/usuariosGruposFrm.jsp/1.6/Mon Jan 26 19:49:39 2009/-kk/
+/validar.jsp/1.1/Tue Jul 17 18:48:33 2007/-kk/
