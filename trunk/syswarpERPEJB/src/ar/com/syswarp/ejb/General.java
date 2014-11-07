@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Hashtable;
 import java.sql.SQLException;
 import javax.ejb.Local;
+
+import ar.com.syswarp.entity.Empresa;
 @Local
 public interface General {
 	public List getVariables(String idempresa) throws RemoteException;
@@ -539,6 +541,8 @@ public interface General {
 
 	public List getGlobalempresasAll() throws RemoteException;
 
+	public List<Empresa> getEmpresas() throws RemoteException;
+	
 	public List getGlobalempresasOcu(long limit, long offset, String ocurrencia)
 			throws RemoteException;
 

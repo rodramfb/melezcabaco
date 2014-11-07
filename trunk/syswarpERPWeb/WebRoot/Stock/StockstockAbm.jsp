@@ -2,15 +2,6 @@
  response.setHeader("Cache-Control", "no-cache");
  response.setHeader("Pragma","no-cache");
  response.setDateHeader("Expires",0);
-/* 
-   Grilla para la entidad: Stockstock
-   Copyrigth(r) sysWarp S.R.L. 
-   Fecha de creacion: Mon Sep 04 09:21:33 GMT-03:00 2006 
-   Observaciones: 
-      .
-
-
-*/ 
 %>
 
 <%@ page import="javax.servlet.http.*"%>
@@ -28,7 +19,6 @@ String titulo = "Articulos";
 String pathskin = session.getAttribute("pathskin").toString();
 String pathscript = session.getAttribute("pathscript").toString();
 String tipo =  request.getParameter("tipo");
-//System.out.println("tipo " + tipo );
 // variables de paginacion
 int i = 0;
 Iterator iterStockstock   = null;
@@ -59,7 +49,6 @@ String usuario    = session.getAttribute("usuario").toString();
  <script language="JavaScript" src="<%=pathscript%>/forms.js"></script>
  <script>
   function callOverlib(leyenda){
-  //  overlib(leyenda, STICKY, CAPTION, 'MAS INFO',TIMEOUT,5000,HAUTO,VAUTO,WIDTH,350,BGCOLOR, '#DBDEEE', CAPCOLOR, '#FF0000');
     overlib(leyenda, STICKY, CAPTION, 'MAS INFO',TIMEOUT,5000,HAUTO,FIXY ,0 ,WIDTH,350,BGCOLOR, '#9999CC', CAPCOLOR, '#FF0000'); 
   }
  </script>
@@ -227,48 +216,6 @@ iterStockstock = Stockstock.iterator();
       <td width="3%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><div align="center"></div></td>
       <td width="3%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><div align="center"></div></td>
 
-<%-- 
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[13]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[14]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[15]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[16]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[17]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[18]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[19]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[20]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[21]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[22]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[23]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[24]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[25]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[26]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[27]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[28]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[29]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[30]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[31]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[32]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[33]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[34]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[35]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[36]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[37]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[38]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[39]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[40]%></td>
-	  <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[41]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[42]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[43]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[44]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[45]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[46]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[47]%></td>
-     <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[48]%></td>
-	 <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[49]%></td>
-	 <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[50]%></td>
-	 <td width="10%" onClick="javascript:sortTable(<%=totCol-4%>, rsTable);"><%=tituCol[51]%></td>
- 
- --%>
    </tr>
    <%int r = 0;
    Hashtable htRestringido = new Hashtable();
@@ -309,51 +256,8 @@ iterStockstock = Stockstock.iterator();
       <%} %>
       <td class="fila-det-border" ><div align="center"><img src="../imagenes/default/gnome_tango/status/dialog-information.png" width="18" height="18" onClick="callOverlib('<%=masInfo%>')"  title="Click para ver más info."></div></td>
 	  
-	        <td class="fila-det-border" ><%if(!Common.setNotNull(sCampos[54]).equals("")){%><div align="center"><img src="../imagenes/default/gnome_tango/devices/camera_unmount.png" width="22" height="22" onClick="abrirVentana('../General/globalBlobImagenesQueryLov.jsp?soloImagen=true&tupla=<%=sCampos[54]%>', 'BLOB', 800, 450)" style="cursor:pointer"></div><% } else out.write("&nbsp;"); %></td>
+      <td class="fila-det-border" ><%if(!Common.setNotNull(sCampos[54]).equals("")){%><div align="center"><img src="../imagenes/default/gnome_tango/devices/camera_unmount.png" width="22" height="22" onClick="abrirVentana('../General/globalBlobImagenesQueryLov.jsp?soloImagen=true&tupla=<%=sCampos[54]%>', 'BLOB', 800, 450)" style="cursor:pointer"></div><% } else out.write("&nbsp;"); %></td>
 
-<%--
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[13])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[14])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[15])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[16])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[17])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[18])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[19])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[20])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[21])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[22])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[23])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[24])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[25])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[26])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[27])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[28])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[29])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[30])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[31])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[32])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[33])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[34])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[35])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[36])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[37])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[38])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[39])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[40])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[41])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[42])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[43])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[44])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[45])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[46])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[47])%></td>
-      <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[48])%></td>	
-	    <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[49])%></td>	
-	    <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[50])%></td>	
-	    <td class="fila-det-border" >&nbsp;<%=Common.setNotNull(sCampos[51])%></td>	
-
-
- --%>
     </tr>
 <%
    }%>

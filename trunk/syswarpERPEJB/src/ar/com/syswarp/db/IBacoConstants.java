@@ -4,6 +4,7 @@ public interface IBacoConstants {
 
 	public static interface IBacoTables {
 
+		public String TABLE_EMPRESAS = "GLOBALEMPRESAS";
 		public String TABLE_CONTACTO = "SASCONTACTOS";
 		public String TABLE_TIPO_CONTACTO = "SASTIPOSCONTACTOS";
 		public String TABLE_CANAL_CONTACTO = "SASCANALESCONTACTOS";
@@ -14,6 +15,17 @@ public interface IBacoConstants {
 	}
 	
 	public static interface IBacoBaseQuerys {
+		
+		public String BASE_QUERY_EMPRESA = "" + 
+			" SELECT " +
+			"   ge.idempresa, " +
+			"   ge.empresa, " +
+			"   ge.usuarioalt, " +
+			"   ge.usuarioact, " +
+			"   ge.fechaalt, " +
+			"   ge.fechaact " +
+			" FROM " + IBacoTables.TABLE_EMPRESAS + " ge " +
+			" ORDER BY 2 ";
 		
 		public String BASE_QUERY_CONTACTO = "" +
 			" SELECT " +
@@ -36,7 +48,7 @@ public interface IBacoConstants {
 			"   ac.accioncontacto, " +
 			"   sc.idresultadocontacto, " +
 			"   rc.resultadocontacto " +
-			" FROM SASCONTACTOS sc " +
+			" FROM " + IBacoTables.TABLE_CONTACTO + " sc " +
 			"   INNER JOIN sastiposcontactos tc on (sc.idtipocontacto = tc.idtipocontacto) " + 
 			"   INNER JOIN sascanalescontactos cc on (sc.idcanalcontacto = cc.idcanalcontacto) " +
 			"   INNER JOIN sasmotivoscontactos mc on (sc.idmotivocontacto = mc.idmotivocontacto)  " +

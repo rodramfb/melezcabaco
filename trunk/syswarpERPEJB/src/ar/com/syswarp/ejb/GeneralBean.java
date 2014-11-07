@@ -61,6 +61,11 @@ import java.io.PrintWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
 
+import ar.com.syswarp.entity.Empresa;
+import ar.com.syswarp.entitymanager.AccionContactoManager;
+import ar.com.syswarp.entitymanager.EmpresaManager;
+import ar.com.syswarp.entitymanager.ResultadoContactoManager;
+import ar.com.syswarp.entitymanager.utils.QueryManager;
 import bsh.EvalError;
 import bsh.Interpreter;
 
@@ -82,6 +87,12 @@ public class GeneralBean implements General {
 
 	static Logger log = Logger.getLogger(GeneralBean.class);
 
+	/***********************
+	 **** Managers ****
+	 ***********************/
+	QueryManager queryManager = QueryManager.getInstance(log);
+	EmpresaManager empresaManager = new EmpresaManager(log);
+	
 	private Connection conexion;
 
 	private Properties props;
@@ -8271,8 +8282,13 @@ public class GeneralBean implements General {
 		return vecSalida;
 	}
 
+	
+	@Override
+	public List<Empresa> getEmpresas() throws RemoteException {
+		return empresaManager.list(dbconn, null);
+	}
+	
 	// para una ocurrencia (ordena por el segundo campo por defecto)
-
 	public List getGlobalempresasOcu(long limit, long offset, String ocurrencia)
 			throws EJBException {
 		ResultSet rsSalida = null;
@@ -28542,4 +28558,5 @@ public class GeneralBean implements General {
 		}
 		return salida;
 	}
+
 }
