@@ -16,6 +16,8 @@ import ar.com.syswarp.utils.StringUtils;
 public class QueryManager {
 
 	private static QueryManager _instance = new QueryManager();
+
+	@SuppressWarnings("unused")
 	private Logger logger;
 
 	private QueryManager() {
@@ -73,7 +75,7 @@ public class QueryManager {
 		return list;
 
 	}
-	
+
 	public int executeQuery(Connection connection, String query,
 			Object... params) throws SQLException, Exception {
 
@@ -81,8 +83,9 @@ public class QueryManager {
 		int rowsAffected = 0;
 
 		System.out.println("Query: " + query);
-		System.out.println("Params: " + StringUtils.join(params, ", ", false, "null"));
-		
+		System.out.println("Params: "
+				+ StringUtils.join(params, ", ", false, "null"));
+
 		preparedStatement = fillStatement(connection.prepareStatement(query),
 				params);
 		rowsAffected = preparedStatement.executeUpdate();

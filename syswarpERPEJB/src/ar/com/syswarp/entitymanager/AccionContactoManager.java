@@ -13,20 +13,21 @@ import ar.com.syswarp.entity.AccionContacto;
 import ar.com.syswarp.entitymanager.utils.QueryManager;
 import ar.com.syswarp.utils.LogUtils;
 
-public class AccionContactoManager extends
-		AbstractEntityManager<AccionContacto> {
+public class AccionContactoManager implements IEntityManager<AccionContacto> {
+
+	private Logger logger;
 
 	public AccionContactoManager(Logger logger) {
-		super(logger);
+		this.logger = logger;
 	}
 
 	@Override
-	protected String getBaseQuery() {
+	public String getBaseQuery() {
 		return IBacoBaseQuerys.BASE_QUERY_ACCION_CONTACTO;
 	}
 
 	@Override
-	protected String getTableName() {
+	public String getTableName() {
 		return IBacoTables.TABLE_ACCION_CONTACTO;
 	}
 
@@ -39,61 +40,58 @@ public class AccionContactoManager extends
 
 	public boolean existsExactMatch(Connection connection, AccionContacto entity) {
 
-		String cQuery = getBaseQuery()
-			+ " AND ac.idmotivocontacto = ? "
-			+ " AND ac.idcanalcontacto = ? "
-			+ " AND ac.idtipocontacto = ? "
-			+ " AND ac.accioncontacto = ? "
-			;
+		String cQuery = getBaseQuery() + " AND ac.idmotivocontacto = ? "
+				+ " AND ac.idcanalcontacto = ? "
+				+ " AND ac.idtipocontacto = ? " + " AND ac.accioncontacto = ? ";
 
 		List<String[]> list = new ArrayList<String[]>();
 		try {
-	
+
 			list = QueryManager.getInstance(logger).asList(connection, cQuery,
-					entity.getIdempresa(), 
-					entity.getIdmotivocontacto(), 
-					entity.getIdcanalcontacto(), 
-					entity.getIdtipocontacto(), 
+					entity.getIdempresa(), entity.getIdmotivocontacto(),
+					entity.getIdcanalcontacto(), entity.getIdtipocontacto(),
 					entity.getAccioncontacto().trim());
-	
+
 		} catch (SQLException e) {
-			LogUtils.logException(logger, "AccionContactoManager :: existsExactMatch()", e);
+			LogUtils.logException(logger,
+					"AccionContactoManager :: existsExactMatch()", e);
 		} catch (Exception e) {
-			LogUtils.logException(logger, "AccionContactoManager :: existsExactMatch()", e);
+			LogUtils.logException(logger,
+					"AccionContactoManager :: existsExactMatch()", e);
 		}
-	
+
 		return list != null && !list.isEmpty();
 	}
-	
+
 	public boolean isInUse(Connection connection, AccionContacto entity) {
 
 		String cQuery = ""
-			+ " SELECT c.idresultadocontacto, c.idaccioncontacto "
-			+ " FROM SASCONTACTOS c "
-			+ " WHERE c.idempresa = ? AND c.idaccioncontacto = ? "
-			+ " UNION "
-			+ " SELECT rc.idresultadocontacto, rc.idaccioncontacto "
-			+ " FROM SASRESULTADOSCONTACTOS rc "
-			+ " WHERE rc.idempresa = ? AND rc.idaccioncontacto = ? ";
-	
+				+ " SELECT c.idresultadocontacto, c.idaccioncontacto "
+				+ " FROM SASCONTACTOS c "
+				+ " WHERE c.idempresa = ? AND c.idaccioncontacto = ? "
+				+ " UNION "
+				+ " SELECT rc.idresultadocontacto, rc.idaccioncontacto "
+				+ " FROM SASRESULTADOSCONTACTOS rc "
+				+ " WHERE rc.idempresa = ? AND rc.idaccioncontacto = ? ";
+
 		List<String[]> list = new ArrayList<String[]>();
 		try {
-	
+
 			list = QueryManager.getInstance(logger).asList(connection, cQuery,
-					entity.getIdempresa(), 
-					entity.getIdaccioncontacto(), 
-					entity.getIdempresa(), 
-					entity.getIdaccioncontacto());
-	
+					entity.getIdempresa(), entity.getIdaccioncontacto(),
+					entity.getIdempresa(), entity.getIdaccioncontacto());
+
 		} catch (SQLException e) {
-			LogUtils.logException(logger, "AccionContactoManager :: isInUse()", e);
+			LogUtils.logException(logger, "AccionContactoManager :: isInUse()",
+					e);
 		} catch (Exception e) {
-			LogUtils.logException(logger, "AccionContactoManager :: isInUse()", e);
+			LogUtils.logException(logger, "AccionContactoManager :: isInUse()",
+					e);
 		}
-	
+
 		return list != null && !list.isEmpty();
 	}
-	
+
 	@Override
 	public String delete(Connection connection, AccionContacto entity) {
 
@@ -104,15 +102,14 @@ public class AccionContactoManager extends
 		if (isInUse(connection, entity)) {
 			return "Error: El registro se encuentra asociado a un contacto existente";
 		}
-		
-		String cQuery = "DELETE FROM " 
-			+ getTableName() 
-			+ " WHERE idaccioncontacto = ? AND idempresa = ? ";
+
+		String cQuery = "DELETE FROM " + getTableName()
+				+ " WHERE idaccioncontacto = ? AND idempresa = ? ";
 
 		try {
 
-			int rowsaffected = QueryManager.getInstance(logger).executeQuery(connection, cQuery, 
-					entity.getIdaccioncontacto(), 
+			int rowsaffected = QueryManager.getInstance(logger).executeQuery(
+					connection, cQuery, entity.getIdaccioncontacto(),
 					entity.getIdempresa());
 
 			if (rowsaffected == 1) {
@@ -120,9 +117,11 @@ public class AccionContactoManager extends
 			}
 
 		} catch (SQLException e) {
-			LogUtils.logSQLException(logger, "AccionContactoManager :: delete()", e);
+			LogUtils.logSQLException(logger,
+					"AccionContactoManager :: delete()", e);
 		} catch (Exception e) {
-			LogUtils.logException(logger, "AccionContactoManager :: delete()", e);
+			LogUtils.logException(logger, "AccionContactoManager :: delete()",
+					e);
 		}
 
 		return "Imposible eliminar el registro";
@@ -144,21 +143,12 @@ public class AccionContactoManager extends
 		if (existsExactMatch(connection, entity)) {
 			return "Error: Ya existe un registro con los mismos valores";
 		}
-		
-		String cQuery = "INSERT INTO " 
-			+ getTableName() 
-			+ " ( "
-			+ "   accioncontacto, "
-			+ "   idtipocontacto, "
-			+ "   idcanalcontacto, "
-			+ "   idmotivocontacto, "
-			+ "   usuarioalt, "
-			+ "   fechaalt, "
-			+ "   idempresa "
-			+ " ) "
-			+ " VALUES ("
-			+ "   ?, ?, ?, ?, ?, ?, ? "
-			+ " ) ";
+
+		String cQuery = "INSERT INTO " + getTableName() + " ( "
+				+ "   accioncontacto, " + "   idtipocontacto, "
+				+ "   idcanalcontacto, " + "   idmotivocontacto, "
+				+ "   usuarioalt, " + "   fechaalt, " + "   idempresa " + " ) "
+				+ " VALUES (" + "   ?, ?, ?, ?, ?, ?, ? " + " ) ";
 
 		try {
 
@@ -166,24 +156,23 @@ public class AccionContactoManager extends
 			if (error != null) {
 				return error;
 			}
-			
-			int rowsaffected = QueryManager.getInstance(logger).executeQuery(connection, cQuery, 
-					entity.getAccioncontacto(), 
-					entity.getIdtipocontacto(), 
-					entity.getIdcanalcontacto(), 
-					entity.getIdmotivocontacto(), 
-					entity.getUsuarioalt(), 
-					entity.getFechaalt(), 
-					entity.getIdempresa());
+
+			int rowsaffected = QueryManager.getInstance(logger).executeQuery(
+					connection, cQuery, entity.getAccioncontacto(),
+					entity.getIdtipocontacto(), entity.getIdcanalcontacto(),
+					entity.getIdmotivocontacto(), entity.getUsuarioalt(),
+					entity.getFechaalt(), entity.getIdempresa());
 
 			if (rowsaffected == 1) {
 				return "Alta Correcta";
 			}
 
 		} catch (SQLException e) {
-			LogUtils.logSQLException(logger, "AccionContactoManager :: create()", e);
+			LogUtils.logSQLException(logger,
+					"AccionContactoManager :: create()", e);
 		} catch (Exception e) {
-			LogUtils.logException(logger, "AccionContactoManager :: create()", e);
+			LogUtils.logException(logger, "AccionContactoManager :: create()",
+					e);
 		}
 
 		return "Imposible dar el alta del registro";
@@ -195,18 +184,12 @@ public class AccionContactoManager extends
 		if (existsExactMatch(connection, entity)) {
 			return "Error: Ya existe un registro con los mismos valores";
 		}
-		
-		String cQuery = "UPDATE " 
-			+ getTableName() 
-			+ " SET "
-			+ "   accioncontacto = ?, "
-			+ "   idtipocontacto = ?, "
-			+ "   idcanalcontacto = ?, "
-			+ "   idmotivocontacto = ?, "
-			+ "   usuarioact = ?, "
-			+ "   fechaact = ?, "
-			+ "   idempresa = ? "
-			+ " WHERE idaccioncontacto = ? ";
+
+		String cQuery = "UPDATE " + getTableName() + " SET "
+				+ "   accioncontacto = ?, " + "   idtipocontacto = ?, "
+				+ "   idcanalcontacto = ?, " + "   idmotivocontacto = ?, "
+				+ "   usuarioact = ?, " + "   fechaact = ?, "
+				+ "   idempresa = ? " + " WHERE idaccioncontacto = ? ";
 
 		try {
 
@@ -214,15 +197,12 @@ public class AccionContactoManager extends
 			if (error != null) {
 				return error;
 			}
-			
-			int rowsaffected = QueryManager.getInstance(logger).executeQuery(connection, cQuery, 
-					entity.getAccioncontacto(), 
-					entity.getIdtipocontacto(), 
-					entity.getIdcanalcontacto(), 
-					entity.getIdmotivocontacto(), 
-					entity.getUsuarioact(), 
-					entity.getFechaact(), 
-					entity.getIdempresa(), 
+
+			int rowsaffected = QueryManager.getInstance(logger).executeQuery(
+					connection, cQuery, entity.getAccioncontacto(),
+					entity.getIdtipocontacto(), entity.getIdcanalcontacto(),
+					entity.getIdmotivocontacto(), entity.getUsuarioact(),
+					entity.getFechaact(), entity.getIdempresa(),
 					entity.getIdaccioncontacto());
 
 			if (rowsaffected > 0) {
@@ -230,9 +210,11 @@ public class AccionContactoManager extends
 			}
 
 		} catch (SQLException e) {
-			LogUtils.logSQLException(logger, "AccionContactoManager :: update()", e);
+			LogUtils.logSQLException(logger,
+					"AccionContactoManager :: update()", e);
 		} catch (Exception e) {
-			LogUtils.logException(logger, "AccionContactoManager :: update()", e);
+			LogUtils.logException(logger, "AccionContactoManager :: update()",
+					e);
 		}
 
 		return "Imposible actualizar el registro";
@@ -241,27 +223,24 @@ public class AccionContactoManager extends
 	@Override
 	public List<String[]> getList(Connection connection, AccionContacto entity) {
 
-		String cQuery = getBaseQuery()
-			+ " AND ("
-			+ "   ac.idmotivocontacto = ? AND "
-			+ "   ac.idcanalcontacto = ? AND "
-			+ "   ac.idtipocontacto = ? "
-			+ " ) "
-			+ " ORDER BY 2 ";
+		String cQuery = getBaseQuery() + " AND ("
+				+ "   ac.idmotivocontacto = ? AND "
+				+ "   ac.idcanalcontacto = ? AND "
+				+ "   ac.idtipocontacto = ? " + " ) " + " ORDER BY 2 ";
 
 		List<String[]> list = new ArrayList<String[]>();
 		try {
 
 			list = QueryManager.getInstance(logger).asList(connection, cQuery,
-					entity.getIdempresa(), 
-					entity.getIdmotivocontacto(),
-					entity.getIdcanalcontacto(), 
-					entity.getIdtipocontacto());
+					entity.getIdempresa(), entity.getIdmotivocontacto(),
+					entity.getIdcanalcontacto(), entity.getIdtipocontacto());
 
 		} catch (SQLException e) {
-			LogUtils.logException(logger, "AccionContactoManager :: getList()", e);
+			LogUtils.logException(logger, "AccionContactoManager :: getList()",
+					e);
 		} catch (Exception e) {
-			LogUtils.logException(logger, "AccionContactoManager :: getList()", e);
+			LogUtils.logException(logger, "AccionContactoManager :: getList()",
+					e);
 		}
 
 		return list;
@@ -271,22 +250,20 @@ public class AccionContactoManager extends
 	public List<String[]> getAll(Connection connection, AccionContacto entity,
 			long limit, long offset) {
 
-		String cQuery = getBaseQuery()
-			+ " ORDER BY 2 "
-			+ " LIMIT ? OFFSET ? ";
+		String cQuery = getBaseQuery() + " ORDER BY 2 " + " LIMIT ? OFFSET ? ";
 
 		List<String[]> list = new ArrayList<String[]>();
 		try {
 
 			list = QueryManager.getInstance(logger).asList(connection, cQuery,
-					entity.getIdempresa(), 
-					limit, 
-					offset);
+					entity.getIdempresa(), limit, offset);
 
 		} catch (SQLException e) {
-			LogUtils.logException(logger, "AccionContactoManager :: getAll()", e);
+			LogUtils.logException(logger, "AccionContactoManager :: getAll()",
+					e);
 		} catch (Exception ex) {
-			LogUtils.logException(logger, "AccionContactoManager :: getAll()", ex);
+			LogUtils.logException(logger, "AccionContactoManager :: getAll()",
+					ex);
 		}
 
 		return list;
@@ -296,23 +273,17 @@ public class AccionContactoManager extends
 	public List<String[]> getByOcurrence(Connection connection,
 			AccionContacto entity, String ocurrence, long limit, long offset) {
 
-		String cQuery = getBaseQuery() 
-			+ " AND ("
-			+ "   UPPER(ac.accioncontacto) LIKE '%?%' "
-			+ "   OR UPPER(tc.tipocontacto) like '%?%' "
-			+ " ) "
-			+ " ORDER BY 2 "
-			+ " LIMIT ? OFFSET ? ";
+		String cQuery = getBaseQuery() + " AND ("
+				+ "   UPPER(ac.accioncontacto) LIKE '%?%' "
+				+ "   OR UPPER(tc.tipocontacto) like '%?%' " + " ) "
+				+ " ORDER BY 2 " + " LIMIT ? OFFSET ? ";
 
 		List<String[]> list = new ArrayList<String[]>();
 		try {
 
 			list = QueryManager.getInstance(logger).asList(connection, cQuery,
-					entity.getIdempresa(), 
-					ocurrence.toUpperCase(), 
-					ocurrence.toUpperCase(), 
-					limit, 
-					offset);
+					entity.getIdempresa(), ocurrence.toUpperCase(),
+					ocurrence.toUpperCase(), limit, offset);
 
 		} catch (SQLException e) {
 			LogUtils.logException(logger,
@@ -328,23 +299,30 @@ public class AccionContactoManager extends
 	@Override
 	public List<String[]> getByPK(Connection connection, AccionContacto entity) {
 
-		String cQuery = getBaseQuery()
-			+ " AND ac.idaccioncontacto = ? ";
+		String cQuery = getBaseQuery() + " AND ac.idaccioncontacto = ? ";
 
 		List<String[]> list = new ArrayList<String[]>();
 		try {
 
 			list = QueryManager.getInstance(logger).asList(connection, cQuery,
-					entity.getIdempresa(), 
-					entity.getIdaccioncontacto());
+					entity.getIdempresa(), entity.getIdaccioncontacto());
 
 		} catch (SQLException e) {
-			LogUtils.logException(logger, "AccionContactoManager :: getByPK()", e);
+			LogUtils.logException(logger, "AccionContactoManager :: getByPK()",
+					e);
 		} catch (Exception e) {
-			LogUtils.logException(logger, "AccionContactoManager :: getByPK()", e);
+			LogUtils.logException(logger, "AccionContactoManager :: getByPK()",
+					e);
 		}
 
 		return list;
+	}
+
+	@Override
+	public List<AccionContacto> list(Connection connection,
+			AccionContacto entity) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

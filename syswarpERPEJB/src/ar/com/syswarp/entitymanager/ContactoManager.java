@@ -13,20 +13,22 @@ import ar.com.syswarp.entity.Contacto;
 import ar.com.syswarp.entitymanager.utils.QueryManager;
 import ar.com.syswarp.utils.LogUtils;
 
-public class ContactoManager extends
-		AbstractEntityManager<Contacto> {
+public class ContactoManager implements
+		IEntityManager<Contacto> {
 
+	private Logger logger;
+	
 	public ContactoManager(Logger logger) {
-		super(logger);
+		this.logger = logger;
 	}
 
 	@Override
-	protected String getBaseQuery() {
+	public String getBaseQuery() {
 		return IBacoBaseQuerys.BASE_QUERY_CONTACTO;
 	}
 
 	@Override
-	protected String getTableName() {
+	public String getTableName() {
 		return IBacoTables.TABLE_CONTACTO;
 	}
 
@@ -282,6 +284,12 @@ public class ContactoManager extends
 		}
 
 		return list;
+	}
+
+	@Override
+	public List<Contacto> list(Connection connection, Contacto entity) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

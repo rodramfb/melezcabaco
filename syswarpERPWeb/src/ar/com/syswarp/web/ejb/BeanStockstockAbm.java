@@ -1,33 +1,32 @@
-/* 
- javabean para la entidad: Stockstock
- Copyrigth(r) sysWarp S.R.L. 
- Fecha de creacion: Mon Sep 04 09:21:34 GMT-03:00 2006 
- 
- Para manejar la pagina: StockstockAbm.jsp
- 
- */
 package ar.com.syswarp.web.ejb;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
-import java.util.*;
-import java.math.*;
 
-import ar.com.syswarp.ejb.*;
+import org.apache.log4j.Logger;
+
 import ar.com.syswarp.api.Common;
+import ar.com.syswarp.ejb.Stock;
 
 public class BeanStockstockAbm implements SessionBean, Serializable {
+
+	private static final long serialVersionUID = 3132307499439118569L;
+
 	static Logger log = Logger.getLogger(BeanStockstockAbm.class);
 
+	@SuppressWarnings("unused")
 	private SessionContext context;
-	
+
 	private BigDecimal idempresa = new BigDecimal(-1);
 
 	private int limit = 15;
@@ -85,7 +84,8 @@ public class BeanStockstockAbm implements SessionBean, Serializable {
 				if (codigo_st == null) {
 					this.mensaje = "Debe seleccionar un registro a eliminar.";
 				} else {
-					this.mensaje = Stockstock.StockstockDelete(codigo_st, this.idempresa);
+					this.mensaje = Stockstock.StockstockDelete(codigo_st,
+							this.idempresa);
 				}
 			}
 			if (this.accion.equalsIgnoreCase("modificacion")) {
@@ -128,7 +128,8 @@ public class BeanStockstockAbm implements SessionBean, Serializable {
 				this.StockstockList = Stockstock.getStockstockOcu(this.limit,
 						this.offset, this.ocurrencia, this.idempresa);
 			} else {
-				this.totalRegistros = Stockstock.getTotalEntidad("Stockstock", this.idempresa);
+				this.totalRegistros = Stockstock.getTotalEntidad("Stockstock",
+						this.idempresa);
 				this.totalPaginas = (this.totalRegistros / this.limit) + 1;
 				if (this.totalPaginas < this.paginaSeleccion)
 					this.paginaSeleccion = this.totalPaginas;
@@ -139,9 +140,9 @@ public class BeanStockstockAbm implements SessionBean, Serializable {
 				}
 				this.StockstockList = Stockstock.getStockstockAll(this.limit,
 						this.offset, this.idempresa);
-				
+
 			}
-			
+
 			if (this.totalRegistros < 1)
 				this.mensaje = "No existen registros.";
 		} catch (Exception e) {
