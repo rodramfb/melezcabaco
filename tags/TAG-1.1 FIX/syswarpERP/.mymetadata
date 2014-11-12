@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enterprise-project
+  version="1.0.0"
+  name="syswarpERP"
+  id="myeclipse.1277814044851"
+  j2ee-spec="1.4"
+  archive="syswarpERP.ear">
+  <project-modules>
+    <project-module
+      type="WEB"
+      name="syswarpERPWeb"
+      id="myeclipse.1139581521588"
+      context-root="/syswarpERPWeb"
+      j2ee-spec="1.4"
+      archive="syswarpERPWeb.war">
+      <attributes>
+        <attribute name="webrootdir" value="/WebRoot" />
+      </attributes>
+    </project-module>
+    <project-module
+      type="EJB"
+      name="syswarpERPEJB"
+      id="myeclipse.1139581521802"
+      j2ee-spec="1.4"
+      archive="syswarpERPEJB.jar" />
+  </project-modules>
+</enterprise-project>
+
