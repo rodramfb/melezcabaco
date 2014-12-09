@@ -7,9 +7,6 @@
    Copyrigth(r) sysWarp S.R.L. 
    Fecha de creacion: Thu Apr 16 08:42:23 GYT 2009 
    Observaciones: 
-      .
-
-
 */ 
 %>
 

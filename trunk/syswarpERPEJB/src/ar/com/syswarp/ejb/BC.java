@@ -1,19 +1,14 @@
 package ar.com.syswarp.ejb;
 
-import javax.ejb.EJBException;
-import javax.ejb.EJBObject;
-import javax.ejb.Local;
-
-import sun.misc.REException;
-
+import java.math.BigDecimal;
 import java.rmi.RemoteException;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Hashtable;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Properties;
-import java.math.*;
 
 import javax.ejb.Local;
 
@@ -223,10 +218,9 @@ public interface BC {
 
 	public String _borrar_clientesEstadosUpdate(BigDecimal idestado,
 			String estado, String fechasn, BigDecimal idempresa,
-			String usuarioact) throws  RemoteException;
-	
-	
-	public   String InterFacesGenerarPedido(BigDecimal idpedidoDelta,
+			String usuarioact) throws RemoteException;
+
+	public String InterFacesGenerarPedido(BigDecimal idpedidoDelta,
 			BigDecimal idcampacabeDelta, BigDecimal idcliente,
 			BigDecimal idsucuclie, Timestamp fechapedido,
 			BigDecimal idcondicion, String obsarmado, String obsentrega,
@@ -234,8 +228,8 @@ public interface BC {
 			BigDecimal idtarjeta, BigDecimal cuotas, String origenpedido,
 			BigDecimal total, BigDecimal cotizacion, Hashtable htArticulos,
 			String usuarioalt, BigDecimal idempresa, Properties props)
-			throws  SQLException, RemoteException;
-	
+			throws SQLException, RemoteException;
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

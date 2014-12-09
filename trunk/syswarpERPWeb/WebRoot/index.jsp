@@ -3,7 +3,9 @@
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
-<%@page import="ar.com.syswarp.entity.Empresa"%>
+<%@ page import="ar.com.syswarp.entity.Empresa"%>
+<%@ page import="javax.ejb.EJB"%>
+<%@ page import="ar.com.syswarp.service.EmpresaService"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%
@@ -73,13 +75,13 @@ List<Empresa> empresasList = general.getEmpresas();
 						</div>
 						<div class="form-group">
 						<select name="empresa" class="form-control input-sx" placeholder="Empresa">
-								   <%
+										<%
 										for (Empresa empresa : empresasList) {
-									%>								      
-											<option value="<%=empresa.getIdempresa()%>"><%=empresa.getEmpresa()%></option>
-									<%
+										%>
+										<option value="<%=empresa.getIdempresa()%>"><%=empresa.getEmpresa()%></option>
+										<%
 										}
-									%> 
+										%>
 								   </select>
 						</div>
 						<div style="color:red; margin-bottom:10px"> <%if (mensaje != null) out.write(mensaje);%></div>
