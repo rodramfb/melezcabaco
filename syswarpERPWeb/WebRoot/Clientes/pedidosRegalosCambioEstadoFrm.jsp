@@ -39,13 +39,12 @@ String pathscript = session.getAttribute("pathscript").toString();
 <script language="JavaScript" src="vs/calendar/calendarcode.js"></script>
 <script>
 
-function enviar(){
-
-  if(confirm('Esta acción dispara notificaciones a distintos sectores.\nConfirma los valores seleccionados?')){
-    document.frm.validar.value = 'validar';
-    document.frm.submit();
-  }
-}
+	function enviar() {
+		if(confirm('Esta acción dispara notificaciones a distintos sectores.\nConfirma los valores seleccionados?')) {
+			document.frm.validar.value = 'validar';
+    		document.frm.submit();
+		}
+	}
 
 </script>
 </head>

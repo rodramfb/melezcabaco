@@ -100,10 +100,10 @@ public class BCBean implements BC {
 			susuario = props.getProperty("sconn.usuario").trim();
 			sclave = props.getProperty("sconn.clave").trim();
 			Class.forName(sclase);
-			sconexion = DriverManager.getConnection(surl, susuario, sclave);
+			// sconexion = DriverManager.getConnection(surl, susuario, sclave);
 
 			this.dbconn = conexion;
-			this.sdbconn = sconexion;
+			// this.sdbconn = sconexion;
 
 		} catch (java.lang.ClassNotFoundException cnfException) {
 			log.error("Error driver : " + cnfException);

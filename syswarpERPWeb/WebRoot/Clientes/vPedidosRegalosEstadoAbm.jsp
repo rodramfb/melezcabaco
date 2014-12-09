@@ -62,43 +62,38 @@ String usuario    = session.getAttribute("usuario").toString();
  <script language="JavaScript" src="vs/overlib/overlib.js"></script>
  <script>
 
-   function callDetalle(idpedido, idcliente, cliente, tipopedido){
-     var pagina = 'pedidosHistoricoClienteDetalle.jsp?idpedido_cabe=' + idpedido + '&idcliente=' + idcliente + '&cliente=' + cliente + '&tipopedido=' + tipopedido;
-     abrirVentana(pagina, 'detalle', 800, 450);
-   }
-
-   function cambiarEstado( idpedido ){
-
-		 document.frm.accion.value = 'cambiarestado';  
-     document.frm.idpedido_regalos_cabe.value = idpedido;
-     document.frm.submit();
-
-   }
-
-
-	function getAudit(idpedido, idestado){
-    //20101203 - EJV - Mantis 627 ??? 
-    if(true){
-    //if(idestado == 4 || idestado == 5){
-      var pagina = 'pedidosCambioEstadosLogAudit.jsp?idpedido=' + idpedido  +   '&tipopedido=R'; 
-		  frmLOV = open(pagina, 'audit','toolbar=no,menubar=no,scrollbars=yes,resizable=no,width=600,height=200,status=no,location=no'); 
-		  if (frmLOV.opener == null) frmLOV.opener = self;
-			frmLOV.focus();
-			return frmLOV;
-    }
-    else{
-      alert('No existe auditoría para pedido: ' + idpedido); 
-      return null; 
-    }
+	function callDetalle(idpedido, idcliente, cliente, tipopedido) {
+		var pagina = 'pedidosHistoricoClienteDetalle.jsp?idpedido_cabe=' + idpedido + '&idcliente=' + idcliente + '&cliente=' + cliente + '&tipopedido=' + tipopedido;
+		abrirVentana(pagina, 'detalle', 800, 450);
 	}
 
-   function modificarOrden( idpedido ){
+	function cambiarEstado(idpedido) {
+		document.frm.accion.value = 'cambiarestado';  
+		document.frm.idpedido_regalos_cabe.value = idpedido;
+		document.frm.submit();
+	}
 
-     document.frm.action = 'pedidosRegalosCabeUpdate.jsp';
-	 document.frm.idpedido_regalos_cabe.value = idpedido;
-     document.frm.submit();
 
-   }
+	function getAudit(idpedido, idestado) {
+    	//20101203 - EJV - Mantis 627 ??? 
+		if (true) {
+		//if(idestado == 4 || idestado == 5){
+			var pagina = 'pedidosCambioEstadosLogAudit.jsp?idpedido=' + idpedido  +   '&tipopedido=R'; 
+			frmLOV = open(pagina, 'audit','toolbar=no,menubar=no,scrollbars=yes,resizable=no,width=600,height=200,status=no,location=no'); 
+			if (frmLOV.opener == null) frmLOV.opener = self;
+			frmLOV.focus();
+			return frmLOV;
+		} else {
+			alert('No existe auditoría para pedido: ' + idpedido); 
+			return null; 
+		}
+	}
+
+	function modificarOrden(idpedido) {
+		document.frm.action = 'pedidosRegalosCabeUpdate.jsp';
+		document.frm.idpedido_regalos_cabe.value = idpedido;
+		document.frm.submit();
+	}
 
  </script>
 

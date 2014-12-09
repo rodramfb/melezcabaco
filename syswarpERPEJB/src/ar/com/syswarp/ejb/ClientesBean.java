@@ -5902,55 +5902,6 @@ public class ClientesBean implements Clientes {
 
 			}
 
-			// 20090918 -- TODO:
-			// if (salida[0].equalsIgnoreCase("OK")) {
-			//
-			// try {
-			//
-			// String conmutador = "OFF";
-			//
-			// if (conmutador.equals("")) {
-			//
-			// if (properties == null || properties.isEmpty())
-			// properties = this.props;
-			//
-			// BCBean.InterFacesGenerarPedido(idpedido_regalos_cabe,
-			// idcampacabe, idcliente, idsucuclie,
-			// fechapedido, idcondicion, obsarmado,
-			// obsentrega, totaliva, idprioridad, idzona,
-			// idtarjeta, cuotas, origenpedido, total,
-			// cotizacion, htArticulos, usuarioalt, idempresa,
-			// properties);
-			//
-			// } else if (conmutador
-			// .equals("POR AHORA ESTO TAMBIEN QUEDA OUT")) {
-			//
-			// // PRUEBAS PARA LA GENERACION DE CAMPANIA EN BACO ...
-			//
-			// // BCBean.getSetCampaniaActivaBaco(idempresa,
-			// // usuarioalt, dbconn, dbconn);
-			//
-			// } else {
-			// log
-			// .warn("----------------      !!  ATENCION !!         ----------------");
-			// log
-			// .warn("|                                                             |");
-			// log
-			// .warn("| INTERFACE PEDIDOS REGALOS DELTA < - >BACO NO SE UTILIZA     |");
-			// log
-			// .warn("|                                                             |");
-			// log
-			// .warn("----------------              ***            -----------------");
-			// }
-			//
-			// } catch (Exception eBC) {
-			// log
-			// .error("EXC - pedidosRegalsCreate(.....), al ejecutarse INTERFACE BACO / pedido ["
-			// + idpedido_regalos_cabe + "] : " + eBC);
-			// }
-			//
-			// }
-
 		} catch (SQLException sqlException) {
 			salida[0] = "SQLE: Imposible generar pedido.";
 			log.error("Error SQL public String[] pedidosRegalosUpdate(.....)"
@@ -23548,11 +23499,6 @@ public class ClientesBean implements Clientes {
 	 * 
 	 */
 
-	/*
-	 * TODO: 20091001 - EJV REPLICADO EN INTERFACES :
-	 * BCBean.stockStockBisCantPediCreateUpdate
-	 */
-
 	public String[] stockStockBisCantPediCreateUpdate(String articu_sb,
 			BigDecimal deposi_sb, BigDecimal pedid_sb, String usuarioact,
 			BigDecimal idempresa, Connection conn) throws EJBException {
@@ -23912,11 +23858,6 @@ public class ClientesBean implements Clientes {
 		}
 		return salida;
 	}
-
-	/*
-	 * TODO: 20091001 - EJV REPLICADO EN BCBean :
-	 * ClientesBean.getStockDepositosPk
-	 */
 
 	public List getStockDepositosPk(BigDecimal codigo_dt, BigDecimal idempresa)
 			throws EJBException {
@@ -34660,19 +34601,6 @@ public class ClientesBean implements Clientes {
 
 					}
 
-					try {
-
-						retorno = BCBean.interfacesAnularPedidoBaco(idpedido,
-								usuarioalt, idempresa, props);
-						salida = retorno[0];
-
-					} catch (Exception e) {
-						salida = "(EX) Error al intentear anula pedido BACO.";
-						log
-								.error("callPedidosCabeUpdateEstado(): Imposible acutalizar pedido BACO: ["
-										+ idpedido + "] - " + e);
-					}
-
 				}
 
 				if (salida.equalsIgnoreCase("OK")) {
@@ -34999,24 +34927,6 @@ public class ClientesBean implements Clientes {
 
 					}
 
-					// 20101126 - Mantis 602 - Entregas no pasan Baco, por ende
-					// no se anulan -->
-					// try {
-					//
-					// retorno = BCBean.interfacesAnularPedidoBaco(
-					// idpedido_regalos_entrega_cabe, usuarioalt,
-					// idempresa, props);
-					// salida = retorno[0];
-					//
-					// } catch (Exception e) {
-					// salida = "(EX) Error al intentear anula pedido BACO.";
-					// log
-					// .error("callPedidosCabeUpdateEstado(): Imposible acutalizar pedido BACO: ["
-					// + idpedido_regalos_entrega_cabe
-					// + "] - " + e);
-					// }
-					// <--
-
 				}
 
 				if (salida.equalsIgnoreCase("OK")) {
@@ -35265,20 +35175,6 @@ public class ClientesBean implements Clientes {
 						// < --
 						// -------------------------------------------------------
 
-					}
-
-					try {
-
-						retorno = BCBean
-								.interfacesAnularPedidoBacoPreconformacion(
-										idpedido, usuarioalt, idempresa, props);
-						salida = retorno[0];
-
-					} catch (Exception e) {
-						salida = "(EX) Error al intentear anula pedido BACO.";
-						log
-								.error("callPedidosCabeUpdateEstadoPreconf(): Imposible acutalizar pedido BACO: ["
-										+ idpedido + "] - " + e);
 					}
 
 				}
@@ -39298,10 +39194,6 @@ public class ClientesBean implements Clientes {
 
 				} else if (conmutador.equals("D1")) {
 
-					// PRUEBAS PARA LA GENERACION DE CAMPANIA EN BACO ...
-
-					// BCBean.getSetCampaniaActivaBaco(idempresa,
-					// usuarioalt, dbconn, dbconn);
 
 				} else {
 					log

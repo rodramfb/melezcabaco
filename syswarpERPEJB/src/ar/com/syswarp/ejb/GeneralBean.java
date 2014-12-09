@@ -1,31 +1,41 @@
 package ar.com.syswarp.ejb;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.rmi.RemoteException;
-import javax.ejb.EJBException;
-import javax.ejb.SessionBean;
-import javax.ejb.SessionContext;
-import javax.ejb.CreateException;
-import javax.ejb.Stateless;
-
-import java.io.*;
-import java.sql.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
-
-import javax.mail.Message;
-import javax.sql.*;
-import java.util.*;
-import org.apache.log4j.*;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -34,47 +44,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import java.lang.*;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
 
-import net.sf.jasperreports.view.JasperViewer;
-import net.sf.jasperreports.engine.*;
+import javax.ejb.CreateException;
+import javax.ejb.EJBException;
+import javax.ejb.SessionContext;
+import javax.ejb.Stateless;
+import javax.mail.Message;
 
-// lectura de xml
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperRunManager;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import org.apache.log4j.Logger;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.DOMException;
-
+import sun.misc.BASE64Encoder;
 import ar.com.syswarp.entity.Empresa;
-import ar.com.syswarp.entitymanager.AccionContactoManager;
 import ar.com.syswarp.entitymanager.EmpresaManager;
-import ar.com.syswarp.entitymanager.ResultadoContactoManager;
 import ar.com.syswarp.entitymanager.utils.QueryManager;
 import bsh.EvalError;
 import bsh.Interpreter;
-
-//--- security
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import sun.misc.BASE64Encoder;
-import sun.misc.CharacterEncoder;
 
 @Stateless
 public class GeneralBean implements General {
@@ -92,7 +81,7 @@ public class GeneralBean implements General {
 	 ***********************/
 	QueryManager queryManager = QueryManager.getInstance(log);
 	EmpresaManager empresaManager = new EmpresaManager(log);
-	
+
 	private Connection conexion;
 
 	private Properties props;
@@ -8282,12 +8271,11 @@ public class GeneralBean implements General {
 		return vecSalida;
 	}
 
-	
 	@Override
 	public List<Empresa> getEmpresas() throws RemoteException {
 		return empresaManager.list(dbconn, null);
 	}
-	
+
 	// para una ocurrencia (ordena por el segundo campo por defecto)
 	public List getGlobalempresasOcu(long limit, long offset, String ocurrencia)
 			throws EJBException {
